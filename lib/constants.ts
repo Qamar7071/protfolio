@@ -4,22 +4,21 @@
 export const SITE_CONFIG = {
   name: "Qamar",
   fullName: "Qamar Abbas",
-  title: "AI/ML Engineer & Full-Stack Developer",
-  tagline: "Building intelligent, production-ready software.",
+  title: "AI/ML Student & Python Developer",
+  tagline: "Building intelligent, deployed ML applications.",
   description:
-    "Portfolio of Qamar — AI/ML Engineer, Python & Java Developer, and Full-Stack Engineer based in Islamabad, Pakistan. I build intelligent, scalable, production-ready software with clean code and real-world impact.",
+    "Portfolio of Qamar Abbas — AI/ML student and Python developer based in Islamabad, Pakistan. Currently pursuing BS in Artificial Intelligence at Shifa Tameer-e-Millat University while shipping real ML applications to production.",
   url: "https://qamar.dev",
   ogImage: "/og-image.png",
   location: "Islamabad, Pakistan",
   email: "qamarjamal7071@gmail.com",
   phone: "+923408280700",
-  availability: "Available for freelance & full-time roles",
+  availability: "Available for freelance & internships",
   resumeUrl: "/resume.pdf",
 } as const;
 
 /* =========================================================
    SOCIAL LINKS
-   Note: keys use lowercase for consistency with the app code.
    ========================================================= */
 export const SOCIAL_LINKS = {
   github: "https://github.com/Qamar7071/",
@@ -38,60 +37,61 @@ export const NAV_LINKS = [
   { name: "About", href: "#about" },
   { name: "Skills", href: "#skills" },
   { name: "Projects", href: "#projects" },
+  { name: "Certifications", href: "#certifications" },
   { name: "Services", href: "#services" },
   { name: "Experience", href: "#experience" },
   { name: "Contact", href: "#contact" },
 ] as const;
 
 /* =========================================================
-   HERO — rotating titles (typewriter effect)
+   HERO — rotating titles
    ========================================================= */
 export const ROTATING_TITLES = [
-  "AI/ML Engineer",
+  "AI/ML Student",
   "Python Developer",
-  "Java Developer",
-  "Full-Stack Developer",
+  "ML Engineer in Training",
+  "Data Enthusiast",
   "Problem Solver",
 ] as const;
 
 export const HERO_HIGHLIGHTS = [
-  "Production-ready ML systems",
-  "Scalable backend APIs",
-  "Clean, tested code",
-  "End-to-end delivery",
+  "Deployed ML applications",
+  "IBM-certified in Deep Learning",
+  "BS Artificial Intelligence",
+  "Freelancing on Fiverr",
 ] as const;
 
 /* =========================================================
-   STATS — Apna College style number strip
+   STATS — real, honest numbers
    ========================================================= */
 export const STATS = [
-  { value: "3+", label: "Years of Experience", icon: "Briefcase" },
-  { value: "40+", label: "Projects Delivered", icon: "Rocket" },
-  { value: "20+", label: "Happy Clients", icon: "Users" },
-  { value: "15+", label: "Technologies Mastered", icon: "Code2" },
+  { value: "5+", label: "Deployed Projects", icon: "Rocket" },
+  { value: "10+", label: "Technologies", icon: "Code2" },
+  { value: "2", label: "Certifications", icon: "Award" },
+  { value: "4+", label: "Years Studying AI", icon: "GraduationCap" },
 ] as const;
 
 /* =========================================================
-   ABOUT
+   ABOUT — honest story
    ========================================================= */
 export const ABOUT = {
   heading: "Get to know me",
   intro:
-    "I'm Qamar — an engineer who lives at the intersection of machine learning and full-stack development. From training and deploying ML models to shipping polished, production-ready web applications, I turn ideas into working software.",
+    "I'm Qamar Abbas — an AI/ML student and Python developer building at the intersection of machine learning and modern web deployment. Currently pursuing my BS in Artificial Intelligence at Shifa Tameer-e-Millat University while shipping real ML applications to production.",
   paragraphs: [
-    "I specialize in AI/ML systems using Python, PyTorch, and TensorFlow, and I build robust backend and full-stack applications with Java (Spring Boot), Node.js, and modern frontend stacks.",
-    "Based in Islamabad, Pakistan, I work with startups and teams worldwide to design, build, and deploy software that solves real problems — with clean architecture, strong tests, and pixel-perfect UI.",
+    "I focus on end-to-end machine learning applications using Python, scikit-learn, TensorFlow, and Keras — from training models on real datasets to deploying them as live web applications with Flask, Vercel, and Render.",
+    "Based in Islamabad, Pakistan, I'm open to freelance opportunities and internships where I can grow while contributing to meaningful projects. I'm actively learning through hands-on projects, Fiverr freelance work, and industry certifications like IBM's Deep Learning course.",
   ],
   keyPoints: [
-    { title: "AI/ML Systems", desc: "Model training, deployment, and MLOps for real production use cases." },
-    { title: "Backend Engineering", desc: "Java Spring Boot & Python APIs, database design, and scalable services." },
-    { title: "Full-Stack Delivery", desc: "React, Next.js, and TypeScript apps — designed, built, and shipped." },
-    { title: "Clean Code", desc: "Tested, documented, and reviewed — engineered to last." },
+    { title: "AI/ML Applications", desc: "Trained and deployed 5+ end-to-end machine learning models on real datasets." },
+    { title: "Python Ecosystem", desc: "Comfortable with scikit-learn, TensorFlow, Keras, Pandas, and NumPy for data science." },
+    { title: "Modern Deployment", desc: "Ship live apps using Flask, Vercel, and Render — no just-in-my-laptop projects." },
+    { title: "Always Learning", desc: "IBM-certified in Deep Learning, pursuing BS AI, freelancing on Fiverr." },
   ],
 } as const;
 
 /* =========================================================
-   SKILLS — grouped by domain
+   SKILLS — grouped by domain (honest, based on real usage)
    ========================================================= */
 export const SKILL_CATEGORIES = [
   {
@@ -99,17 +99,18 @@ export const SKILL_CATEGORIES = [
     icon: "Brain",
     color: "primary",
     skills: [
-      "Python", "PyTorch", "TensorFlow", "scikit-learn",
-      "Hugging Face", "OpenAI API", "LangChain", "Pandas", "NumPy",
+      "Python", "TensorFlow", "Keras", "Deep Learning",
+      "scikit-learn", "Random Forest", "Regression Models",
+      "Pandas", "NumPy", "Data Preprocessing",
     ],
   },
   {
-    title: "Backend Development",
+    title: "Backend & Web",
     icon: "Server",
     color: "secondary",
     skills: [
-      "Java", "Spring Boot", "FastAPI", "Django",
-      "Node.js", "Express", "REST APIs", "GraphQL", "Microservices",
+      "Python", "Flask", "REST APIs",
+      "Java (Basic)", "JavaScript", "HTML", "CSS",
     ],
   },
   {
@@ -117,180 +118,205 @@ export const SKILL_CATEGORIES = [
     icon: "Layout",
     color: "primary",
     skills: [
-      "TypeScript", "React", "Next.js", "Tailwind CSS",
-      "Framer Motion", "Redux", "React Query", "Zustand",
+      "JavaScript", "TypeScript", "React",
+      "Next.js", "Tailwind CSS", "Framer Motion",
     ],
   },
   {
-    title: "Databases & DevOps",
+    title: "Tools & Deployment",
     icon: "Database",
     color: "secondary",
     skills: [
-      "PostgreSQL", "MongoDB", "MySQL", "Redis",
-      "Docker", "Kubernetes", "AWS", "Git", "CI/CD",
+      "Git", "GitHub", "Vercel", "Render",
+      "VS Code", "IntelliJ IDEA", "OpenAI API",
+      "Prompt Engineering",
     ],
   },
 ] as const;
 
 /* =========================================================
-   PROJECTS — featured work
+   PROJECTS — real deployed work
    ========================================================= */
 export const PROJECTS = [
   {
-    id: "ai-resume-analyzer",
-    title: "AI Resume Analyzer",
+    id: "diabetes-risk-screening",
+    title: "Diabetes Risk Assessment",
     category: "AI / ML",
     description:
-      "An intelligent resume screening platform that uses NLP and semantic matching to rank candidates against job descriptions, with explainable scoring.",
-    image: "/projects/resume-analyzer.png",
-    tech: ["Python", "FastAPI", "Hugging Face", "Next.js", "PostgreSQL"],
-    liveUrl: "#",
+      "A clinical screening tool that predicts diabetes probability from 8 routine health measurements. Uses ensemble ML models — Random Forest, Logistic Regression, and Gradient Boosting — trained on the Pima Indians Diabetes dataset with 768 records.",
+    image: "/projects/diabetes.png",
+    tech: ["Python", "Scikit-learn", "Random Forest", "JavaScript", "Vercel"],
+    liveUrl: "https://diabetes-prediction-app-rho.vercel.app/",
     githubUrl: "#",
     featured: true,
   },
   {
-    id: "smart-inventory",
-    title: "Smart Inventory System",
-    category: "Full-Stack",
+    id: "uswa-ai-assistant",
+    title: "USWA AI Assistant",
+    category: "AI / ML",
     description:
-      "End-to-end inventory management platform with ML-based demand forecasting, real-time dashboards, and multi-warehouse support.",
-    image: "/projects/inventory.png",
-    tech: ["Java", "Spring Boot", "React", "PostgreSQL", "Docker"],
-    liveUrl: "#",
+      "An intelligent chatbot built for the Uswa Yultar Education System in Gilgit-Baltistan. Helps students and parents get instant answers about admissions, fees, class timings, subjects, teachers, and holidays — powered by LLM technology with contextual understanding.",
+    image: "/projects/uswa.png",
+    tech: ["Python", "OpenAI API", "Flask", "JavaScript", "Render"],
+    liveUrl: "https://uswa-ai-assistant-2.onrender.com/",
     githubUrl: "#",
     featured: true,
   },
   {
-    id: "chatbot-platform",
-    title: "Multi-Tenant Chatbot Platform",
+    id: "scholarly-gpa-predictor",
+    title: "Scholarly — GPA Predictor",
     category: "AI / ML",
     description:
-      "SaaS chatbot platform powered by LLMs with knowledge-base integration, custom personas, and analytics for each tenant.",
-    image: "/projects/chatbot.png",
-    tech: ["Python", "LangChain", "OpenAI", "Next.js", "MongoDB"],
-    liveUrl: "#",
+      "An academic prediction engine that estimates student GPA using Linear Regression trained on 1,500 records. Analyzes 8 lifestyle factors — study hours, sleep, attendance, previous GPA, assignments, participation, extracurriculars, and social media — with feature-impact analysis. R² 0.608, RMSE 0.247.",
+    image: "/projects/gpa.png",
+    tech: ["Python", "Flask", "Scikit-learn", "Linear Regression", "Vercel"],
+    liveUrl: "https://gpa-predictor-woad.vercel.app/",
     githubUrl: "#",
     featured: true,
   },
   {
-    id: "finance-tracker",
-    title: "Personal Finance Tracker",
-    category: "Full-Stack",
-    description:
-      "Beautiful, secure personal finance app with budgets, insights, and category-level analytics — mobile-first PWA.",
-    image: "/projects/finance.png",
-    tech: ["Next.js", "TypeScript", "Prisma", "PostgreSQL"],
-    liveUrl: "#",
-    githubUrl: "#",
-    featured: false,
-  },
-  {
-    id: "image-classifier",
-    title: "Vision Classifier API",
+    id: "loancheck-eligibility",
+    title: "LoanCheck — AL Habib",
     category: "AI / ML",
     description:
-      "Fine-tuned computer-vision model served as a REST API with autoscaling, batch inference, and monitoring.",
-    image: "/projects/vision.png",
-    tech: ["Python", "PyTorch", "FastAPI", "Docker", "AWS"],
-    liveUrl: "#",
+      "An AI-powered loan eligibility portal styled after Bank AL Habib. Uses Logistic Regression trained on 2,000+ records to give instant approval probability assessments based on income, loan terms, education, credit history, and property area. 84% accuracy, 0.93 ROC-AUC score. Follows State Bank of Pakistan guidelines.",
+    image: "/projects/loan.png",
+    tech: ["Python", "Flask", "Scikit-learn", "Logistic Regression", "Vercel"],
+    liveUrl: "https://loan-predictor-sigma.vercel.app/",
     githubUrl: "#",
-    featured: false,
+    featured: true,
   },
   {
-    id: "ecommerce-platform",
-    title: "Modern E-Commerce Platform",
-    category: "Full-Stack",
+    id: "image-classifier-cnn",
+    title: "Image Classification (Cat vs Dog)",
+    category: "AI / ML",
     description:
-      "Headless commerce storefront with Stripe payments, admin dashboard, and blazing-fast product search.",
-    image: "/projects/ecommerce.png",
-    tech: ["Next.js", "Stripe", "Node.js", "MongoDB", "Redis"],
+      "Convolutional Neural Network image classifier that categorizes images as cats or dogs. Covers image preprocessing, feature extraction, model training, and evaluation using TensorFlow/Keras and OpenCV. Great starting point for computer vision projects.",
+    image: "/projects/cnn.png",
+    tech: ["Python", "TensorFlow", "Keras", "OpenCV", "CNN"],
     liveUrl: "#",
     githubUrl: "#",
     featured: false,
   },
 ] as const;
 
-export const PROJECT_CATEGORIES = ["All", "AI / ML", "Full-Stack"] as const;
+export const PROJECT_CATEGORIES = ["All", "AI / ML"] as const;
 
 /* =========================================================
-   EXPERIENCE — work timeline
+   CERTIFICATES — professional credentials
+   ========================================================= */
+export const CERTIFICATES = [
+  {
+    id: "ibm-deep-learning-keras",
+    title: "Introduction to Deep Learning & Neural Networks with Keras",
+    provider: "IBM",
+    platform: "Coursera",
+    date: "Jul 14, 2026",
+    verifyUrl: "https://coursera.org/verify/GYNJY9XS0VZY",
+    image: "/certificates/ibm-deep-learning.png",
+    skills: ["Deep Learning", "Neural Networks", "Keras", "TensorFlow"],
+    featured: true,
+  },
+  {
+    id: "python-programming-course",
+    title: "Python Programming Course",
+    provider: "Uswa Public School",
+    platform: "Certificate of Appreciation",
+    date: "2020",
+    verifyUrl: "#",
+    image: "/certificates/python-course.png",
+    skills: ["Python", "Programming Fundamentals"],
+    featured: true,
+  },
+  {
+    id: "arduino-basic-course",
+    title: "Basic Arduino Course",
+    provider: "Uswa Public School & College",
+    platform: "Yultar, Skardu",
+    date: "2019",
+    verifyUrl: "#",
+    image: "/certificates/arduino.png",
+    skills: ["Arduino", "Electronics", "Hardware"],
+    featured: false,
+  },
+  {
+    id: "best-award-2022",
+    title: "Best Award — Naat, Art Competition & Scientific Exhibition",
+    provider: "Uswa Public School & College",
+    platform: "Yultar, Skardu",
+    date: "Mar 17, 2022",
+    verifyUrl: "#",
+    image: "/certificates/naat-2022.png",
+    skills: ["Leadership", "Creativity", "Public Speaking"],
+    featured: false,
+  },
+  {
+    id: "naat-art-science-2017",
+    title: "Naat, Art & Scientific Exhibition — Certificate of Appreciation",
+    provider: "Uswa Public School & College",
+    platform: "Yultar, Skardu",
+    date: "May 20, 2017",
+    verifyUrl: "#",
+    image: "/certificates/naat-2017.png",
+    skills: ["Public Speaking", "Art"],
+    featured: false,
+  },
+  {
+    id: "oxford-art-competition",
+    title: "Art Competition Participant",
+    provider: "Oxford University Press",
+    platform: "Pakistan",
+    date: "May 20, 2017",
+    verifyUrl: "#",
+    image: "/certificates/oxford-art.png",
+    skills: ["Art", "Creativity"],
+    featured: false,
+  },
+] as const;
+
+/* =========================================================
+   EXPERIENCE — real work
    ========================================================= */
 export const EXPERIENCE = [
   {
-    role: "AI/ML Engineer",
-    company: "Freelance",
+    role: "Freelance Python & ML Developer",
+    company: "Fiverr",
     period: "2024 — Present",
-    location: "Remote",
+    location: "Remote (Global)",
     description:
-      "Building custom ML models, LLM integrations, and AI-powered products for startups and enterprise clients across Pakistan, the Middle East, and Europe.",
-    tags: ["Python", "PyTorch", "LangChain", "FastAPI"],
+      "Provide Python data analysis, machine learning modeling, and prompt engineering services to clients worldwide. Specializing in custom ChatGPT prompt engineering for real estate professionals and end-to-end data science solutions for startups and students.",
+    tags: ["Python", "Scikit-learn", "Prompt Engineering", "Data Analysis"],
   },
   {
-    role: "Full-Stack Developer",
-    company: "Tech Studio",
-    period: "2023 — 2024",
+    role: "Independent AI/ML Developer",
+    company: "Personal Projects",
+    period: "2024 — Present",
     location: "Islamabad, Pakistan",
     description:
-      "Delivered production-grade web apps using Next.js, Node.js, and PostgreSQL. Led frontend architecture and mentored junior developers.",
-    tags: ["Next.js", "Node.js", "TypeScript", "PostgreSQL"],
-  },
-  {
-    role: "Java Backend Developer",
-    company: "Enterprise Solutions",
-    period: "2022 — 2023",
-    location: "Islamabad, Pakistan",
-    description:
-      "Built and maintained Spring Boot microservices for financial and inventory systems, with REST APIs, JWT auth, and CI/CD pipelines.",
-    tags: ["Java", "Spring Boot", "Microservices", "Docker"],
+      "Built and deployed 5+ end-to-end machine learning applications including diabetes risk prediction, GPA forecasting, loan eligibility assessment, and educational AI chatbots. All projects are live on Vercel and Render with real-world use cases.",
+    tags: ["Python", "Flask", "TensorFlow", "Keras", "Vercel", "Render"],
   },
 ] as const;
 
 /* =========================================================
-   TESTIMONIALS
+   TESTIMONIALS — will grow with real clients
    ========================================================= */
-export const TESTIMONIALS = [
-  {
-    name: "Ahmed Khan",
-    role: "Founder, StartupX",
-    avatar: "/testimonials/1.jpg",
-    quote:
-      "Qamar delivered an ML-powered dashboard that saved us weeks of engineering. Clean code, fast delivery, and genuinely great communication.",
-    rating: 5,
-  },
-  {
-    name: "Sarah Ali",
-    role: "CTO, FinTech Labs",
-    avatar: "/testimonials/2.jpg",
-    quote:
-      "One of the most reliable full-stack engineers I've worked with. Ships on time, thinks about edge cases, and writes code the whole team can read.",
-    rating: 5,
-  },
-  {
-    name: "Bilal Iqbal",
-    role: "Product Manager, SaaS Co",
-    avatar: "/testimonials/3.jpg",
-    quote:
-      "From backend APIs to a beautiful frontend, Qamar handled the entire product build. The AI features he shipped became our biggest selling point.",
-    rating: 5,
-  },
-  {
-    name: "Fatima Hassan",
-    role: "Engineering Lead, Retail Tech",
-    avatar: "/testimonials/4.jpg",
-    quote:
-      "Excellent at breaking down complex ML problems and turning them into production systems. Highly recommend for AI + full-stack work.",
-    rating: 5,
-  },
-] as const;
+export const TESTIMONIALS: {
+  name: string;
+  role: string;
+  avatar: string;
+  quote: string;
+  rating: number;
+}[] = [];
 
 /* =========================================================
    TECH MARQUEE — logos row
    ========================================================= */
 export const TECH_MARQUEE = [
-  "Python", "Java", "TypeScript", "React", "Next.js",
-  "Node.js", "Spring Boot", "PyTorch", "TensorFlow",
-  "PostgreSQL", "MongoDB", "Docker", "AWS", "LangChain",
-  "FastAPI", "Tailwind CSS",
+  "Python", "TensorFlow", "Keras", "scikit-learn",
+  "Flask", "JavaScript", "TypeScript", "Next.js",
+  "React", "Tailwind CSS", "Vercel", "Render",
+  "Git", "OpenAI API", "Pandas", "NumPy",
 ] as const;
 
 /* =========================================================
@@ -368,29 +394,29 @@ export const SERVICES = [
 ] as const;
 
 /* =========================================================
-   FAQ — bottom of contact section
+   FAQ
    ========================================================= */
 export const FAQS = [
   {
     q: "What kind of projects do you take on?",
-    a: "AI/ML systems, full-stack web apps, and backend services — from MVPs to production-scale rebuilds. I especially enjoy projects that combine ML with real product surfaces.",
+    a: "AI/ML applications, Python-based data analysis, prompt engineering, and machine learning model development. I especially enjoy projects that involve real-world datasets and end-to-end deployment.",
   },
   {
     q: "Do you work remotely?",
-    a: "Yes. I'm based in Islamabad, Pakistan, and work remotely with clients worldwide across multiple time zones.",
+    a: "Yes. I'm based in Islamabad, Pakistan, and work remotely with clients worldwide through Fiverr and direct engagements.",
   },
   {
-    q: "How do you price your work?",
-    a: "Depending on scope: fixed-price for well-defined MVPs, or weekly/monthly for ongoing engineering work. I always share a clear estimate before we start.",
+    q: "Are you available for internships?",
+    a: "Yes! As an AI/ML student, I'm actively looking for internship opportunities where I can contribute to real projects while learning from experienced teams.",
   },
   {
     q: "How quickly can you start?",
-    a: "For most projects, I can start within 1–2 weeks. For urgent work, I try to accommodate faster timelines when my schedule allows.",
+    a: "For freelance projects, usually within a few days. For internships, I balance university commitments — please reach out and we can discuss schedule.",
   },
 ] as const;
 
 /* =========================================================
-   FOOTER LINKS  — real URLs from SOCIAL_LINKS
+   FOOTER LINKS
    ========================================================= */
 export const FOOTER_LINKS = {
   navigate: [
@@ -398,6 +424,7 @@ export const FOOTER_LINKS = {
     { name: "About", href: "#about" },
     { name: "Skills", href: "#skills" },
     { name: "Projects", href: "#projects" },
+    { name: "Certifications", href: "#certifications" },
     { name: "Contact", href: "#contact" },
   ],
   services: [

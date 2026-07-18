@@ -2,13 +2,27 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageCircle, X, Send, SkipForward, Sparkles } from "lucide-react";
+import toast from "react-hot-toast";
+import {
+  MessageCircle,
+  X,
+  Send,
+  SkipForward,
+  Sparkles,
+  UserPlus,
+  Mail,
+  Phone,
+  Loader2,
+  CheckCircle2,
+} from "lucide-react";
 
 import {
   SITE_CONFIG,
+  SOCIAL_LINKS,
   SKILL_CATEGORIES,
   PROJECTS,
   EXPERIENCE,
+  CERTIFICATES,
 } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
@@ -21,51 +35,57 @@ type Message = {
   text: string;
   displayedText?: string;
   isStreaming?: boolean;
+  showContactPrompt?: boolean;
 };
 
 type Topic =
   | "skills" | "projects" | "experience" | "hire" | "contact"
   | "ai" | "fullstack" | "location" | "pricing" | "resume"
-  | "education" | "tools" | "about" | null;
+  | "education" | "tools" | "about" | "certifications"
+  | "diabetes" | "uswa" | "gpa" | "loan" | "cnn"
+  | "fiverr" | "internship" | "availability"
+  | null;
 
 /* -------------------------------------------------------------------------- */
-/*  Random pick helper                                                        */
+/*  Helpers                                                                   */
 /* -------------------------------------------------------------------------- */
 const pick = <T,>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
 
 /* -------------------------------------------------------------------------- */
-/*  Response variants — less repetitive replies                               */
+/*  Response variants                                                         */
 /* -------------------------------------------------------------------------- */
 const V = {
   greetings: [
-    `Hi there! 👋 I'm Qamar's AI assistant. What would you like to know about him?`,
-    `Hey! 😊 I can tell you about Qamar's skills, projects, or how to work with him. What's on your mind?`,
-    `Hello! I'm here to help you learn about Qamar. Ask me anything!`,
-    `Assalam-o-Alaikum! 👋 I'm Qamar's assistant. How can I help you today?`,
+    `Hi there! 👋 I'm Qamar's AI assistant. Ask me anything about his skills, projects, or how to work with him!`,
+    `Hey! 😊 I know all about Qamar — his AI projects, certifications, and background. What would you like to know?`,
+    `Assalam-o-Alaikum! 👋 I'm here to help you learn about Qamar Abbas — AI/ML student and Python developer. What's on your mind?`,
+    `Hello! I can tell you about Qamar's 5 deployed projects, IBM certification, and freelance services. Ask away!`,
   ],
   fallback: [
-    `I can help you explore Qamar's:\n\n🎯 **Skills** — his tech stack\n🚀 **Projects** — featured work\n💼 **Experience** — background\n📧 **Contact** — how to reach him\n💰 **Pricing** — how he charges\n\nWhat would you like to know?`,
-    `Hmm, let me help you find the right info. Try asking about:\n\n• Qamar's skills or tech stack\n• His projects and portfolio\n• Experience and background\n• How to hire him\n• Contact details\n\nWhat interests you?`,
-    `I'm not sure I caught that. Here's what I can tell you about:\n\n🧠 AI/ML expertise\n💻 Full-stack development\n🏗️ Project portfolio\n🤝 Freelance availability\n\nWhich sounds interesting?`,
+    `I can help you explore Qamar's:\n\n🎯 **Skills** — Python, ML, Deep Learning\n🚀 **Projects** — 5 deployed AI apps\n🎓 **Certifications** — IBM, Arduino, Python\n📚 **Education** — BS AI at Shifa University\n💼 **Freelance** — Fiverr services\n📧 **Contact** — how to reach him\n\nWhat would you like to know?`,
+    `Hmm, let me help. Try asking about:\n\n• AI/ML projects (diabetes, USWA chatbot, GPA)\n• Skills and tech stack\n• IBM Deep Learning certificate\n• How to hire or contact him\n• Freelance rates\n\nWhat interests you?`,
+    `Not sure I caught that. I can share info on:\n\n🧠 AI/ML expertise\n💻 5 live deployed apps\n🎓 6 certifications\n📍 Islamabad, Pakistan\n💼 Available for freelance & internships\n\nWhich sounds interesting?`,
   ],
   thanks: [
-    `You're welcome! 😊 Feel free to reach out to Qamar anytime through the Contact section.`,
-    `Glad I could help! Anything else you'd like to know?`,
+    `You're welcome! 😊 Want Qamar to reach out to you directly? Just say "contact me"!`,
+    `Glad I could help! Anything else? Or would you like to send Qamar a message?`,
     `My pleasure! Let me know if you have more questions.`,
   ],
 };
 
 /* -------------------------------------------------------------------------- */
-/*  Bot brain — returns { text, topic }                                       */
+/*  Bot brain — comprehensive knowledge of Qamar                              */
 /* -------------------------------------------------------------------------- */
-function getBotResponse(input: string, lastTopic: Topic): { text: string; topic: Topic } {
+function getBotResponse(
+  input: string,
+  lastTopic: Topic,
+): { text: string; topic: Topic; showContactPrompt?: boolean } {
   const q = input.toLowerCase().trim();
 
-  // Follow-up detection — reuses last topic on short/generic prompts
+  // Follow-up detection
   const isFollowUp =
     /^(more|tell me more|another|which|any other|more info|details|explain|expand|go on|continue|and)\b/i.test(q) ||
     (q.length < 10 && lastTopic !== null);
-
   if (isFollowUp && lastTopic) {
     return getBotResponse(lastTopic, null);
   }
@@ -75,123 +95,207 @@ function getBotResponse(input: string, lastTopic: Topic): { text: string; topic:
     return { text: pick(V.greetings), topic: null };
   }
 
-  // About / Who
+  // About / who
   if (/^(who|about|introduce|yourself|qamar)$/.test(q) || /who\s(is|are)/.test(q) || /tell.+about/.test(q)) {
     return {
-      text: `**Qamar** is an AI/ML Engineer & Full-Stack Developer based in ${SITE_CONFIG.location}. He builds intelligent, production-ready software — from ML models to full web apps.\n\nHe's especially strong in:\n• 🧠 AI/ML systems (Python, PyTorch, LangChain)\n• 💻 Full-stack apps (Next.js, Java Spring Boot)\n• ☁️ Cloud & DevOps (Docker, AWS)\n\nWant to know about his skills, projects, or how to hire him?`,
+      text: `**Qamar Abbas** is an ambitious AI/ML student and Python developer based in ${SITE_CONFIG.location} 🇵🇰\n\n• 🎓 Pursuing **BS in Artificial Intelligence** (Grade A) at Shifa Tameer-e-Millat University since 2024\n• 🚀 Built and deployed **5+ AI/ML applications** on real datasets\n• 🏆 **IBM-certified** in Deep Learning & Neural Networks (Coursera, 2026)\n• 💼 Active **freelancer on Fiverr** offering ML and prompt engineering services\n• 🔥 Passionate about turning ideas into production ML systems\n\nWant to know about his projects, skills, or how to hire him?`,
       topic: "about",
     };
   }
 
-  // Skills
-  if (/skill|tech|stack|know|programm|language|framework|expert|good\s?at/.test(q)) {
+  // Education / university
+  if (/education|study|studies|degree|university|college|graduation|qualifi|learn|shifa|school/.test(q)) {
+    return {
+      text: `Qamar is currently pursuing his **Bachelor of Science in Artificial Intelligence** at **Shifa Tameer-e-Millat University**, Islamabad. 🎓\n\n• 📅 Started: 2024\n• 📚 Currently in **4th semester**\n• 🎯 Focus: Machine Learning, Data Science, Python\n• ⭐ Grade: A\n\nHe complements his degree with real-world projects and industry certifications like IBM's Deep Learning course.`,
+      topic: "education",
+    };
+  }
+
+  // Skills / general
+  if (/^skill|tech\s?stack|know|programm|language|framework|expert|good\s?at/.test(q)) {
     const skills = SKILL_CATEGORIES.map(
-      (c) => `**${c.title}:** ${c.skills.slice(0, 4).join(", ")}`,
+      (c) => `**${c.title}:** ${c.skills.slice(0, 5).join(", ")}`,
     ).join("\n\n");
     return {
-      text: `Here's Qamar's tech stack:\n\n${skills}\n\nHe's especially strong in **AI/ML** and **full-stack**. Want details on any specific area?`,
+      text: `Qamar's tech stack:\n\n${skills}\n\nHe's especially strong in **AI/ML with Python**. Want to know about a specific area?`,
       topic: "skills",
     };
   }
 
-  // AI / ML
-  if (/\bai\b|\bml\b|machine\s?learning|deep\s?learning|pytorch|tensorflow|llm|gpt|langchain|neural|nlp|computer\s?vision/.test(q)) {
+  // AI / ML deep
+  if (/\bai\b|\bml\b|machine\s?learning|deep\s?learning|pytorch|tensorflow|keras|neural|nlp|computer\s?vision|scikit/.test(q)) {
     return {
-      text: `AI/ML is Qamar's specialty! 🧠\n\n• **Languages:** Python (primary)\n• **Frameworks:** PyTorch, TensorFlow, scikit-learn\n• **LLMs:** OpenAI, LangChain, RAG systems\n• **Deployment:** FastAPI, Docker, MLOps pipelines\n\nCheck his "AI Resume Analyzer" and "Chatbot Platform" projects — both use production LLM setups!`,
+      text: `AI/ML is Qamar's core focus! 🧠\n\n**Frameworks:** TensorFlow, Keras, scikit-learn\n**Models he's used:** Random Forest, Logistic Regression, Gradient Boosting, Linear Regression, CNN\n**Data tools:** Pandas, NumPy\n**IBM Certified** in Deep Learning & Neural Networks (2026)\n\nHe's shipped 5 production ML apps — from clinical diabetes screening (ensemble models) to a CNN cat/dog classifier. Ask me about any specific project!`,
       topic: "ai",
     };
   }
 
-  // Full-stack
+  // Python
+  if (/python|django|flask|fastapi/.test(q)) {
+    return {
+      text: `Python is Qamar's primary language! 🐍\n\n• **ML/Data:** scikit-learn, TensorFlow, Keras, Pandas, NumPy\n• **Web/Backend:** Flask (used in 4+ live projects)\n• **Certified** in Python programming from 2019\n• Uses Python daily for freelance data analysis on Fiverr\n\nAll his deployed ML apps run on Python + Flask backends.`,
+      topic: "skills",
+    };
+  }
+
+  // Full-stack / web
   if (/full[-\s]?stack|frontend|backend|react|next|node|web\s?dev|\bapi\b|typescript|javascript/.test(q)) {
     return {
-      text: `Qamar is a full-stack engineer:\n\n**Frontend:** React, Next.js, TypeScript, Tailwind CSS\n**Backend:** Java Spring Boot, Node.js, FastAPI, Django\n**Databases:** PostgreSQL, MongoDB, Redis\n**DevOps:** Docker, AWS, CI/CD\n\nHe delivers end-to-end web apps — from design to deployment.`,
+      text: `Qamar is expanding into full-stack:\n\n**Frontend:** JavaScript, TypeScript, React, Next.js, Tailwind CSS\n**Backend:** Python (Flask), REST APIs\n**Deployment:** Vercel, Render (all his apps are live!)\n\nHis portfolio (this site) is built with Next.js + TypeScript + Tailwind — proving he can ship modern web apps too.`,
       topic: "fullstack",
     };
   }
 
-  // Projects
-  if (/project|work|portfolio|built|create|made|showcase|example|demo/.test(q)) {
-    const featured = PROJECTS.filter((p) => p.featured).slice(0, 3);
+  // Projects list
+  if (/project|work|portfolio|built|create|made|showcase|example|demo|apps?/.test(q)) {
+    const featured = PROJECTS.filter((p) => p.featured).slice(0, 4);
     const list = featured
       .map((p) => `• **${p.title}** — ${p.description.split(".")[0]}`)
       .join("\n");
     return {
-      text: `Qamar has built **${PROJECTS.length}+ projects**. Here are his featured ones:\n\n${list}\n\nScroll down to the Projects section for live demos and GitHub links! 🚀`,
+      text: `Qamar has ${PROJECTS.length} projects, ${featured.length} of them **live and deployed**:\n\n${list}\n\nAll live at Vercel/Render. Scroll to the Projects section for live previews and details! Or ask me about a specific one 🚀`,
       topic: "projects",
     };
   }
 
-  // Experience
-  if (/experience|year|career|history|background|previous|role|job\s?history/.test(q)) {
-    const list = EXPERIENCE.map(
-      (e) => `• **${e.role}** at ${e.company} (${e.period})`,
+  // Individual projects
+  if (/diabetes|health|clinical|medical/.test(q)) {
+    return {
+      text: `**Diabetes Risk Assessment** 🏥\n\nA clinical ML screening tool that predicts diabetes probability from 8 routine health measurements. Uses an **ensemble** of Random Forest, Logistic Regression, and Gradient Boosting — trained on the Pima Indians Diabetes dataset (768 records).\n\n🔗 Live: diabetes-prediction-app-rho.vercel.app`,
+      topic: "diabetes",
+    };
+  }
+  if (/uswa|chatbot|school\s?bot|education\s?chat/.test(q)) {
+    return {
+      text: `**USWA AI Assistant** 🤖\n\nAn intelligent education chatbot Qamar built for **Uswa Yultar Education System** (Gilgit-Baltistan). Helps students and parents get instant answers about admissions, fees, timings, subjects, and holidays.\n\nPowered by LLM with contextual understanding.\n\n🔗 Live: uswa-ai-assistant-2.onrender.com`,
+      topic: "uswa",
+    };
+  }
+  if (/gpa|scholarly|grade\s?prediction|student\s?performance/.test(q)) {
+    return {
+      text: `**Scholarly — GPA Predictor** 📊\n\nAn academic prediction engine that estimates GPA using **Linear Regression** trained on 1,500 records. Analyzes 8 lifestyle factors: study hours, sleep, attendance, previous GPA, assignments, participation, extracurriculars, and social media.\n\n• R² = 0.608\n• RMSE = 0.247\n• Feature-impact analysis included\n\n🔗 Live: gpa-predictor-woad.vercel.app`,
+      topic: "gpa",
+    };
+  }
+  if (/loan|bank|credit|al\s?habib|eligibility/.test(q)) {
+    return {
+      text: `**LoanCheck — AL Habib** 🏦\n\nAn AI-powered loan eligibility portal styled after Bank AL Habib. Uses **Logistic Regression** trained on 2,000+ records for instant approval assessments.\n\n• **84% accuracy**, 0.93 ROC-AUC\n• Considers income, loan terms, education, credit history, property area\n• Follows State Bank of Pakistan guidelines\n\n🔗 Live: loan-predictor-sigma.vercel.app`,
+      topic: "loan",
+    };
+  }
+  if (/cat|dog|image\s?class|cnn|convolution|computer\s?vision/.test(q)) {
+    return {
+      text: `**Image Classification (Cat vs Dog)** 🐱🐶\n\nA **Convolutional Neural Network** that classifies images as cats or dogs. Built with TensorFlow/Keras and OpenCV.\n\nCovers: image preprocessing, CNN architecture, feature extraction, model training, and evaluation. Great foundation for more advanced computer vision work.`,
+      topic: "cnn",
+    };
+  }
+
+  // Certifications
+  if (/certifi|credenti|award|coursera|ibm|badge|arduino/.test(q)) {
+    const list = CERTIFICATES.map(
+      (c) => `• **${c.title}** — ${c.provider} (${c.date})`,
     ).join("\n");
     return {
-      text: `Qamar has **3+ years** of professional experience:\n\n${list}\n\nHe's currently available for freelance and full-time roles!`,
+      text: `Qamar has **${CERTIFICATES.length} certifications** 🏆\n\n${list}\n\nAll verified. The IBM Deep Learning cert is verifiable on Coursera. See the Certifications section for details!`,
+      topic: "certifications",
+    };
+  }
+
+  // Experience
+  if (/experience|year|career|history|background|previous|role|job\s?history|internship/.test(q)) {
+    return {
+      text: `Qamar's experience so far:\n\n**Freelance Python & ML Developer** at Fiverr (2024 – Present)\nData analysis, ML modeling, and prompt engineering services for global clients.\n\n**Independent AI/ML Developer** (2024 – Present)\nBuilt and deployed 5+ end-to-end ML applications on real datasets.\n\nAs an AI/ML student, he's actively building his career through hands-on projects and freelance work.`,
       topic: "experience",
     };
   }
 
-  // Hire / freelance
-  if (/hire|freelance|available|work\s?with|collaborate|join|team|opportunit|recruit/.test(q)) {
+  // Fiverr
+  if (/fiverr|freelance|gig/.test(q)) {
     return {
-      text: `Yes, Qamar is **${SITE_CONFIG.availability}** 🎯\n\nBest ways to reach out:\n📧 ${SITE_CONFIG.email}\n📱 WhatsApp button in the hero section\n💼 Or use the Contact form on this page\n\nHe typically responds within **24 hours** and offers free 30-min discovery calls.`,
+      text: `Qamar actively freelances on **Fiverr** 💼\n\nServices offered:\n• Python data analysis & preprocessing\n• Machine learning modeling\n• Custom ChatGPT prompt engineering\n• End-to-end AI solutions\n\n🔗 Check his Fiverr profile via the Contact section, or reach out directly for custom quotes.`,
+      topic: "fiverr",
+    };
+  }
+
+  // Hire / availability
+  if (/hire|available|work\s?with|collaborate|join|team|opportunit|recruit|internship/.test(q)) {
+    return {
+      text: `Yes! Qamar is **${SITE_CONFIG.availability}** 🎯\n\nHe's especially open to:\n• 🎓 Internship opportunities (AI/ML focus)\n• 💼 Freelance ML/data projects\n• 🚀 Collaborative student projects\n\nHe typically responds within **24 hours**.\n\nWould you like him to reach out to you directly? Just tell me a bit about what you need!`,
       topic: "hire",
+      showContactPrompt: true,
     };
   }
 
   // Contact
   if (/contact|email|reach|phone|number|whatsapp|call|message|dm/.test(q)) {
     return {
-      text: `Contact Qamar directly:\n\n📧 **Email:** ${SITE_CONFIG.email}\n📱 **Phone:** ${SITE_CONFIG.phone}\n📍 **Location:** ${SITE_CONFIG.location}\n\nAll social links (Gmail, WhatsApp, GitHub, LinkedIn, Facebook) are in the hero section — click any icon to connect!`,
+      text: `Here's how to reach Qamar:\n\n📧 **Email:** ${SITE_CONFIG.email}\n📱 **Phone/WhatsApp:** ${SITE_CONFIG.phone}\n📍 **Location:** ${SITE_CONFIG.location}\n\n**Fastest way:** Use the button below to send Qamar a message directly via WhatsApp with your info!`,
       topic: "contact",
+      showContactPrompt: true,
     };
   }
 
   // Resume
   if (/resume|\bcv\b|download|pdf/.test(q)) {
     return {
-      text: `You can download Qamar's resume from the **"Resume" button** in the top-right of the navbar. 📄\n\nIt has full details of his experience, skills, projects, and education.`,
+      text: `You can download Qamar's professional resume from the **"Resume" button** in the top-right of the navbar. 📄\n\nIt covers his:\n• Education (BS AI at Shifa University)\n• 5 deployed AI/ML projects with live links\n• IBM Deep Learning certification\n• Freelance experience on Fiverr\n• Complete technical skill set`,
       topic: "resume",
     };
   }
 
   // Location
-  if (/location|where|based|city|country|pakistan|from|live|timezone/.test(q)) {
+  if (/location|where|based|city|country|pakistan|from|live|timezone|islamabad/.test(q)) {
     return {
-      text: `Qamar is based in **${SITE_CONFIG.location}** 🇵🇰\n\nHe works remotely with clients worldwide across multiple time zones — perfect for async collaboration.`,
+      text: `Qamar is based in **${SITE_CONFIG.location}** 🇵🇰\n\nHe works remotely with clients globally — timezone flexible for async collaboration across the Middle East, Europe, and beyond.`,
       topic: "location",
     };
   }
 
   // Pricing
-  if (/price|cost|rate|charge|fee|budget|how\s?much|payment|salary|hourly/.test(q)) {
+  if (/price|cost|rate|charge|fee|budget|how\s?much|payment|salary|hourly|quote/.test(q)) {
     return {
-      text: `Qamar's pricing is flexible based on project scope: 💰\n\n• **Fixed-price** for well-defined MVPs\n• **Weekly/monthly** for ongoing work\n• **Hourly** for consulting sessions\n\nHe shares a clear estimate before starting — no surprises. Reach out via the Contact form for a quote!`,
+      text: `Qamar's pricing is flexible & student-friendly: 💰\n\n**Fiverr gigs:**\n• Custom ChatGPT prompts — starting at $15\n• Python data analysis & ML — starting at $90\n\n**Custom projects:**\n• Fixed-price for well-defined scopes\n• Weekly rates for ongoing work\n\nHe provides transparent estimates before starting. Would you like to discuss your project?`,
       topic: "pricing",
-    };
-  }
-
-  // Education
-  if (/education|study|degree|university|college|graduation|qualifi|learn/.test(q)) {
-    return {
-      text: `Qamar has a strong Computer Science background and continues learning through hands-on projects, open-source contributions, and staying current with the latest AI/ML research.\n\nFor specific credentials, check his LinkedIn or resume.`,
-      topic: "education",
+      showContactPrompt: true,
     };
   }
 
   // Tools
-  if (/tool|editor|ide|setup|environment|use|workflow/.test(q)) {
+  if (/tool|editor|ide|setup|environment|use|workflow|vs\s?code/.test(q)) {
     return {
-      text: `Qamar's daily toolkit: 🛠️\n\n• **Editors:** VS Code, IntelliJ IDEA, Cursor\n• **Version Control:** Git, GitHub\n• **DevOps:** Docker, Kubernetes, AWS\n• **Design:** Figma\n• **Collab:** Slack, Notion, Linear`,
+      text: `Qamar's daily toolkit: 🛠️\n\n• **Editors:** VS Code, IntelliJ IDEA\n• **Version Control:** Git, GitHub\n• **Deployment:** Vercel, Render\n• **ML Tools:** Jupyter, scikit-learn, TensorFlow\n• **Design:** Figma (basic)\n• **AI:** OpenAI API, prompt engineering`,
       topic: "tools",
     };
   }
 
+  // GitHub / LinkedIn
+  if (/github|linkedin|social|profile/.test(q)) {
+    return {
+      text: `Find Qamar online:\n\n🐙 **GitHub:** github.com/Qamar7071\n💼 **LinkedIn:** linkedin.com/in/qamar-abbas-39a971392\n💰 **Fiverr:** All active gigs live\n📘 **Facebook:** Personal profile\n\nAll social links are in the hero section — one click away!`,
+      topic: "contact",
+    };
+  }
+
+  // Response time
+  if (/response|reply|answer|how\s?soon|when|fast/.test(q)) {
+    return {
+      text: `Qamar typically responds within **24 hours** ⏱️\n\nFor Fiverr messages, usually faster. For urgent projects, WhatsApp is the fastest way to reach him.\n\nWant to send a message right now?`,
+      topic: "contact",
+      showContactPrompt: true,
+    };
+  }
+
   // Thanks / bye
-  if (/thank|thanks|bye|goodbye|see\s?you|later|great|awesome|cool/.test(q)) {
+  if (/thank|thanks|bye|goodbye|see\s?you|later|great|awesome|cool|nice/.test(q)) {
     return { text: pick(V.thanks), topic: null };
+  }
+
+  // Age / personal
+  if (/age|old|birthday|born/.test(q)) {
+    return {
+      text: `That's personal info I'll let Qamar share directly! 😊 What I can tell you: he's an active AI student since 2024, actively building his career, and passionate about ML.\n\nWant to know about his professional side? Ask about projects, skills, or how to hire him!`,
+      topic: null,
+    };
   }
 
   // Fallback
@@ -205,8 +309,25 @@ const SUGGESTIONS = [
   "What are your skills?",
   "Show me projects",
   "How to hire you?",
-  "Tell me about AI/ML work",
+  "Tell me about certifications",
 ];
+
+/* -------------------------------------------------------------------------- */
+/*  WhatsApp notification helper                                              */
+/* -------------------------------------------------------------------------- */
+function sendLeadToWhatsApp(name: string, email: string, message: string) {
+  const text =
+    `🌟 *New Lead from Portfolio Chatbot!*\n\n` +
+    `👤 *Name:* ${name}\n` +
+    `📧 *Email:* ${email}\n\n` +
+    `💬 *Message:*\n${message}\n\n` +
+    `---\n_Sent from Qamar's portfolio chatbot_ 🤖`;
+
+  // Extract just digits from phone (WhatsApp format needs no +)
+  const phoneDigits = SITE_CONFIG.phone.replace(/[^0-9]/g, "");
+  const url = `https://wa.me/${phoneDigits}?text=${encodeURIComponent(text)}`;
+  window.open(url, "_blank", "noopener,noreferrer");
+}
 
 /* -------------------------------------------------------------------------- */
 /*  CHATBOT                                                                   */
@@ -220,17 +341,16 @@ export default function Chatbot() {
     const g = pick(V.greetings);
     return [{ id: "welcome", role: "bot", text: g, displayedText: g, isStreaming: false }];
   });
+  const [showContactForm, setShowContactForm] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const streamIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Auto-scroll
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isTyping]);
 
-  // Focus input on open
   useEffect(() => {
     if (isOpen) {
       const t = setTimeout(() => inputRef.current?.focus(), 300);
@@ -238,30 +358,28 @@ export default function Chatbot() {
     }
   }, [isOpen]);
 
-  // Escape closes
   useEffect(() => {
     const onEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setIsOpen(false);
+      if (e.key === "Escape") {
+        if (showContactForm) setShowContactForm(false);
+        else setIsOpen(false);
+      }
     };
     window.addEventListener("keydown", onEsc);
     return () => window.removeEventListener("keydown", onEsc);
-  }, []);
+  }, [showContactForm]);
 
-  // Cleanup stream on unmount
   useEffect(() => {
     return () => {
       if (streamIntervalRef.current) clearInterval(streamIntervalRef.current);
     };
   }, []);
 
-  /* --------- Stream text character-by-character --------- */
   const streamText = useCallback((msgId: string, fullText: string) => {
     if (streamIntervalRef.current) clearInterval(streamIntervalRef.current);
-
     let i = 0;
     const CHARS_PER_TICK = 3;
     const TICK_MS = 18;
-
     streamIntervalRef.current = setInterval(() => {
       i += CHARS_PER_TICK;
       if (i >= fullText.length) {
@@ -280,7 +398,6 @@ export default function Chatbot() {
     }, TICK_MS);
   }, []);
 
-  /* --------- Skip current streaming --------- */
   const skipStreaming = () => {
     if (streamIntervalRef.current) {
       clearInterval(streamIntervalRef.current);
@@ -291,11 +408,9 @@ export default function Chatbot() {
     );
   };
 
-  /* --------- Send a user message --------- */
   const sendMessage = (text: string) => {
     const trimmed = text.trim();
     if (!trimmed || isTyping) return;
-
     skipStreaming();
 
     setMessages((prev) => [...prev, { id: `u-${Date.now()}`, role: "user", text: trimmed }]);
@@ -304,24 +419,34 @@ export default function Chatbot() {
 
     const thinkTime = 700 + Math.random() * 800;
     setTimeout(() => {
-      const { text: response, topic } = getBotResponse(trimmed, lastTopic);
-      if (topic) setLastTopic(topic);
+      const response = getBotResponse(trimmed, lastTopic);
+      if (response.topic) setLastTopic(response.topic);
 
       const msgId = `b-${Date.now()}`;
       setMessages((prev) => [
         ...prev,
-        { id: msgId, role: "bot", text: response, displayedText: "", isStreaming: true },
+        {
+          id: msgId,
+          role: "bot",
+          text: response.text,
+          displayedText: "",
+          isStreaming: true,
+          showContactPrompt: response.showContactPrompt,
+        },
       ]);
       setIsTyping(false);
-      streamText(msgId, response);
+      streamText(msgId, response.text);
     }, thinkTime);
   };
 
   const anyStreaming = messages.some((m) => m.isStreaming);
+  const hasContactPrompt = messages.some(
+    (m) => m.showContactPrompt && !m.isStreaming,
+  );
 
   return (
     <>
-      {/* ========== FLOATING BUTTON ========== */}
+      {/* FLOATING BUTTON */}
       <AnimatePresence>
         {!isOpen && (
           <motion.button
@@ -330,13 +455,7 @@ export default function Chatbot() {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0, opacity: 0 }}
             transition={{ type: "spring", stiffness: 260, damping: 20 }}
-            className={cn(
-              "fixed bottom-6 right-6 z-40",
-              "flex items-center gap-2.5 px-5 py-3 rounded-full",
-              "bg-primary text-white font-semibold shadow-button",
-              "hover:bg-primary-600 hover:shadow-button-hover hover:-translate-y-0.5",
-              "transition-all duration-200",
-            )}
+            className="fixed bottom-6 right-6 z-40 flex items-center gap-2.5 px-5 py-3 rounded-full bg-primary text-white font-semibold shadow-button hover:bg-primary-600 hover:shadow-button-hover hover:-translate-y-0.5 transition-all duration-200"
             aria-label="Open chat"
           >
             <MessageCircle className="w-5 h-5" />
@@ -349,7 +468,7 @@ export default function Chatbot() {
         )}
       </AnimatePresence>
 
-      {/* ========== CHAT WINDOW ========== */}
+      {/* CHAT WINDOW */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -360,11 +479,10 @@ export default function Chatbot() {
             className={cn(
               "fixed z-50 bg-white shadow-2xl border border-dark-100",
               "inset-x-0 bottom-0 rounded-t-3xl max-h-[85vh]",
-              "sm:inset-x-auto sm:bottom-6 sm:right-6 sm:w-[380px] sm:h-[560px] sm:max-h-[80vh] sm:rounded-3xl",
+              "sm:inset-x-auto sm:bottom-6 sm:right-6 sm:w-[400px] sm:h-[600px] sm:max-h-[85vh] sm:rounded-3xl",
               "flex flex-col overflow-hidden",
             )}
             role="dialog"
-            aria-label="Chat with Qamar's assistant"
           >
             {/* Header */}
             <div className="bg-gradient-to-r from-primary to-primary-700 text-white px-5 py-4 flex items-center justify-between shrink-0">
@@ -374,29 +492,57 @@ export default function Chatbot() {
                   <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-green-400 border-2 border-primary" />
                 </div>
                 <div>
-                  <p className="font-semibold text-sm leading-tight">
-                    Qamar&apos;s AI Assistant
-                  </p>
+                  <p className="font-semibold text-sm leading-tight">Qamar&apos;s AI Assistant</p>
                   <p className="text-xs text-white/80 flex items-center gap-1">
                     <span className="w-1.5 h-1.5 rounded-full bg-green-400" />
                     Online · Instant replies
                   </p>
                 </div>
               </div>
-              <button
-                type="button"
-                onClick={() => setIsOpen(false)}
-                className="w-8 h-8 rounded-full hover:bg-white/20 flex items-center justify-center transition-colors"
-                aria-label="Close chat"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={() => setShowContactForm(true)}
+                  title="Contact Qamar directly"
+                  className="w-8 h-8 rounded-full hover:bg-white/20 flex items-center justify-center transition-colors"
+                  aria-label="Contact Qamar"
+                >
+                  <UserPlus className="w-4 h-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsOpen(false)}
+                  className="w-8 h-8 rounded-full hover:bg-white/20 flex items-center justify-center transition-colors"
+                  aria-label="Close chat"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3 bg-dark-50">
+            <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3 bg-dark-50 relative">
               {messages.map((msg) => (
-                <MessageBubble key={msg.id} message={msg} />
+                <div key={msg.id}>
+                  <MessageBubble message={msg} />
+                  {msg.showContactPrompt && !msg.isStreaming && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.3 }}
+                      className="ml-10 mt-2"
+                    >
+                      <button
+                        type="button"
+                        onClick={() => setShowContactForm(true)}
+                        className="inline-flex items-center gap-2 text-xs font-bold bg-primary text-white px-4 py-2 rounded-full shadow-button hover:bg-primary-600 hover:-translate-y-0.5 transition-all"
+                      >
+                        <Mail className="w-3.5 h-3.5" />
+                        Send Qamar a message
+                      </button>
+                    </motion.div>
+                  )}
+                </div>
               ))}
               {isTyping && <ThinkingIndicator />}
 
@@ -417,7 +563,6 @@ export default function Chatbot() {
                   </div>
                 </div>
               )}
-
               <div ref={messagesEndRef} />
             </div>
 
@@ -458,20 +603,176 @@ export default function Chatbot() {
                   onClick={() => sendMessage(input)}
                   disabled={!input.trim() || isTyping}
                   className="w-10 h-10 rounded-full bg-primary text-white hover:bg-primary-600 disabled:bg-dark-200 disabled:cursor-not-allowed flex items-center justify-center transition-colors shrink-0"
-                  aria-label="Send message"
+                  aria-label="Send"
                 >
                   <Send className="w-4 h-4" />
                 </button>
               </div>
               <p className="text-[10px] text-dark-400 text-center mt-2 flex items-center justify-center gap-1">
                 <Sparkles className="w-2.5 h-2.5" />
-                AI-powered · Instant answers · No data stored
+                AI-powered · Notification sent to Qamar via WhatsApp
               </p>
             </div>
+
+            {/* Contact form overlay */}
+            <AnimatePresence>
+              {showContactForm && (
+                <ContactFormOverlay onClose={() => setShowContactForm(false)} />
+              )}
+            </AnimatePresence>
           </motion.div>
         )}
       </AnimatePresence>
     </>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/*  CONTACT FORM OVERLAY — lead capture with WhatsApp send                    */
+/* -------------------------------------------------------------------------- */
+function ContactFormOverlay({ onClose }: { onClose: () => void }) {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name.trim() || !email.trim() || !message.trim()) {
+      toast.error("Please fill all fields");
+      return;
+    }
+    if (!/^\S+@\S+\.\S+$/.test(email)) {
+      toast.error("Please enter a valid email");
+      return;
+    }
+    setSending(true);
+
+    // Small delay for UX
+    setTimeout(() => {
+      sendLeadToWhatsApp(name, email, message);
+      setSent(true);
+      setSending(false);
+      toast.success("Opening WhatsApp — click Send to complete!");
+      setTimeout(onClose, 2500);
+    }, 500);
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="absolute inset-0 z-10 bg-white/95 backdrop-blur-sm flex items-start justify-center p-5 overflow-y-auto"
+    >
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        exit={{ y: 20, opacity: 0 }}
+        className="w-full mt-4"
+      >
+        {sent ? (
+          <div className="text-center py-8">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 text-green-600 mb-4">
+              <CheckCircle2 className="w-10 h-10" />
+            </div>
+            <h3 className="text-xl font-display font-bold text-dark-900 mb-2">
+              Almost there! 🎉
+            </h3>
+            <p className="text-sm text-dark-500">
+              WhatsApp is opening — just click <strong>Send</strong> to deliver your message to Qamar.
+            </p>
+          </div>
+        ) : (
+          <>
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h3 className="text-lg font-display font-bold text-dark-900">
+                  Send Qamar a message
+                </h3>
+                <p className="text-xs text-dark-500 mt-0.5">
+                  Direct WhatsApp — usually replies within 24h
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={onClose}
+                className="w-8 h-8 rounded-full hover:bg-dark-100 flex items-center justify-center text-dark-500"
+                aria-label="Close form"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-3">
+              <div>
+                <label className="block text-xs font-bold text-dark-700 mb-1">
+                  Your Name
+                </label>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="John Doe"
+                  disabled={sending}
+                  className="w-full px-3 py-2 bg-dark-50 border border-dark-200 focus:border-primary focus:bg-white focus:outline-none rounded-lg text-sm text-dark-900"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-dark-700 mb-1">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="you@example.com"
+                  disabled={sending}
+                  className="w-full px-3 py-2 bg-dark-50 border border-dark-200 focus:border-primary focus:bg-white focus:outline-none rounded-lg text-sm text-dark-900"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-dark-700 mb-1">
+                  Your Message
+                </label>
+                <textarea
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  placeholder="Hi Qamar, I'd like to discuss..."
+                  rows={4}
+                  disabled={sending}
+                  className="w-full px-3 py-2 bg-dark-50 border border-dark-200 focus:border-primary focus:bg-white focus:outline-none rounded-lg text-sm text-dark-900 resize-none"
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={sending}
+                className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-primary text-white font-bold shadow-button hover:bg-primary-600 hover:-translate-y-0.5 disabled:bg-dark-300 disabled:hover:translate-y-0 transition-all"
+              >
+                {sending ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Opening WhatsApp...
+                  </>
+                ) : (
+                  <>
+                    <Phone className="w-4 h-4" />
+                    Send via WhatsApp
+                  </>
+                )}
+              </button>
+
+              <p className="text-[10px] text-dark-400 text-center">
+                Message opens in WhatsApp — click Send there to deliver.
+                No spam, no data stored.
+              </p>
+            </form>
+          </>
+        )}
+      </motion.div>
+    </motion.div>
   );
 }
 
@@ -500,7 +801,7 @@ function MessageBubble({ message }: { message: Message }) {
       )}
       <div
         className={cn(
-          "max-w-[75%] px-4 py-2.5 rounded-2xl text-sm whitespace-pre-wrap break-words leading-relaxed",
+          "max-w-[80%] px-4 py-2.5 rounded-2xl text-sm whitespace-pre-wrap break-words leading-relaxed",
           isBot
             ? "bg-white text-dark-800 rounded-tl-sm shadow-soft"
             : "bg-primary text-white rounded-tr-sm",
@@ -533,7 +834,6 @@ function ThinkingIndicator() {
   );
 }
 
-/** Renders **bold** markdown as <strong> */
 function formatText(text: string) {
   const parts = text.split(/(\*\*[^*]+\*\*)/g);
   return parts.map((part, i) =>

@@ -1,7 +1,11 @@
 import Navbar from "@/components/layout/Navbar";
 import Hero from "@/components/sections/Hero";
+import Skills from "@/components/sections/Skills";
 import Projects from "@/components/sections/Projects";
 import Services from "@/components/sections/Services";
+import Certifications from "@/components/sections/Certifications";
+import Experience from "@/components/sections/Experience";
+import Contact from "@/components/sections/Contact";
 
 /* -------------------------------------------------------------------------- */
 /*  HOME PAGE                                                                 */
@@ -34,36 +38,23 @@ export default function HomePage() {
         description="A bit about me — background, story, and what I care about as an engineer."
       />
 
-      {/* ============================ SKILLS (placeholder) ========================== */}
-      <PlaceholderSection
-        id="skills"
-        step="Step 5"
-        heading="Skills"
-        description="Grouped skill cards — AI/ML, Backend, Frontend, DevOps."
-        tinted
-      />
+      {/* ============================ SKILLS ========================== */}
+      <Skills />
 
       {/* ============================ PROJECTS ======================== */}
       <Projects />
 
+      {/* ============================ CERTIFICATIONS ================== */}
+      <Certifications />
+
       {/* ============================ SERVICES ==================== */}
       <Services />
 
-      {/* ============================ EXPERIENCE (placeholder) ==================== */}
-      <PlaceholderSection
-        id="experience"
-        step="Step 8"
-        heading="Experience"
-        description="Work timeline with roles, companies, and highlights."
-      />
+      {/* ============================ EXPERIENCE ==================== */}
+      <Experience />
 
-      {/* ============================ CONTACT (placeholder) ========================= */}
-      <PlaceholderSection
-        id="contact"
-        step="Step 8"
-        heading="Contact"
-        description="Contact form with React Hook Form + Zod validation, plus social links."
-      />
+      {/* ============================ CONTACT ================================ */}
+      <Contact />
 
       {/* ============================ FOOTER (placeholder) ========================== */}
       <footer className="bg-dark-900 text-white py-8 text-center text-sm">

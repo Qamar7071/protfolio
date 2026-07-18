@@ -198,7 +198,7 @@ export default function Hero() {
               <div className="relative">
                 {/* Blue border layer */}
                 <div
-                  className="relative w-[260px] h-[320px] sm:w-[300px] sm:h-[370px] lg:w-[340px] lg:h-[420px] bg-primary shadow-card-hover"
+                  className="relative w-[240px] h-[290px] sm:w-[290px] sm:h-[350px] lg:w-[320px] lg:h-[385px] bg-primary shadow-card-hover"
                   style={{
                     clipPath:
                       "polygon(0% 0%, 100% 0%, 100% 82%, 50% 100%, 0% 82%)",
@@ -206,7 +206,7 @@ export default function Hero() {
                 >
                   {/* Inner image (inset creates the border thickness) */}
                   <div
-                    className="absolute inset-[5px] bg-dark-100 overflow-hidden"
+                    className="absolute inset-[4px] bg-dark-100 overflow-hidden"
                     style={{
                       clipPath:
                         "polygon(0% 0%, 100% 0%, 100% 82%, 50% 100%, 0% 82%)",
@@ -217,7 +217,7 @@ export default function Hero() {
                       <img
                         src={AVATAR_CANDIDATES[avatarIdx]}
                         alt={`${SITE_CONFIG.fullName} — ${SITE_CONFIG.title}`}
-                        className="absolute inset-0 w-full h-full object-cover object-[center_20%] scale-110"
+                        className="absolute inset-0 w-full h-full object-cover object-[center_30%] scale-125"
                         onError={() => setAvatarIdx((i) => i + 1)}
                       />
                     ) : (
@@ -235,38 +235,38 @@ export default function Hero() {
                 </div>
               </div>
 
-              {/* Floating badge: experience */}
+              {/* Floating badge: live projects */}
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.6 }}
-                className="absolute -left-2 sm:-left-6 lg:-left-8 top-12 sm:top-16 card-flat !p-3 flex items-center gap-2.5 bg-white shadow-card animate-float z-20"
+                className="absolute -left-4 sm:-left-8 top-16 card-flat !p-3 flex items-center gap-2.5 bg-white shadow-card animate-float"
               >
                 <span className="icon-box !w-10 !h-10">
                   <Sparkles className="w-5 h-5" />
                 </span>
                 <div className="text-left">
                   <p className="text-lg font-bold text-dark-900 leading-none">
-                    3+ yrs
+                    5+
                   </p>
-                  <p className="text-xs text-dark-500">Experience</p>
+                  <p className="text-xs text-dark-500">Live Projects</p>
                 </div>
               </motion.div>
 
-              {/* Floating badge: projects */}
+              {/* Floating badge: IBM certified */}
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.75 }}
-                className="absolute -right-2 sm:-right-6 lg:-right-8 bottom-20 sm:bottom-24 card-flat !p-3 flex items-center gap-2.5 bg-white shadow-card animate-float z-20"
+                className="absolute -right-2 sm:-right-6 bottom-24 card-flat !p-3 flex items-center gap-2.5 bg-white shadow-card animate-float"
                 style={{ animationDelay: "1.5s" }}
               >
-                <span className="icon-box-yellow !w-10 !h-10">🚀</span>
+                <span className="icon-box-yellow !w-10 !h-10">🎓</span>
                 <div className="text-left">
                   <p className="text-lg font-bold text-dark-900 leading-none">
-                    40+
+                    IBM
                   </p>
-                  <p className="text-xs text-dark-500">Projects</p>
+                  <p className="text-xs text-dark-500">Certified</p>
                 </div>
               </motion.div>
             </div>

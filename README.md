@@ -3,7 +3,7 @@
 Personal portfolio of **Qamar**, an AI/ML Engineer & Full-Stack Developer based in Rawalpindi, Pakistan.
 
 Built with **Next.js 14**, **TypeScript**, **Tailwind CSS**, and **Framer Motion** — clean "Apna College" inspired theme (coral/red + yellow, light mode).
-
+npm run dev
 ---
 
 ## 🚀 Getting Started
