@@ -62,9 +62,9 @@ const V = {
     `Hello! I can tell you about Qamar's 5 deployed projects, IBM certification, and freelance services. Ask away!`,
   ],
   fallback: [
-    `I can help you explore Qamar's:\n\n🎯 **Skills** — Python, ML, Deep Learning\n🚀 **Projects** — 5 deployed AI apps\n🎓 **Certifications** — IBM, Arduino, Python\n📚 **Education** — BS AI at Shifa University\n💼 **Freelance** — Fiverr services\n📧 **Contact** — how to reach him\n\nWhat would you like to know?`,
+    `I can help you explore Qamar's:\n\n🎯 **Skills** — Python, ML, Deep Learning\n🚀 **Projects** — 5 deployed AI apps\n🎓 **Certifications** — Coursera, IBM, Arduino, Python\n📚 **Education** — BS AI at Shifa University\n💼 **Freelance** — Fiverr services\n📧 **Contact** — how to reach him\n\nWhat would you like to know?`,
     `Hmm, let me help. Try asking about:\n\n• AI/ML projects (diabetes, USWA chatbot, GPA)\n• Skills and tech stack\n• IBM Deep Learning certificate\n• How to hire or contact him\n• Freelance rates\n\nWhat interests you?`,
-    `Not sure I caught that. I can share info on:\n\n🧠 AI/ML expertise\n💻 5 live deployed apps\n🎓 6 certifications\n📍 Islamabad, Pakistan\n💼 Available for freelance & internships\n\nWhich sounds interesting?`,
+    `Not sure I caught that. I can share info on:\n\n🧠 AI/ML expertise\n💻 5 live deployed apps\n🎓 9 certifications\n📍 Islamabad, Pakistan\n💼 Available for freelance & internships\n\nWhich sounds interesting?`,
   ],
   thanks: [
     `You're welcome! 😊 Want Qamar to reach out to you directly? Just say "contact me"!`,

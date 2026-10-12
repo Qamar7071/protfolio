@@ -67,7 +67,7 @@ export const HERO_HIGHLIGHTS = [
 export const STATS = [
   { value: "5+", label: "Deployed Projects", icon: "Rocket" },
   { value: "10+", label: "Technologies", icon: "Code2" },
-  { value: "2", label: "Certifications", icon: "Award" },
+  { value: "9", label: "Certifications", icon: "Award" },
   { value: "4+", label: "Years Studying AI", icon: "GraduationCap" },
 ] as const;
 

@@ -23,6 +23,7 @@ type Certificate = (typeof CERTIFICATES)[number];
 /* -------------------------------------------------------------------------- */
 function useImageCandidates(originalPath: string) {
   const candidates = (() => {
+    if (!originalPath) return [];
     const lastDot = originalPath.lastIndexOf(".");
     const base = lastDot > 0 ? originalPath.slice(0, lastDot) : originalPath;
     return Array.from(
@@ -112,6 +113,7 @@ function CertificateCard({
   index: number;
   onView: () => void;
 }) {
+  const pdfUrl = "pdfUrl" in cert ? cert.pdfUrl : undefined;
   const img = useImageCandidates(cert.image);
 
   return (
@@ -127,7 +129,7 @@ function CertificateCard({
         className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-dark-50 to-dark-100 cursor-pointer"
         onClick={onView}
       >
-        {!img.failed ? (
+        {!pdfUrl && !img.failed ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={img.src}
@@ -139,7 +141,7 @@ function CertificateCard({
           <div className="w-full h-full flex flex-col items-center justify-center gap-3 p-6">
             <Award className="w-14 h-14 text-primary/40" />
             <p className="text-sm font-semibold text-primary/60 text-center">
-              {cert.provider}
+              {pdfUrl ? "PDF Certificate" : cert.provider}
             </p>
           </div>
         )}
@@ -240,7 +242,8 @@ function CertificateModal({
   cert: Certificate | null;
   onClose: () => void;
 }) {
-  const img = useImageCandidates(cert?.image ?? "");
+  const pdfUrl = cert && "pdfUrl" in cert ? cert.pdfUrl : undefined;
+  const img = useImageCandidates(pdfUrl ? "" : (cert?.image ?? ""));
 
   useEffect(() => {
     if (!cert) return;
@@ -277,7 +280,13 @@ function CertificateModal({
           >
             {/* Cert image full */}
             <div className="relative bg-dark-50">
-              {!img.failed ? (
+              {pdfUrl ? (
+                <iframe
+                  src={pdfUrl}
+                  title={`${cert.title} certificate`}
+                  className="w-full aspect-[4/3] border-0"
+                />
+              ) : !img.failed ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={img.src}
@@ -358,6 +367,17 @@ function CertificateModal({
                   Verify on {cert.platform}
                   <ExternalLink className="w-4 h-4" />
                 </a>
+                {pdfUrl && (
+                  <a
+                    href={pdfUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-secondary"
+                  >
+                    Open Certificate PDF
+                    <ExternalLink className="w-4 h-4" />
+                  </a>
+                )}
               </div>
             </div>
           </motion.div>
