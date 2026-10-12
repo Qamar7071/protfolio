@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, Download, Sparkles, MapPin, Star } from "lucide-react";
+import { ArrowRight, Download, Sparkles, MapPin, Award, GraduationCap, Clock } from "lucide-react";
 
 import { SITE_CONFIG, ROTATING_TITLES, STATS } from "@/lib/constants";
 import SocialLinks from "@/components/ui/SocialLinks";
@@ -129,12 +129,12 @@ export default function Hero() {
 
             {/* Subheading */}
             <p className="mt-4 text-base sm:text-lg text-dark-500 max-w-xl mx-auto lg:mx-0 leading-relaxed">
-              {SITE_CONFIG.description.split(".")[0]}. Based in{" "}
+              I build intelligent, deployed ML applications while pursuing my BS in AI. Based in{" "}
               <span className="inline-flex items-center gap-1 font-semibold text-dark-700">
                 <MapPin className="w-4 h-4 text-primary" />
                 {SITE_CONFIG.location}
               </span>
-              .
+              , available for remote projects worldwide.
             </p>
 
             {/* CTAs — Apna College style (yellow accent word) */}
@@ -164,24 +164,19 @@ export default function Hero() {
               <SocialLinks />
             </div>
 
-            {/* Trust indicators */}
-            <div className="mt-8 flex items-center gap-6 justify-center lg:justify-start">
-              <div className="flex items-center gap-1.5">
-                <div className="flex">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className="w-4 h-4 fill-secondary-400 text-secondary-400"
-                    />
-                  ))}
-                </div>
-                <span className="text-sm font-semibold text-dark-700">5.0</span>
-                <span className="text-sm text-dark-400">rating</span>
+            {/* Trust indicators — honest credentials */}
+            <div className="mt-8 flex flex-wrap items-center gap-2 justify-center lg:justify-start">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-dark-200 shadow-soft">
+                <Award className="w-3.5 h-3.5 text-primary" />
+                <span className="text-xs font-bold text-dark-700">IBM Certified</span>
               </div>
-              <div className="w-px h-5 bg-dark-200" />
-              <div className="text-sm">
-                <span className="font-bold text-dark-900">20+</span>{" "}
-                <span className="text-dark-400">happy clients</span>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-dark-200 shadow-soft">
+                <GraduationCap className="w-3.5 h-3.5 text-primary" />
+                <span className="text-xs font-bold text-dark-700">BS AI · Shifa University</span>
+              </div>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-dark-200 shadow-soft">
+                <Clock className="w-3.5 h-3.5 text-primary" />
+                <span className="text-xs font-bold text-dark-700">24hr Response</span>
               </div>
             </div>
           </motion.div>
