@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   User,
@@ -19,17 +18,8 @@ import { ABOUT, SITE_CONFIG } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 const KEY_POINT_ICONS = [Brain, Server, Code2, Rocket];
-const AVATAR_CANDIDATES = ["/avatar.png", "/avatar_jpg.png"];
 
 export default function About() {
-  const [avatarIdx, setAvatarIdx] = useState(0);
-  const [avatarFailed, setAvatarFailed] = useState(false);
-
-  useEffect(() => {
-    setAvatarIdx(0);
-    setAvatarFailed(false);
-  }, []);
-
   return (
     <section id="about" className="section-padding bg-white relative overflow-hidden">
       <div className="absolute inset-0 bg-radial-fade pointer-events-none" />
@@ -47,7 +37,7 @@ export default function About() {
         </div>
 
         <div className="grid lg:grid-cols-3 gap-10 lg:gap-14 max-w-6xl mx-auto items-start">
-          {/* LEFT: Photo + Quick facts */}
+          {/* LEFT: Quick facts */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -55,41 +45,6 @@ export default function About() {
             transition={{ duration: 0.5 }}
             className="lg:col-span-1 space-y-6"
           >
-            <div className="relative">
-              <div className="aspect-[4/5] rounded-3xl overflow-hidden bg-gradient-to-br from-primary/20 to-secondary-300/30 relative shadow-card">
-                {!avatarFailed ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={AVATAR_CANDIDATES[avatarIdx]}
-                    alt="Qamar Abbas"
-                    className="w-full h-full object-cover"
-                    onError={() => {
-                      if (avatarIdx < AVATAR_CANDIDATES.length - 1) {
-                        setAvatarIdx((i) => i + 1);
-                      } else {
-                        setAvatarFailed(true);
-                      }
-                    }}
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center">
-                    <div className="text-6xl font-display font-bold text-primary/40">
-                      QA
-                    </div>
-                  </div>
-                )}
-                <div className="absolute top-4 left-4 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/95 backdrop-blur shadow-lg">
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-                    <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
-                  </span>
-                  <span className="text-xs font-bold text-dark-800">Available</span>
-                </div>
-              </div>
-              <div className="absolute -bottom-3 -right-3 w-24 h-24 bg-secondary-300 rounded-3xl -z-10" />
-              <div className="absolute -top-3 -left-3 w-16 h-16 bg-primary/30 rounded-2xl -z-10" />
-            </div>
-
             <div className="bg-dark-50 rounded-2xl p-5 space-y-3">
               <QuickFact icon={<GraduationCap className="w-4 h-4" />} label="Education" value="BS AI · Grade A" />
               <QuickFact icon={<MapPin className="w-4 h-4" />} label="Location" value={SITE_CONFIG.location} />
