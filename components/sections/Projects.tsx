@@ -170,7 +170,11 @@ function ProjectCard({
           <img
             src={project.image}
             alt={project.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            className={`w-full h-full ${
+              "imageFit" in project && project.imageFit === "contain"
+                ? "object-contain bg-[#0a1e3a]"
+                : "object-cover"
+            } group-hover:scale-105 transition-transform duration-500`}
             onError={() => setImgFailed(true)}
           />
         ) : (
@@ -334,7 +338,11 @@ function ProjectModal({
                 <img
                   src={project.image}
                   alt={project.title}
-                  className="w-full h-full object-cover"
+                  className={`w-full h-full ${
+                    "imageFit" in project && project.imageFit === "contain"
+                      ? "object-contain bg-[#0a1e3a]"
+                      : "object-cover"
+                  }`}
                   onError={() => setImgFailed(true)}
                 />
               ) : (

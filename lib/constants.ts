@@ -145,6 +145,32 @@ export const SKILL_CATEGORIES = [
    ========================================================= */
 export const PROJECTS = [
   {
+    id: "raahi-ai-travel-concierge",
+    title: "Raahi AI — Travel Concierge",
+    category: "AI Agent",
+    description:
+      "An AI travel concierge for Northern Pakistan that helps travelers discover destinations and plan personalised trips around real routes, seasons, and budgets.",
+    image: "/projects/raahi-ai.png",
+    imageFit: "contain",
+    tech: ["AI Agent", "Travel Planning", "Northern Pakistan"],
+    liveUrl: "https://north-kappa-ivory.vercel.app/",
+    githubUrl: "#",
+    featured: true,
+  },
+  {
+    id: "kkh-road-status",
+    title: "KKH Road Status — Havelian to Khunjerab",
+    category: "Travel Tools",
+    description:
+      "A road-status and trip-planning dashboard for the 805 km Karakoram Highway. Explore eight route segments, check forecast risk and road reports, and plan a journey from Havelian to Khunjerab.",
+    image: "/projects/kkh-road-status.png",
+    imageFit: "contain",
+    tech: ["Interactive Risk Map", "Route Planning", "Weather Forecasts", "Community Reports"],
+    liveUrl: "https://kkh-road-status.vercel.app/",
+    githubUrl: "#",
+    featured: true,
+  },
+  {
     id: "diabetes-risk-screening",
     title: "Diabetes Risk Assessment",
     category: "AI / ML",
@@ -258,7 +284,7 @@ export const PROJECTS = [
   },
 ] as const;
 
-export const PROJECT_CATEGORIES = ["All", "AI / ML"] as const;
+export const PROJECT_CATEGORIES = ["All", "AI / ML", "AI Agent", "Travel Tools"] as const;
 
 /* =========================================================
    CERTIFICATES — professional credentials
