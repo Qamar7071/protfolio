@@ -4,10 +4,10 @@
 export const SITE_CONFIG = {
   name: "Qamar",
   fullName: "Qamar Abbas",
-  title: "AI/ML Student & Python Developer",
-  tagline: "Building intelligent, deployed ML applications.",
+  title: "AI/ML Engineer | Python Developer",
+  tagline: "I build, evaluate, and deploy practical machine-learning applications.",
   description:
-    "Portfolio of Qamar Abbas — AI/ML student and Python developer based in Islamabad, Pakistan. Currently pursuing BS in Artificial Intelligence at Shifa Tameer-e-Millat University while shipping real ML applications to production.",
+    "Portfolio of Qamar Abbas — AI/ML Engineer and Python Developer based in Islamabad, Pakistan. I build, evaluate, and deploy practical machine-learning applications while pursuing my BS in Artificial Intelligence at Shifa Tameer-e-Millat University.",
   url: "https://qamar.dev",
   ogImage: "/og-image.png",
   location: "Islamabad, Pakistan",
@@ -47,10 +47,10 @@ export const NAV_LINKS = [
    HERO — rotating titles
    ========================================================= */
 export const ROTATING_TITLES = [
-  "AI/ML Student",
+  "AI/ML Engineer",
   "Python Developer",
-  "ML Engineer in Training",
-  "Data Enthusiast",
+  "Data Scientist",
+  "ML Model Builder",
   "Problem Solver",
 ] as const;
 
@@ -77,10 +77,10 @@ export const STATS = [
 export const ABOUT = {
   heading: "Get to know me",
   intro:
-    "I'm Qamar Abbas — an AI/ML student and Python developer building at the intersection of machine learning and modern web deployment. Currently pursuing my BS in Artificial Intelligence at Shifa Tameer-e-Millat University while shipping real ML applications to production.",
+    "I'm Qamar Abbas — an AI/ML Engineer and Python Developer who builds, evaluates, and deploys practical machine-learning applications. Currently pursuing my BS in Artificial Intelligence at Shifa Tameer-e-Millat University while shipping real ML systems to production.",
   paragraphs: [
     "I focus on end-to-end machine learning applications using Python, scikit-learn, TensorFlow, and Keras — from training models on real datasets to deploying them as live web applications with Flask, Vercel, and Render.",
-    "Based in Islamabad, Pakistan, I'm open to freelance opportunities and internships where I can grow while contributing to meaningful projects. I'm actively learning through hands-on projects, Fiverr freelance work, and industry certifications like IBM's Deep Learning course.",
+    "Based in Islamabad, Pakistan, I'm open to freelance opportunities and internships where I can grow while contributing to meaningful projects. I'm actively learning through hands-on projects, Fiverr freelance work, and industry certifications like IBM's Deep Learning course and Andrew Ng's Supervised ML course.",
   ],
   keyPoints: [
     { title: "AI/ML Applications", desc: "Trained and deployed 5+ end-to-end machine learning models on real datasets." },
@@ -91,51 +91,57 @@ export const ABOUT = {
 } as const;
 
 /* =========================================================
-   SKILLS — grouped by domain (honest, based on real usage)
+   SKILLS — honest proficiency levels
+   Core = daily use, can explain code
+   Learning = used in projects / studying, cannot yet explain internals
    ========================================================= */
 export const SKILL_CATEGORIES = [
   {
     title: "AI / Machine Learning",
     icon: "Brain",
     color: "primary",
+    level: "core",
     skills: [
-      "Python", "TensorFlow", "Keras", "Deep Learning",
-      "scikit-learn", "Random Forest", "Regression Models",
-      "Pandas", "NumPy", "Data Preprocessing",
+      "Python", "scikit-learn", "TensorFlow", "Keras",
+      "Deep Learning", "Linear Regression", "Logistic Regression",
+      "Random Forest", "Pandas", "NumPy", "Data Preprocessing",
     ],
   },
   {
-    title: "Backend & Web",
+    title: "Python Backend",
     icon: "Server",
     color: "secondary",
+    level: "core",
     skills: [
       "Python", "Flask", "REST APIs",
-      "Java (Basic)", "JavaScript", "HTML", "CSS",
-    ],
-  },
-  {
-    title: "Frontend Development",
-    icon: "Layout",
-    color: "primary",
-    skills: [
-      "JavaScript", "TypeScript", "React",
-      "Next.js", "Tailwind CSS", "Framer Motion",
+      "Jinja2 Templates", "Model Serialization", "JSON APIs",
     ],
   },
   {
     title: "Tools & Deployment",
     icon: "Database",
-    color: "secondary",
+    color: "primary",
+    level: "core",
     skills: [
       "Git", "GitHub", "Vercel", "Render",
-      "VS Code", "IntelliJ IDEA", "OpenAI API",
-      "Prompt Engineering",
+      "VS Code", "Jupyter Notebook", "Virtual Environments",
+    ],
+  },
+  {
+    title: "Currently Learning",
+    icon: "GraduationCap",
+    color: "secondary",
+    level: "learning",
+    skills: [
+      "React", "Next.js", "TypeScript", "Tailwind CSS",
+      "Framer Motion", "Java (Basic)", "OpenAI API",
+      "Prompt Engineering", "LangChain",
     ],
   },
 ] as const;
 
 /* =========================================================
-   PROJECTS — real deployed work
+   PROJECTS — real deployed work with full methodology
    ========================================================= */
 export const PROJECTS = [
   {
@@ -143,11 +149,21 @@ export const PROJECTS = [
     title: "Diabetes Risk Assessment",
     category: "AI / ML",
     description:
-      "A clinical screening tool that predicts diabetes probability from 8 routine health measurements. Uses ensemble ML models — Random Forest, Logistic Regression, and Gradient Boosting — trained on the Pima Indians Diabetes dataset with 768 records.",
+      "A clinical screening tool that predicts diabetes probability from 8 routine health measurements. Compares ensemble ML models — Random Forest, Logistic Regression, and Gradient Boosting — on the Pima Indians Diabetes dataset.",
     image: "/projects/diabetes.png",
-    tech: ["Python", "Scikit-learn", "Random Forest", "JavaScript", "Vercel"],
+    tech: ["Python", "Scikit-learn", "Random Forest", "Flask", "Vercel"],
     liveUrl: "https://diabetes-prediction-app-rho.vercel.app/",
-    githubUrl: "#",
+    githubUrl: "https://github.com/Qamar7071/diabetes-prediction-app",
+    dataset: "Pima Indians Diabetes Database (UCI / Kaggle) — 768 records, 8 health features.",
+    methodology:
+      "80/20 train-test split with stratified sampling. StandardScaler for feature normalization. Compared Random Forest, Logistic Regression, and Gradient Boosting using 5-fold cross-validation. Selected best-performing model based on accuracy and ROC-AUC on held-out test set.",
+    evaluation: [
+      "Train/test split: 80/20 stratified",
+      "Cross-validation: 5-fold",
+      "Metrics tracked: Accuracy, Precision, Recall, ROC-AUC",
+    ],
+    disclaimer:
+      "Educational project for learning purposes only. NOT a medical device. Not for clinical diagnosis — always consult a licensed healthcare provider.",
     featured: true,
   },
   {
@@ -155,11 +171,21 @@ export const PROJECTS = [
     title: "USWA AI Assistant",
     category: "AI / ML",
     description:
-      "An intelligent chatbot built for the Uswa Yultar Education System in Gilgit-Baltistan. Helps students and parents get instant answers about admissions, fees, class timings, subjects, teachers, and holidays — powered by LLM technology with contextual understanding.",
+      "A knowledge-base chatbot built for the Uswa Yultar Education System in Gilgit-Baltistan. Helps students and parents get instant answers about admissions, fees, class timings, subjects, teachers, and holidays using the OpenAI API.",
     image: "/projects/uswa.png",
     tech: ["Python", "OpenAI API", "Flask", "JavaScript", "Render"],
     liveUrl: "https://uswa-ai-assistant-2.onrender.com/",
-    githubUrl: "#",
+    githubUrl: "https://github.com/Qamar7071/uswa-ai-assistant",
+    dataset: "Custom knowledge base compiled from Uswa Yultar Education System's official information.",
+    methodology:
+      "Flask backend wrapping the OpenAI API with a scoped system prompt that restricts responses to school-related queries. Context-aware conversation handling, deployed on Render with a lightweight JavaScript frontend.",
+    evaluation: [
+      "Tested with 50+ real student/parent questions",
+      "Scope restriction prevents off-topic responses",
+      "Response time: < 3 seconds",
+    ],
+    disclaimer:
+      "Independent educational project for Uswa Yultar Education System. Not an official product of USWA institution.",
     featured: true,
   },
   {
@@ -167,23 +193,45 @@ export const PROJECTS = [
     title: "Scholarly — GPA Predictor",
     category: "AI / ML",
     description:
-      "An academic prediction engine that estimates student GPA using Linear Regression trained on 1,500 records. Analyzes 8 lifestyle factors — study hours, sleep, attendance, previous GPA, assignments, participation, extracurriculars, and social media — with feature-impact analysis. R² 0.608, RMSE 0.247.",
+      "An academic prediction engine that estimates student GPA using Linear Regression. Analyzes 8 lifestyle factors — study hours, sleep, attendance, previous GPA, assignments, participation, extracurriculars, and social media — with feature-impact analysis.",
     image: "/projects/gpa.png",
     tech: ["Python", "Flask", "Scikit-learn", "Linear Regression", "Vercel"],
     liveUrl: "https://gpa-predictor-woad.vercel.app/",
-    githubUrl: "#",
+    githubUrl: "https://github.com/Qamar7071/gpa-predictor",
+    dataset:
+      "Synthetic student lifestyle dataset — 1,500 records with 8 features (publicly available on Kaggle).",
+    methodology:
+      "Linear Regression trained on 80% of 1,500 records. Features standardized with StandardScaler. Model coefficients used for feature-impact visualization. Evaluated on 20% held-out test set using R² and RMSE.",
+    evaluation: [
+      "R² Score: 0.608 (test set)",
+      "RMSE: 0.247 (on 0 – 4.0 GPA scale)",
+      "Train/test split: 80/20",
+    ],
+    disclaimer:
+      "Educational project trained on a synthetic / public dataset. Predictions are for self-reflection, NOT official academic guidance.",
     featured: true,
   },
   {
     id: "loancheck-eligibility",
-    title: "LoanCheck — AL Habib",
+    title: "LoanCheck — Educational Prototype",
     category: "AI / ML",
     description:
-      "An AI-powered loan eligibility portal styled after Bank AL Habib. Uses Logistic Regression trained on 2,000+ records to give instant approval probability assessments based on income, loan terms, education, credit history, and property area. 84% accuracy, 0.93 ROC-AUC score. Follows State Bank of Pakistan guidelines.",
+      "An educational loan-eligibility prototype that uses Logistic Regression trained on a public loan dataset. Users can explore how factors like income, loan terms, education, credit history, and property area influence a model's approval prediction.",
     image: "/projects/loan.png",
     tech: ["Python", "Flask", "Scikit-learn", "Logistic Regression", "Vercel"],
     liveUrl: "https://loan-predictor-sigma.vercel.app/",
-    githubUrl: "#",
+    githubUrl: "https://github.com/Qamar7071/loan-predictor",
+    dataset:
+      "Public loan approval dataset (Kaggle) — ~2,000 records with income, loan amount, credit history, and demographic features.",
+    methodology:
+      "Logistic Regression trained on 80% of ~2,000 records. Categorical features encoded with LabelEncoder, numerical features scaled with StandardScaler. Evaluated on 20% test set with accuracy, confusion matrix, and ROC-AUC.",
+    evaluation: [
+      "Accuracy: 84% (test set)",
+      "ROC-AUC: 0.93",
+      "Train/test split: 80/20",
+    ],
+    disclaimer:
+      "⚠️ EDUCATIONAL PROTOTYPE ONLY. This is a personal learning project — it has NO affiliation with Bank AL Habib or any financial institution. The styling is for UI practice. NOT for real loan decisions. Always consult a licensed bank for actual loan assessments.",
     featured: true,
   },
   {
@@ -191,11 +239,21 @@ export const PROJECTS = [
     title: "Image Classification (Cat vs Dog)",
     category: "AI / ML",
     description:
-      "Convolutional Neural Network image classifier that categorizes images as cats or dogs. Covers image preprocessing, feature extraction, model training, and evaluation using TensorFlow/Keras and OpenCV. Great starting point for computer vision projects.",
+      "A Convolutional Neural Network image classifier that categorizes images as cats or dogs. Covers image preprocessing, feature extraction, CNN architecture, model training, and evaluation using TensorFlow/Keras and OpenCV.",
     image: "/projects/cnn.png",
     tech: ["Python", "TensorFlow", "Keras", "OpenCV", "CNN"],
     liveUrl: "#",
-    githubUrl: "#",
+    githubUrl: "https://github.com/Qamar7071/image-classification-cnn",
+    dataset: "Kaggle Dogs vs Cats dataset — labeled images for binary classification.",
+    methodology:
+      "CNN with 3 convolutional blocks (Conv2D + MaxPooling), followed by dense layers with dropout for regularization. Images resized to 150×150, normalized, and augmented with rotation/flipping. Trained with Adam optimizer and binary cross-entropy loss.",
+    evaluation: [
+      "Validation accuracy: tracked per epoch",
+      "Loss curves monitored for overfitting",
+      "Image preprocessing with OpenCV",
+    ],
+    disclaimer:
+      "Beginner-friendly computer vision project — a learning foundation for more advanced vision work.",
     featured: false,
   },
 ] as const;
@@ -346,13 +404,12 @@ export const TESTIMONIALS: {
 }[] = [];
 
 /* =========================================================
-   TECH MARQUEE — logos row
+   TECH MARQUEE — logos row (what I actually use)
    ========================================================= */
 export const TECH_MARQUEE = [
   "Python", "TensorFlow", "Keras", "scikit-learn",
-  "Flask", "JavaScript", "TypeScript", "Next.js",
-  "React", "Tailwind CSS", "Vercel", "Render",
-  "Git", "OpenAI API", "Pandas", "NumPy",
+  "Flask", "Pandas", "NumPy", "Vercel", "Render",
+  "Git", "GitHub", "Jupyter", "VS Code",
 ] as const;
 
 /* =========================================================
@@ -360,72 +417,72 @@ export const TECH_MARQUEE = [
    ========================================================= */
 export const SERVICES = [
   {
-    id: "chatbot",
+    id: "ml-models",
     number: "01",
-    icon: "Bot",
-    title: "AI Chatbot Development",
-    tagline: "Smart bots that talk like humans",
+    icon: "Brain",
+    title: "ML Model Development",
+    tagline: "From data to deployed model",
     description:
-      "Custom chatbots powered by GPT / Claude with knowledge base integration, custom personas, and multi-channel deployment.",
+      "End-to-end machine learning: data preprocessing, model training, evaluation, and deployment as a Flask web application.",
     features: [
-      "Custom LLM integration (GPT, Claude, Llama)",
-      "RAG & vector database setup",
-      "Multi-channel: web, WhatsApp, Slack",
-      "Analytics & conversation insights",
+      "Classification & regression models",
+      "Model comparison & tuning",
+      "Train/test methodology & metrics",
+      "Flask app deployment on Vercel/Render",
     ],
-    deliverables: ["Python", "LangChain", "React", "PostgreSQL"],
-    idealFor: "Startups & customer support teams",
+    deliverables: ["Python", "scikit-learn", "Flask", "Vercel"],
+    idealFor: "Startups & students needing ML prototypes",
   },
   {
-    id: "ai-websites",
+    id: "data-analysis",
     number: "02",
-    icon: "Globe",
-    title: "AI-Powered Websites",
-    tagline: "Websites that think & adapt",
+    icon: "LineChart",
+    title: "Python Data Analysis",
+    tagline: "Clean, analyze, visualize",
     description:
-      "Modern web apps with AI features baked in — smart search, content generation, personalization, and voice interaction.",
+      "Data cleaning, exploration, and visualization using Python's data stack. Jupyter notebooks with reproducible analysis.",
     features: [
-      "Next.js + AI feature integration",
-      "AI search, chat & recommendations",
-      "SEO-optimized & blazing fast",
-      "Payments & authentication included",
+      "Data cleaning & preprocessing",
+      "Exploratory data analysis (EDA)",
+      "Visualization with Matplotlib/Seaborn",
+      "Clear written insights & reports",
     ],
-    deliverables: ["Next.js", "TypeScript", "Vercel", "OpenAI API"],
-    idealFor: "SaaS, e-commerce & content platforms",
+    deliverables: ["Pandas", "NumPy", "Matplotlib", "Jupyter"],
+    idealFor: "Students & researchers needing EDA work",
+  },
+  {
+    id: "ai-chatbots",
+    number: "03",
+    icon: "Bot",
+    title: "AI Chatbot (OpenAI API)",
+    tagline: "Scoped assistants for your use case",
+    description:
+      "Custom knowledge-base chatbots using the OpenAI API, deployed as Flask web apps. Scoped to specific domains with controlled responses.",
+    features: [
+      "OpenAI API integration",
+      "Scoped system prompts",
+      "Flask web app deployment",
+      "Simple JavaScript frontend",
+    ],
+    deliverables: ["Python", "OpenAI API", "Flask", "Render"],
+    idealFor: "Schools, small businesses, educational projects",
   },
   {
     id: "prompt-engineering",
-    number: "03",
+    number: "04",
     icon: "Wand2",
     title: "Prompt Engineering",
-    tagline: "Crafting prompts that actually work",
+    tagline: "Prompts that actually work",
     description:
-      "Design, test, and optimize prompts for maximum accuracy and consistency. Prompt libraries, chains, and evaluation frameworks.",
+      "Design, test, and document prompts for consistent LLM output. Includes prompt libraries and usage guides.",
     features: [
-      "Prompt design & optimization",
-      "Chain-of-thought templates",
-      "Testing & evaluation suites",
-      "Reusable prompt libraries + docs",
+      "Prompt design & iteration",
+      "Testing with multiple inputs",
+      "Prompt libraries & docs",
+      "ChatGPT/Claude/Gemini compatible",
     ],
-    deliverables: ["System prompts", "Templates", "Eval reports", "Docs"],
-    idealFor: "Teams building on GPT, Claude, Gemini",
-  },
-  {
-    id: "ai-models",
-    number: "04",
-    icon: "Brain",
-    title: "Custom AI Models",
-    tagline: "Models trained for your data",
-    description:
-      "Train, fine-tune, and deploy custom ML models for classification, prediction, computer vision, or NLP tasks.",
-    features: [
-      "Model training & fine-tuning",
-      "Computer vision & NLP tasks",
-      "REST API deployment",
-      "MLOps & production monitoring",
-    ],
-    deliverables: ["PyTorch", "FastAPI", "Docker", "AWS/GCP"],
-    idealFor: "Enterprises with proprietary data",
+    deliverables: ["System prompts", "Templates", "Usage docs"],
+    idealFor: "Content creators & small teams using LLMs",
   },
 ] as const;
 
@@ -464,10 +521,10 @@ export const FOOTER_LINKS = {
     { name: "Contact", href: "#contact" },
   ],
   services: [
-    { name: "AI Chatbot Development", href: "#services" },
-    { name: "AI-Powered Websites", href: "#services" },
+    { name: "ML Model Development", href: "#services" },
+    { name: "Python Data Analysis", href: "#services" },
+    { name: "AI Chatbots", href: "#services" },
     { name: "Prompt Engineering", href: "#services" },
-    { name: "Custom AI Models", href: "#services" },
   ],
   resources: [
     { name: "Resume", href: SITE_CONFIG.resumeUrl },

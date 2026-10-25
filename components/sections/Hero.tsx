@@ -4,9 +4,8 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Download, Sparkles, MapPin, Award, GraduationCap, Clock } from "lucide-react";
 
-import { SITE_CONFIG, ROTATING_TITLES, STATS } from "@/lib/constants";
+import { SITE_CONFIG, ROTATING_TITLES } from "@/lib/constants";
 import SocialLinks from "@/components/ui/SocialLinks";
-import { cn } from "@/lib/utils";
 
 /* -------------------------------------------------------------------------- */
 /*  Typewriter hook — cycles through ROTATING_TITLES                          */
@@ -22,14 +21,11 @@ function useTypewriter(words: readonly string[], speed = 90, pause = 1600) {
     let timeout: ReturnType<typeof setTimeout>;
 
     if (!deleting && text === current) {
-      // full word typed -> pause, then start deleting
       timeout = setTimeout(() => setDeleting(true), pause);
     } else if (deleting && text === "") {
-      // fully deleted -> move to next word
       setDeleting(false);
       setIndex((i) => (i + 1) % words.length);
     } else {
-      // type or delete one character
       timeout = setTimeout(
         () => {
           setText((prev) =>
@@ -50,7 +46,6 @@ function useTypewriter(words: readonly string[], speed = 90, pause = 1600) {
 
 /* -------------------------------------------------------------------------- */
 /*  Avatar candidates — tries each format until one loads                     */
-/*  Just drop your photo in /public named avatar.png (or .jpg/.jpeg/.webp)     */
 /* -------------------------------------------------------------------------- */
 const AVATAR_CANDIDATES = [
   "/avatar.png",
@@ -112,32 +107,40 @@ export default function Hero() {
               </span>
             </motion.div>
 
-            {/* Headline */}
+            {/* Headline — "Hi, I'm Qamar" + specific role title */}
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.1] tracking-tight">
               <span className="block text-dark-900">Hi, I&apos;m Qamar</span>
-              <span className="block text-gradient-primary mt-1">
-                {SITE_CONFIG.title.split("&")[0].trim()}
+              <span className="block text-gradient-primary mt-2">
+                AI/ML Engineer
+              </span>
+              <span className="block text-dark-700 text-3xl sm:text-4xl lg:text-5xl mt-1">
+                | Python Developer
               </span>
             </h1>
 
+            {/* Specific tagline */}
+            <p className="mt-5 text-lg sm:text-xl text-dark-700 font-medium max-w-xl mx-auto lg:mx-0 leading-relaxed">
+              I build, evaluate, and deploy practical machine-learning applications.
+            </p>
+
             {/* Typewriter role line */}
-            <p className="mt-5 text-lg sm:text-xl text-dark-600 font-medium h-8">
-              <span>I build as a </span>
+            <p className="mt-4 text-base sm:text-lg text-dark-500 font-medium h-7">
+              <span>Also known as a </span>
               <span className="text-primary font-bold">{typed}</span>
               <span className="inline-block w-0.5 h-5 bg-primary ml-0.5 align-middle animate-pulse" />
             </p>
 
-            {/* Subheading */}
-            <p className="mt-4 text-base sm:text-lg text-dark-500 max-w-xl mx-auto lg:mx-0 leading-relaxed">
-              I build intelligent, deployed ML applications while pursuing my BS in AI. Based in{" "}
+            {/* Location + availability line */}
+            <p className="mt-4 text-sm sm:text-base text-dark-500 max-w-xl mx-auto lg:mx-0 leading-relaxed">
+              Based in{" "}
               <span className="inline-flex items-center gap-1 font-semibold text-dark-700">
                 <MapPin className="w-4 h-4 text-primary" />
                 {SITE_CONFIG.location}
               </span>
-              , available for remote projects worldwide.
+              , open to remote freelance projects and internships worldwide.
             </p>
 
-            {/* CTAs — Apna College style (yellow accent word) */}
+            {/* CTAs */}
             <div className="mt-8 flex flex-wrap items-center justify-center lg:justify-start gap-4">
               <button
                 onClick={() => scrollTo("projects")}
@@ -189,9 +192,7 @@ export default function Hero() {
             className="order-1 lg:order-2 flex justify-center lg:justify-end"
           >
             <div className="relative">
-              {/* Shield / pentagon frame (Apna College signature shape) */}
               <div className="relative">
-                {/* Blue border layer */}
                 <div
                   className="relative w-[240px] h-[290px] sm:w-[290px] sm:h-[350px] lg:w-[320px] lg:h-[385px] bg-primary shadow-card-hover"
                   style={{
@@ -199,7 +200,6 @@ export default function Hero() {
                       "polygon(0% 0%, 100% 0%, 100% 82%, 50% 100%, 0% 82%)",
                   }}
                 >
-                  {/* Inner image (inset creates the border thickness) */}
                   <div
                     className="absolute inset-[4px] bg-dark-100 overflow-hidden"
                     style={{
@@ -216,7 +216,6 @@ export default function Hero() {
                         onError={() => setAvatarIdx((i) => i + 1)}
                       />
                     ) : (
-                      // Fallback shown when NO avatar image is found in /public
                       <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-primary/10 to-secondary-200 flex flex-col items-center justify-center gap-2">
                         <span className="text-7xl font-display font-bold text-primary/50">
                           Q

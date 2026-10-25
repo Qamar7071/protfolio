@@ -12,6 +12,11 @@ import {
   Layers,
   Code2,
   Rocket,
+  Database,
+  Microscope,
+  BarChart3,
+  AlertTriangle,
+  FileText,
 } from "lucide-react";
 
 import { PROJECTS, PROJECT_CATEGORIES, SOCIAL_LINKS } from "@/lib/constants";
@@ -38,7 +43,7 @@ export default function Projects() {
   return (
     <section id="projects" className="section-padding bg-white">
       <div className="container-custom">
-        {/* -------------------- HEADER -------------------- */}
+        {/* HEADER */}
         <div className="text-center max-w-3xl mx-auto mb-12">
           <span className="eyebrow inline-flex items-center gap-2">
             <Sparkles className="w-4 h-4" />
@@ -49,13 +54,12 @@ export default function Projects() {
             <span className="text-gradient-primary">solve real problems</span>
           </h2>
           <p className="section-subheading mx-auto">
-            A selection of AI/ML systems, full-stack web apps, and backend
-            services I&apos;ve designed, built, and shipped for clients
-            worldwide.
+            Real deployed ML applications with full methodology, evaluation
+            metrics, and source code — so you can verify every claim.
           </p>
         </div>
 
-        {/* -------------------- CATEGORY FILTER -------------------- */}
+        {/* CATEGORY FILTER */}
         <div className="flex flex-wrap items-center justify-center gap-2 mb-10">
           {PROJECT_CATEGORIES.map((cat) => {
             const count =
@@ -91,7 +95,7 @@ export default function Projects() {
           })}
         </div>
 
-        {/* -------------------- CARDS GRID -------------------- */}
+        {/* CARDS GRID */}
         <motion.div
           layout
           className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"
@@ -108,7 +112,7 @@ export default function Projects() {
           </AnimatePresence>
         </motion.div>
 
-        {/* -------------------- BOTTOM CTA -------------------- */}
+        {/* BOTTOM CTA */}
         <div className="mt-14 text-center">
           <p className="text-dark-500 mb-4">Want to see more of my work?</p>
           <a
@@ -124,7 +128,7 @@ export default function Projects() {
         </div>
       </div>
 
-      {/* -------------------- MODAL -------------------- */}
+      {/* MODAL */}
       <ProjectModal
         project={selectedProject}
         onClose={() => setSelectedProject(null)}
@@ -146,8 +150,8 @@ function ProjectCard({
   onClick: () => void;
 }) {
   const [imgFailed, setImgFailed] = useState(false);
-  const hasLive = project.liveUrl && project.liveUrl !== "#";
-  const hasCode = project.githubUrl && project.githubUrl !== "#";
+  const hasLive = project.liveUrl && (project.liveUrl as string) !== "#";
+  const hasCode = project.githubUrl && (project.githubUrl as string) !== "#";
 
   return (
     <motion.article
@@ -178,14 +182,12 @@ function ProjectCard({
           </div>
         )}
 
-        {/* Category chip */}
         <div className="absolute top-3 left-3">
           <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-dark-900/75 backdrop-blur-md text-white text-xs font-semibold">
             {project.category}
           </span>
         </div>
 
-        {/* Featured badge */}
         {project.featured && (
           <div className="absolute top-3 right-3">
             <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-secondary-300 text-dark-900 text-xs font-bold shadow-yellow">
@@ -195,7 +197,6 @@ function ProjectCard({
           </div>
         )}
 
-        {/* Hover overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-dark-900/85 via-dark-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
           <span className="text-white text-sm font-semibold inline-flex items-center gap-1.5">
             View Details
@@ -267,7 +268,7 @@ function ProjectCard({
 }
 
 /* -------------------------------------------------------------------------- */
-/*  PROJECT MODAL                                                             */
+/*  PROJECT MODAL — with methodology, dataset, evaluation, disclaimer          */
 /* -------------------------------------------------------------------------- */
 function ProjectModal({
   project,
@@ -278,12 +279,10 @@ function ProjectModal({
 }) {
   const [imgFailed, setImgFailed] = useState(false);
 
-  // Reset img state when project changes
   useEffect(() => {
     setImgFailed(false);
   }, [project?.id]);
 
-  // Body scroll lock + Escape to close
   useEffect(() => {
     if (!project) return;
     document.body.style.overflow = "hidden";
@@ -297,9 +296,15 @@ function ProjectModal({
     };
   }, [project, onClose]);
 
-  const hasLive = project?.liveUrl && project.liveUrl !== "#";
-  const hasCode = project?.githubUrl && project.githubUrl !== "#";
+  const hasLive = project?.liveUrl && (project.liveUrl as string) !== "#";
+  const hasCode = project?.githubUrl && (project.githubUrl as string) !== "#";
   const noLinks = project && !hasLive && !hasCode;
+
+  // Safely access optional methodology fields
+  const dataset = project && "dataset" in project ? (project as { dataset?: string }).dataset : undefined;
+  const methodology = project && "methodology" in project ? (project as { methodology?: string }).methodology : undefined;
+  const evaluation = project && "evaluation" in project ? (project as { evaluation?: readonly string[] }).evaluation : undefined;
+  const disclaimer = project && "disclaimer" in project ? (project as { disclaimer?: string }).disclaimer : undefined;
 
   return (
     <AnimatePresence>
@@ -341,7 +346,6 @@ function ProjectModal({
                 </div>
               )}
 
-              {/* Close button */}
               <button
                 type="button"
                 onClick={onClose}
@@ -351,14 +355,12 @@ function ProjectModal({
                 <X className="w-5 h-5 text-dark-700" />
               </button>
 
-              {/* Category chip */}
               <div className="absolute bottom-4 left-4">
                 <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-dark-900/80 backdrop-blur-md text-white text-xs font-semibold">
                   {project.category}
                 </span>
               </div>
 
-              {/* Featured badge */}
               {project.featured && (
                 <div className="absolute top-4 left-4">
                   <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-secondary-300 text-dark-900 text-xs font-bold shadow-yellow">
@@ -396,6 +398,63 @@ function ProjectModal({
                 </div>
               </div>
 
+              {/* Dataset */}
+              {dataset && (
+                <div className="mb-6 p-4 bg-primary/5 rounded-xl border border-primary/10">
+                  <h3 className="text-xs font-bold text-primary uppercase tracking-wider mb-2 flex items-center gap-2">
+                    <Database className="w-4 h-4" />
+                    Dataset
+                  </h3>
+                  <p className="text-sm text-dark-700 leading-relaxed">
+                    {dataset}
+                  </p>
+                </div>
+              )}
+
+              {/* Methodology */}
+              {methodology && (
+                <div className="mb-6 p-4 bg-dark-50 rounded-xl border border-dark-100">
+                  <h3 className="text-xs font-bold text-dark-700 uppercase tracking-wider mb-2 flex items-center gap-2">
+                    <Microscope className="w-4 h-4" />
+                    Methodology
+                  </h3>
+                  <p className="text-sm text-dark-600 leading-relaxed">
+                    {methodology}
+                  </p>
+                </div>
+              )}
+
+              {/* Evaluation */}
+              {evaluation && evaluation.length > 0 && (
+                <div className="mb-6 p-4 bg-secondary-50 rounded-xl border border-secondary-200">
+                  <h3 className="text-xs font-bold text-dark-700 uppercase tracking-wider mb-3 flex items-center gap-2">
+                    <BarChart3 className="w-4 h-4" />
+                    Evaluation & Metrics
+                  </h3>
+                  <ul className="space-y-1.5">
+                    {evaluation.map((item, i) => (
+                      <li key={i} className="text-sm text-dark-700 flex items-start gap-2">
+                        <span className="text-secondary-700 font-bold mt-0.5">✓</span>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Disclaimer */}
+              {disclaimer && (
+                <div className="mb-6 p-4 bg-amber-50 rounded-xl border border-amber-200">
+                  <h3 className="text-xs font-bold text-amber-700 uppercase tracking-wider mb-2 flex items-center gap-2">
+                    <AlertTriangle className="w-4 h-4" />
+                    Important Notice
+                  </h3>
+                  <p className="text-sm text-dark-700 leading-relaxed">
+                    {disclaimer}
+                  </p>
+                </div>
+              )}
+
               {/* Actions */}
               {(hasLive || hasCode) && (
                 <div className="flex flex-wrap gap-3 pt-6 border-t border-dark-100">
@@ -412,15 +471,26 @@ function ProjectModal({
                     </a>
                   )}
                   {hasCode && (
-                    <a
-                      href={project.githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn-secondary"
-                    >
-                      <Github className="w-4 h-4" />
-                      View Code
-                    </a>
+                    <>
+                      <a
+                        href={project.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn-secondary"
+                      >
+                        <Github className="w-4 h-4" />
+                        Source Code
+                      </a>
+                      <a
+                        href={`${project.githubUrl}#readme`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn-outline"
+                      >
+                        <FileText className="w-4 h-4" />
+                        README
+                      </a>
+                    </>
                   )}
                 </div>
               )}
