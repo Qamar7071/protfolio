@@ -145,6 +145,19 @@ export const SKILL_CATEGORIES = [
    ========================================================= */
 export const PROJECTS = [
   {
+    id: "rh-labs-digital-solutions",
+    title: "RH Labs — Intelligent Digital Solutions",
+    category: "Web Development",
+    description:
+      "A software house website for RH Labs, an Islamabad-based team offering AI chatbots, AI agents, and modern websites. It presents their services, process, portfolio, and consultation options for businesses.",
+    image: "/projects/rh-labs.png",
+    imageFit: "contain",
+    tech: ["AI Chatbots", "AI Agents", "Websites & Web Apps"],
+    liveUrl: "https://rh-labs.vercel.app/",
+    githubUrl: "#",
+    featured: true,
+  },
+  {
     id: "raahi-ai-travel-concierge",
     title: "Raahi AI — Travel Concierge",
     category: "AI Agent",
@@ -284,7 +297,13 @@ export const PROJECTS = [
   },
 ] as const;
 
-export const PROJECT_CATEGORIES = ["All", "AI / ML", "AI Agent", "Travel Tools"] as const;
+export const PROJECT_CATEGORIES = [
+  "All",
+  "AI / ML",
+  "AI Agent",
+  "Travel Tools",
+  "Web Development",
+] as const;
 
 /* =========================================================
    CERTIFICATES — professional credentials
