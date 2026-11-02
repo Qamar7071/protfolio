@@ -4,7 +4,7 @@ import { Toaster } from "react-hot-toast";
 
 import "./globals.css";
 
-import { SITE_CONFIG } from "@/lib/constants";
+import { SITE_CONFIG, SOCIAL_LINKS } from "@/lib/constants";
 import Chatbot from "@/components/ui/Chatbot";
 
 /* -------------------------------------------------------------------------- */
@@ -124,29 +124,35 @@ const jsonLd = {
   name: SITE_CONFIG.fullName,
   jobTitle: SITE_CONFIG.title,
   url: SITE_CONFIG.url,
-  image: `${SITE_CONFIG.url}/avatar.png`,
+  image: `${SITE_CONFIG.url}/avatar-full.webp`,
   email: SITE_CONFIG.email,
   address: {
     "@type": "PostalAddress",
-    addressLocality: "Rawalpindi",
-    addressRegion: "Punjab",
+    addressLocality: "Islamabad",
     addressCountry: "PK",
   },
   sameAs: [
-    "https://github.com/qamar",
-    "https://linkedin.com/in/qamar",
-    "https://twitter.com/qamar",
+    SOCIAL_LINKS.github,
+    SOCIAL_LINKS.linkedin,
+    SOCIAL_LINKS.facebook,
+    SOCIAL_LINKS.fiverr,
   ],
   knowsAbout: [
     "Artificial Intelligence",
     "Machine Learning",
+    "Deep Learning",
     "Python",
-    "Java",
-    "Full-Stack Development",
-    "Next.js",
-    "Spring Boot",
+    "scikit-learn",
+    "TensorFlow",
+    "Keras",
+    "Flask",
+    "Prompt Engineering",
   ],
 };
+
+/* Runs before first paint: play the page intro only on the first visit of a
+   session, and never for people who prefer reduced motion. */
+const INTRO_SCRIPT = `try{if(!sessionStorage.getItem("intro-seen")&&!window.matchMedia("(prefers-reduced-motion: reduce)").matches){document.documentElement.setAttribute("data-intro","on")}}catch(e){}`;
 
 /* -------------------------------------------------------------------------- */
 /*  ROOT LAYOUT                                                               */
@@ -163,6 +169,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        <script dangerouslySetInnerHTML={{ __html: INTRO_SCRIPT }} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

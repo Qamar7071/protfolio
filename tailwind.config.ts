@@ -100,6 +100,7 @@ const config: Config = {
         "marquee-reverse": "marquee 40s linear infinite reverse",
         // projects strip — slides left → right
         "marquee-ltr": "marquee-ltr 45s linear infinite",
+        "spin-slow": "spin 14s linear infinite",
         float: "float 6s ease-in-out infinite",
         blob: "blob 20s ease-in-out infinite",
         wiggle: "wiggle 1s ease-in-out infinite",

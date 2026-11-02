@@ -3,11 +3,12 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { ArrowRight, Download, Sparkles, MapPin, Award, GraduationCap, Clock } from "lucide-react";
+import { ArrowRight, Download, MapPin, Award, GraduationCap, Clock } from "lucide-react";
 
 import { SITE_CONFIG, ROTATING_TITLES } from "@/lib/constants";
 import SocialLinks from "@/components/ui/SocialLinks";
 import AnimatedText from "@/components/ui/AnimatedText";
+import { useIntroDone } from "@/components/ui/IntroProvider";
 
 /* -------------------------------------------------------------------------- */
 /*  Typewriter hook — cycles through ROTATING_TITLES                          */
@@ -51,6 +52,8 @@ function useTypewriter(words: readonly string[], speed = 90, pause = 1600) {
 /* -------------------------------------------------------------------------- */
 export default function Hero() {
   const typed = useTypewriter(ROTATING_TITLES);
+  // hero waits for the page intro (true straight away when the intro is skipped)
+  const intro = useIntroDone();
 
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
@@ -76,14 +79,14 @@ export default function Hero() {
           {/* ============================ LEFT: TEXT ============================ */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={intro ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="order-2 lg:order-1 text-center lg:text-left"
           >
             {/* Availability chip */}
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
+              animate={intro ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
               transition={{ delay: 0.1 }}
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-6"
             >
@@ -105,6 +108,7 @@ export default function Hero() {
                 <AnimatedText
                   text="Hi, I'm Qamar"
                   variant="bounce"
+                  play={intro}
                   delay={0.25}
                   waveColor="#4854d9"
                 />
@@ -113,6 +117,7 @@ export default function Hero() {
                 <AnimatedText
                   text="AI/ML Engineer"
                   variant="slide"
+                  play={intro}
                   delay={0.85}
                   stagger={0.045}
                   waveColor="#8189f8"
@@ -125,6 +130,7 @@ export default function Hero() {
                 <AnimatedText
                   text="| Python Developer"
                   variant="blur"
+                  play={intro}
                   delay={1.55}
                   stagger={0.03}
                   wave={false}
@@ -198,87 +204,47 @@ export default function Hero() {
             </div>
           </motion.div>
 
-          {/* ============================ RIGHT: SHIELD PHOTO ============================ */}
+          {/* ============================ RIGHT: PHOTO ============================ */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
+            animate={intro ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
             transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
             className="order-1 lg:order-2 flex justify-center lg:justify-end"
           >
             <div className="relative">
-              {/* Soft glow behind the shield */}
-              <div className="absolute -inset-6 rounded-[2.5rem] bg-gradient-to-tr from-primary/25 via-transparent to-secondary-300/35 blur-2xl pointer-events-none" />
+              {/* Soft glow behind the photo */}
+              <div className="absolute -inset-8 rounded-full bg-gradient-to-tr from-primary/30 via-transparent to-secondary-300/40 blur-3xl pointer-events-none" />
 
-              <div className="relative">
-                <div
-                  className="relative w-[240px] h-[290px] sm:w-[290px] sm:h-[350px] lg:w-[320px] lg:h-[385px] bg-primary shadow-card-hover"
-                  style={{
-                    clipPath:
-                      "polygon(0% 0%, 100% 0%, 100% 82%, 50% 100%, 0% 82%)",
-                  }}
-                >
-                  <div
-                    className="absolute inset-[4px] bg-dark-100 overflow-hidden"
-                    style={{
-                      clipPath:
-                        "polygon(0% 0%, 100% 0%, 100% 82%, 50% 100%, 0% 82%)",
-                    }}
-                  >
+              <div className="relative w-[260px] h-[260px] sm:w-[330px] sm:h-[330px] lg:w-[410px] lg:h-[410px]">
+                {/* Slowly turning gradient ring */}
+                <div className="absolute inset-0 rounded-full bg-[conic-gradient(from_0deg,#4854d9,#ffd166,#4854d9)] animate-spin-slow shadow-card-hover" />
+
+                <div className="absolute inset-[5px] rounded-full bg-white p-[5px]">
+                  <div className="relative h-full w-full rounded-full overflow-hidden bg-dark-100">
                     {/* Photo settles in: slight zoom + blur → sharp */}
                     <motion.div
                       initial={{ opacity: 0, scale: 1.12, filter: "blur(14px)" }}
-                      animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                      animate={
+                        intro
+                          ? { opacity: 1, scale: 1, filter: "blur(0px)" }
+                          : { opacity: 0, scale: 1.12, filter: "blur(14px)" }
+                      }
                       transition={{ duration: 1.1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
                       className="absolute inset-0"
                     >
                       <Image
-                        src="/avatar-hq.webp"
+                        src="/avatar-full.webp"
                         alt={`${SITE_CONFIG.fullName} — ${SITE_CONFIG.title}`}
                         fill
                         priority
                         quality={95}
-                        sizes="(min-width: 1024px) 320px, (min-width: 640px) 290px, 240px"
-                        className="object-cover object-[center_22%]"
+                        sizes="(min-width: 1024px) 410px, (min-width: 640px) 330px, 260px"
+                        className="object-cover"
                       />
                     </motion.div>
                   </div>
                 </div>
               </div>
-
-              {/* Floating badge: live projects */}
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.6 }}
-                className="absolute -left-4 sm:-left-8 bottom-5 sm:bottom-16 card-flat !p-3 flex items-center gap-2.5 bg-white shadow-card animate-float"
-              >
-                <span className="icon-box !w-10 !h-10">
-                  <Sparkles className="w-5 h-5" />
-                </span>
-                <div className="text-left">
-                  <p className="text-lg font-bold text-dark-900 leading-none">
-                    5+
-                  </p>
-                  <p className="text-xs text-dark-500">Live Projects</p>
-                </div>
-              </motion.div>
-
-              {/* Floating badge: IBM certified */}
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.75 }}
-                className="absolute -right-2 sm:-right-6 top-6 card-flat !p-3 flex items-center gap-2.5 bg-white shadow-card animate-float"
-                style={{ animationDelay: "1.5s" }}
-              >
-                <span className="icon-box-yellow !w-10 !h-10">🎓</span>
-                <div className="text-left">
-                  <p className="text-lg font-bold text-dark-900 leading-none">
-                    IBM
-                  </p>
-                  <p className="text-xs text-dark-500">Certified</p>
-                </div>
-              </motion.div>
             </div>
           </motion.div>
         </div>

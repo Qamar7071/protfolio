@@ -29,6 +29,8 @@ interface AnimatedTextProps {
   wave?: boolean;
   /** colour the letters flash through during the ripple */
   waveColor?: string;
+  /** hold the reveal until true (e.g. while the page intro is still playing) */
+  play?: boolean;
 }
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
@@ -74,6 +76,7 @@ export default function AnimatedText({
   className,
   wave = true,
   waveColor = "#4854d9",
+  play = true,
 }: AnimatedTextProps) {
   const reduce = useReducedMotion();
 
@@ -88,7 +91,7 @@ export default function AnimatedText({
     <motion.span
       className={cn("inline", className)}
       initial="hidden"
-      animate="show"
+      animate={play ? "show" : "hidden"}
       variants={{
         hidden: {},
         show: { transition: { staggerChildren: stagger, delayChildren: delay } },

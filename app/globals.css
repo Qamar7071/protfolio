@@ -263,6 +263,25 @@
 }
 
 /* =========================================================
+   PAGE INTRO — pre-hydration cover
+   <html data-intro="on"> is set by an inline script before first paint;
+   IntroOverlay removes it as soon as its own blocks are on screen.
+   The animation is a pure-CSS failsafe: if JS never loads, the cover
+   disappears by itself after 8s instead of trapping the visitor.
+   ========================================================= */
+html[data-intro="on"] body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  background: #4854d9;
+  animation: intro-cover-failsafe 0.01s linear 8s forwards;
+}
+@keyframes intro-cover-failsafe {
+  to { opacity: 0; visibility: hidden; }
+}
+
+/* =========================================================
    CUSTOM SCROLLBAR (global, outside layers so it applies always)
    ========================================================= */
 ::-webkit-scrollbar {

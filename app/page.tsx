@@ -8,10 +8,11 @@ import Certifications from "@/components/sections/Certifications";
 import Services from "@/components/sections/Services";
 import Experience from "@/components/sections/Experience";
 import Contact from "@/components/sections/Contact";
+import IntroProvider from "@/components/ui/IntroProvider";
 
 export default function HomePage() {
   return (
-    <>
+    <IntroProvider>
       <Navbar />
       <Hero />
       <About />
@@ -22,6 +23,6 @@ export default function HomePage() {
       <Experience />
       <Contact />
       <Footer />
-    </>
+    </IntroProvider>
   );
 }
