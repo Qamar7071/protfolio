@@ -6,7 +6,6 @@ import {
   ExternalLink,
   Github,
   Star,
-  Sparkles,
   ArrowUpRight,
   X,
   Layers,
@@ -21,6 +20,7 @@ import {
 
 import { PROJECTS, PROJECT_CATEGORIES, SOCIAL_LINKS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
+import SectionHeader from "@/components/ui/SectionHeader";
 
 /* -------------------------------------------------------------------------- */
 /*  Types                                                                     */
@@ -43,24 +43,13 @@ export default function Projects() {
   return (
     <section id="projects" className="section-padding bg-white">
       <div className="container-custom">
-        {/* HEADER */}
-        <div className="text-center max-w-3xl mx-auto mb-12">
-          <span className="eyebrow flex items-center justify-center gap-2">
-            <Sparkles className="w-4 h-4" />
-            Featured Work
-          </span>
-          <h2 className="section-heading heading-underline-center mx-auto mt-2">
-            Projects that{" "}
-            <span className="text-gradient-primary">solve real problems</span>
-          </h2>
-          <p className="section-subheading mx-auto">
-            Real deployed ML applications with full methodology, evaluation
-            metrics, and source code — so you can verify every claim.
-          </p>
-        </div>
+        <SectionHeader
+          title="Selected projects"
+          description="Deployed apps with the dataset, method and evaluation written up. Source code is linked where it's public."
+        />
 
         {/* CATEGORY FILTER */}
-        <div className="flex flex-wrap items-center justify-center gap-2 mb-10">
+        <div className="flex flex-wrap items-center gap-2 mb-10">
           {PROJECT_CATEGORIES.map((cat) => {
             const count =
               cat === "All"

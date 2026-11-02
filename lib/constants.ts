@@ -98,45 +98,38 @@ export const ABOUT = {
    ========================================================= */
 export const SKILL_CATEGORIES = [
   {
-    title: "AI / Machine Learning",
+    title: "Machine learning",
+    blurb: "Training, comparing and evaluating models on real datasets.",
     icon: "Brain",
     color: "primary",
     level: "core",
     skills: [
-      "Python", "scikit-learn", "TensorFlow", "Keras",
+      "Python", "scikit-learn", "TensorFlow", "Keras", "Pandas", "NumPy",
       "Deep Learning", "Linear Regression", "Logistic Regression",
-      "Random Forest", "Pandas", "NumPy", "Data Preprocessing",
+      "Random Forest", "Data Preprocessing",
     ],
   },
   {
-    title: "Python Backend",
+    title: "Backend and deployment",
+    blurb: "Serving trained models as web apps and APIs, and putting them online.",
     icon: "Server",
     color: "secondary",
     level: "core",
     skills: [
-      "Python", "Flask", "REST APIs",
-      "Jinja2 Templates", "Model Serialization", "JSON APIs",
+      "Flask", "Git", "GitHub", "Vercel", "Render", "VS Code", "Jupyter Notebook",
+      "REST APIs", "JSON APIs", "Jinja2 Templates", "Model Serialization", "Virtual Environments",
     ],
   },
   {
-    title: "Tools & Deployment",
-    icon: "Database",
-    color: "primary",
-    level: "core",
-    skills: [
-      "Git", "GitHub", "Vercel", "Render",
-      "VS Code", "Jupyter Notebook", "Virtual Environments",
-    ],
-  },
-  {
-    title: "Currently Learning",
+    title: "Learning now",
+    blurb: "Used in recent projects. Still building depth.",
     icon: "GraduationCap",
     color: "secondary",
     level: "learning",
     skills: [
       "React", "Next.js", "TypeScript", "Tailwind CSS",
       "Framer Motion", "Java (Basic)", "OpenAI API",
-      "Prompt Engineering", "LangChain",
+      "LangChain", "Prompt Engineering",
     ],
   },
 ] as const;
@@ -421,6 +414,8 @@ export const EXPERIENCE = [
   {
     role: "Freelance Python & ML Developer",
     company: "Fiverr",
+    logo: "Fiverr",
+    link: "https://www.fiverr.com/s/XLG3ybZ",
     period: "2024 — Present",
     location: "Remote (Global)",
     description:
@@ -430,6 +425,8 @@ export const EXPERIENCE = [
   {
     role: "Independent AI/ML Developer",
     company: "Personal Projects",
+    logo: "GitHub",
+    link: "https://github.com/Qamar7071/",
     period: "2024 — Present",
     location: "Islamabad, Pakistan",
     description:
@@ -437,6 +434,19 @@ export const EXPERIENCE = [
     tags: ["Python", "Flask", "TensorFlow", "Keras", "Vercel", "Render"],
   },
 ] as const;
+
+export const EDUCATION = {
+  degree: "BS Artificial Intelligence",
+  school: "Shifa Tameer-e-Millat University",
+  logo: "STMU",
+  location: "Islamabad, Pakistan",
+  period: "2024 — Present",
+  grade: "Grade A",
+  semester: "4th semester",
+  description:
+    "Coursework so far covers linear algebra, sorting and searching algorithms in C++, and core AI concepts. The projects and certificates on this page are what I build alongside it.",
+  tags: ["Linear Algebra", "C++ Algorithms", "AI Fundamentals"],
+} as const;
 
 /* =========================================================
    TESTIMONIALS — will grow with real clients
@@ -477,6 +487,9 @@ export const SERVICES = [
       "Flask app deployment on Vercel/Render",
     ],
     deliverables: ["Python", "scikit-learn", "Flask", "Vercel"],
+    toolsLabel: "Built with",
+    tools: ["Python", "scikit-learn", "Flask", "Vercel"],
+    relatedProject: "diabetes-risk-screening",
     idealFor: "Startups & students needing ML prototypes",
   },
   {
@@ -494,6 +507,9 @@ export const SERVICES = [
       "Clear written insights & reports",
     ],
     deliverables: ["Pandas", "NumPy", "Matplotlib", "Jupyter"],
+    toolsLabel: "Built with",
+    tools: ["Pandas", "NumPy", "Matplotlib", "Jupyter"],
+    relatedProject: "scholarly-gpa-predictor",
     idealFor: "Students & researchers needing EDA work",
   },
   {
@@ -511,6 +527,9 @@ export const SERVICES = [
       "Simple JavaScript frontend",
     ],
     deliverables: ["Python", "OpenAI API", "Flask", "Render"],
+    toolsLabel: "Built with",
+    tools: ["Python", "OpenAI API", "Flask", "Render"],
+    relatedProject: "uswa-ai-assistant",
     idealFor: "Schools, small businesses, educational projects",
   },
   {
@@ -528,6 +547,9 @@ export const SERVICES = [
       "ChatGPT/Claude/Gemini compatible",
     ],
     deliverables: ["System prompts", "Templates", "Usage docs"],
+    toolsLabel: "Works with",
+    tools: ["ChatGPT", "Claude", "Gemini"],
+    relatedProject: "raahi-ai-travel-concierge",
     idealFor: "Content creators & small teams using LLMs",
   },
 ] as const;

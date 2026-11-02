@@ -20,11 +20,11 @@ import {
   Clock,
   Shield,
   Sparkles,
-  ArrowRight,
+  ArrowUpRight,
 } from "lucide-react";
 
 import { SITE_CONFIG, SOCIAL_LINKS } from "@/lib/constants";
-import SocialLinks from "@/components/ui/SocialLinks";
+import BrandLogo from "@/components/ui/BrandLogo";
 import { cn } from "@/lib/utils";
 
 /* -------------------------------------------------------------------------- */
@@ -56,6 +56,20 @@ const BUDGETS = [
   "$5,000+",
   "Let's discuss",
 ];
+
+/* Direct channels shown in the left panel */
+const CHANNELS = [
+  {
+    label: "Email",
+    logo: "Gmail",
+    value: SITE_CONFIG.email,
+    href: `https://mail.google.com/mail/?view=cm&fs=1&to=${SITE_CONFIG.email}`,
+  },
+  { label: "WhatsApp", logo: "WhatsApp", value: SITE_CONFIG.phone, href: SOCIAL_LINKS.whatsapp },
+  { label: "LinkedIn", logo: "LinkedIn", value: "Qamar Abbas", href: SOCIAL_LINKS.linkedin },
+  { label: "Fiverr", logo: "Fiverr", value: "Hire me on Fiverr", href: SOCIAL_LINKS.fiverr },
+  { label: "GitHub", logo: "GitHub", value: "Qamar7071", href: SOCIAL_LINKS.github },
+] as const;
 
 /* -------------------------------------------------------------------------- */
 /*  Types                                                                     */
@@ -170,113 +184,82 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="section-padding bg-white relative overflow-hidden">
-      {/* Decorative background */}
-      <div className="absolute inset-0 bg-radial-fade pointer-events-none" />
-      <div className="blob w-[400px] h-[400px] bg-primary/15 -top-32 -right-32" />
-      <div
-        className="blob w-[350px] h-[350px] bg-secondary-300/25 bottom-0 -left-24"
-        style={{ animationDelay: "3s" }}
-      />
+    <section id="contact" className="section-padding bg-white">
+      <div className="container-custom">
+        <div className="grid lg:grid-cols-12 rounded-[2rem] overflow-hidden border border-dark-200 shadow-card">
+          {/* =========== LEFT: CHANNELS PANEL =========== */}
+          <div className="lg:col-span-5 bg-primary-950 text-white p-7 sm:p-10 lg:p-12">
+            <h2 className="font-display font-bold text-[2.5rem] sm:text-5xl leading-[1.02] tracking-[-0.035em] text-white">
+              Let&apos;s build something
+              <span className="text-secondary-300" aria-hidden="true">.</span>
+            </h2>
+            <p className="mt-5 text-white/70 leading-relaxed max-w-[42ch]">
+              Tell me what you&apos;re working on. I reply to every inquiry myself,
+              usually within 24 hours.
+            </p>
 
-      <div className="container-custom relative z-10">
-        {/* HEADER */}
-        <div className="text-center max-w-3xl mx-auto mb-14">
-          <span className="eyebrow flex items-center justify-center gap-2">
-            <MessageSquare className="w-4 h-4" />
-            Let&apos;s Work Together
-          </span>
-          <h2 className="section-heading heading-underline-center mx-auto mt-2">
-            Have a project?{" "}
-            <span className="text-gradient-primary">Let&apos;s talk</span>
-          </h2>
-          <p className="section-subheading mx-auto">
-            Share your project details below and I&apos;ll respond within 24 hours.
-            Every inquiry gets a personal reply — no bots, no auto-responders.
-          </p>
-        </div>
+            <ul className="mt-10 space-y-1">
+              {CHANNELS.map((c) => (
+                <li key={c.label}>
+                  <a
+                    href={c.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex items-center gap-4 rounded-2xl -mx-3 px-3 py-3 hover:bg-white/[0.06] focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary-300 transition-colors"
+                  >
+                    <span className="w-11 h-11 rounded-xl bg-white flex items-center justify-center shrink-0">
+                      <BrandLogo name={c.logo} size={22} square />
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block text-sm text-white/55">{c.label}</span>
+                      <span className="block font-semibold truncate">{c.value}</span>
+                    </span>
+                    <ArrowUpRight
+                      className="w-4 h-4 text-white/35 group-hover:text-secondary-300 transition-colors shrink-0"
+                      aria-hidden="true"
+                    />
+                  </a>
+                </li>
+              ))}
+            </ul>
 
-        {/* MAIN GRID */}
-        <div className="grid lg:grid-cols-5 gap-8 lg:gap-10 max-w-6xl mx-auto">
-          {/* =========== LEFT: INFO PANEL =========== */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Contact cards */}
-            <div className="space-y-3">
-              <ContactCard
-                icon={<Mail className="w-5 h-5" />}
-                label="Email"
-                value={SITE_CONFIG.email}
-                href={`mailto:${SITE_CONFIG.email}`}
+            <ul className="mt-10 pt-8 border-t border-white/10 space-y-5">
+              <WhyPoint
+                icon={<Clock className="w-4 h-4" />}
+                title="Reply within 24 hours"
+                desc="Every inquiry gets a personal answer, not an auto-responder."
               />
-              <ContactCard
-                icon={<Phone className="w-5 h-5" />}
-                label="WhatsApp"
-                value={SITE_CONFIG.phone}
-                href={SOCIAL_LINKS.whatsapp}
+              <WhyPoint
+                icon={<Zap className="w-4 h-4" />}
+                title="Working software, not slides"
+                desc="5+ deployed ML apps you can open today."
               />
-              <ContactCard
-                icon={<MapPin className="w-5 h-5" />}
-                label="Location"
-                value={SITE_CONFIG.location}
-                subtitle="Remote-friendly · Global timezones"
+              <WhyPoint
+                icon={<Shield className="w-4 h-4" />}
+                title="Clear estimate first"
+                desc="You see scope and price before any work starts."
               />
-            </div>
+            </ul>
 
-            {/* Why work with me */}
-            <div className="bg-gradient-to-br from-primary to-primary-700 rounded-3xl p-6 text-white shadow-card-hover relative overflow-hidden">
-              <div className="absolute top-4 right-4 opacity-20">
-                <Sparkles className="w-16 h-16" />
-              </div>
-              <h3 className="font-display font-bold text-lg mb-4 relative">
-                Why work with me?
-              </h3>
-              <ul className="space-y-3 relative">
-                <WhyPoint
-                  icon={<Clock className="w-4 h-4" />}
-                  title="24-hour response"
-                  desc="I reply to every inquiry personally within a day."
-                />
-                <WhyPoint
-                  icon={<Zap className="w-4 h-4" />}
-                  title="Ships live projects"
-                  desc="5+ deployed ML apps — no just-in-my-laptop demos."
-                />
-                <WhyPoint
-                  icon={<Shield className="w-4 h-4" />}
-                  title="Transparent pricing"
-                  desc="Clear estimates before we start. No surprises."
-                />
-              </ul>
-            </div>
-
-            {/* Social links */}
-            <div>
-              <p className="text-xs font-bold text-dark-500 uppercase tracking-wider mb-3">
-                Or connect on
-              </p>
-              <SocialLinks size="md" />
-            </div>
+            <p className="mt-10 flex items-center gap-2 text-sm text-white/55">
+              <MapPin className="w-4 h-4" aria-hidden="true" />
+              {SITE_CONFIG.location}, working with clients remotely
+            </p>
           </div>
 
           {/* =========== RIGHT: INQUIRY FORM =========== */}
-          <div className="lg:col-span-3">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className="bg-white rounded-3xl border border-dark-100 shadow-card p-6 sm:p-8 relative overflow-hidden"
-            >
+          <div className="lg:col-span-7 bg-white p-6 sm:p-10 lg:p-12">
+            <div>
               {sent ? (
                 <SuccessState onReset={() => setSent(false)} />
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-5">
                   <div className="mb-2">
-                    <h3 className="text-xl font-display font-bold text-dark-900 mb-1">
-                      Project Inquiry
+                    <h3 className="text-2xl font-display font-bold tracking-tight text-dark-900 mb-1">
+                      Project inquiry
                     </h3>
                     <p className="text-sm text-dark-500">
-                      Fill in the details and I&apos;ll get back to you within 24 hours.
+                      Fill this in and it opens WhatsApp with your brief ready to send.
                     </p>
                   </div>
 
@@ -445,19 +428,17 @@ export default function Contact() {
                     ) : (
                       <>
                         <Send className="w-5 h-5" />
-                        Send Project Inquiry
-                        <ArrowRight className="w-5 h-5" />
+                        Send inquiry on WhatsApp
                       </>
                     )}
                   </button>
 
                   <p className="text-[11px] text-dark-400 text-center">
-                    Your message opens in WhatsApp with all details pre-filled.
-                    Just hit Send there to deliver. No spam, no data stored.
+                    Hit Send in WhatsApp to deliver it. Nothing is stored on this site.
                   </p>
                 </form>
               )}
-            </motion.div>
+            </div>
           </div>
         </div>
       </div>
@@ -495,43 +476,6 @@ export default function Contact() {
 /* -------------------------------------------------------------------------- */
 /*  Sub-components                                                            */
 /* -------------------------------------------------------------------------- */
-function ContactCard({
-  icon,
-  label,
-  value,
-  subtitle,
-  href,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  value: string;
-  subtitle?: string;
-  href?: string;
-}) {
-  const Content = (
-    <div className="flex items-start gap-3 p-4 bg-white rounded-2xl border border-dark-100 shadow-soft hover:shadow-card hover:border-primary/30 hover:-translate-y-0.5 transition-all group">
-      <div className="w-11 h-11 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-white transition-colors">
-        {icon}
-      </div>
-      <div className="min-w-0 flex-1">
-        <p className="text-xs font-bold text-dark-400 uppercase tracking-wider mb-0.5">
-          {label}
-        </p>
-        <p className="text-sm font-semibold text-dark-900 truncate">{value}</p>
-        {subtitle && <p className="text-xs text-dark-500 mt-0.5">{subtitle}</p>}
-      </div>
-    </div>
-  );
-
-  return href ? (
-    <a href={href} target="_blank" rel="noopener noreferrer" className="block">
-      {Content}
-    </a>
-  ) : (
-    Content
-  );
-}
-
 function WhyPoint({
   icon,
   title,
@@ -543,12 +487,12 @@ function WhyPoint({
 }) {
   return (
     <li className="flex items-start gap-3">
-      <div className="w-7 h-7 rounded-lg bg-white/20 backdrop-blur flex items-center justify-center shrink-0 mt-0.5">
+      <div className="w-8 h-8 rounded-lg bg-white/10 text-secondary-300 flex items-center justify-center shrink-0 mt-0.5">
         {icon}
       </div>
       <div>
-        <p className="font-bold text-sm">{title}</p>
-        <p className="text-xs text-white/80 leading-relaxed">{desc}</p>
+        <p className="font-semibold text-sm">{title}</p>
+        <p className="text-sm text-white/60 leading-relaxed">{desc}</p>
       </div>
     </li>
   );

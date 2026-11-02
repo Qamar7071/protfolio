@@ -1,239 +1,162 @@
-"use client";
+import { ArrowUpRight, Download, MapPin } from "lucide-react";
 
-import { motion } from "framer-motion";
-import {
-  Briefcase,
-  MapPin,
-  Calendar,
-  Download,
-  GraduationCap,
-  Building2,
-} from "lucide-react";
+import { EDUCATION, EXPERIENCE, SITE_CONFIG } from "@/lib/constants";
+import BrandLogo from "@/components/ui/BrandLogo";
+import SectionHeader from "@/components/ui/SectionHeader";
 
-import { EXPERIENCE, SITE_CONFIG } from "@/lib/constants";
-import { cn } from "@/lib/utils";
+type Entry = {
+  key: string;
+  logo: string;
+  title: string;
+  org: string;
+  link?: string;
+  period: string;
+  location: string;
+  current?: boolean;
+  facts?: string[];
+  description: string;
+  tags: readonly string[];
+};
+
+const ENTRIES: Entry[] = [
+  {
+    key: "education",
+    logo: EDUCATION.logo,
+    title: EDUCATION.degree,
+    org: EDUCATION.school,
+    period: EDUCATION.period,
+    location: EDUCATION.location,
+    current: true,
+    facts: [EDUCATION.grade, EDUCATION.semester],
+    description: EDUCATION.description,
+    tags: EDUCATION.tags,
+  },
+  ...EXPERIENCE.map((e) => ({
+    key: e.role,
+    logo: e.logo,
+    title: e.role,
+    org: e.company,
+    link: e.link,
+    period: e.period,
+    location: e.location,
+    description: e.description,
+    tags: e.tags,
+  })),
+];
+
+const dash = (s: string) => s.replace("—", "–");
 
 /* -------------------------------------------------------------------------- */
-/*  EXPERIENCE SECTION                                                        */
+/*  EXPERIENCE & EDUCATION — timeline with organisation logos as the nodes    */
 /* -------------------------------------------------------------------------- */
 export default function Experience() {
   return (
-    <section
-      id="experience"
-      className="section-padding bg-dark-50 relative overflow-hidden"
-    >
-      {/* Background decoration */}
-      <div className="absolute inset-0 bg-dots opacity-30 pointer-events-none" />
-      <div className="blob w-[400px] h-[400px] bg-primary/15 top-40 -left-32" />
-      <div
-        className="blob w-[300px] h-[300px] bg-secondary-300/25 bottom-0 -right-24"
-        style={{ animationDelay: "3s" }}
-      />
+    <section id="experience" className="section-padding bg-dark-50">
+      <div className="container-custom">
+        <SectionHeader
+          title="Experience and education"
+          description="Where I study, and where I've been putting it to work."
+        />
 
-      <div className="container-custom relative z-10">
-        {/* ============= HEADER ============= */}
-        <div className="text-center max-w-3xl mx-auto mb-14">
-          <span className="eyebrow flex items-center justify-center gap-2">
-            <Briefcase className="w-4 h-4" />
-            My Journey
-          </span>
-          <h2 className="section-heading heading-underline-center mx-auto mt-2">
-            Experience &{" "}
-            <span className="text-gradient-primary">Education</span>
-          </h2>
-          <p className="section-subheading mx-auto">
-            A student building his career through real projects, freelance work,
-            and continuous learning.
-          </p>
-        </div>
-
-        {/* ============= CURRENTLY ENROLLED BADGE ============= */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="max-w-3xl mx-auto mb-12"
-        >
-          <div className="bg-gradient-to-r from-primary to-primary-700 rounded-3xl p-6 sm:p-7 text-white shadow-card-hover relative overflow-hidden">
-            {/* Decorative icon */}
-            <div className="absolute -top-4 -right-4 opacity-15">
-              <GraduationCap className="w-32 h-32" />
-            </div>
-
-            <div className="flex flex-col sm:flex-row items-start gap-5 relative">
-              <div className="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur flex items-center justify-center shrink-0">
-                <GraduationCap className="w-7 h-7" />
-              </div>
-
-              <div className="flex-1">
-                <span className="inline-flex items-center gap-1.5 text-xs font-bold bg-secondary-300 text-dark-900 px-3 py-1 rounded-full mb-3 shadow-yellow">
-                  <span className="w-1.5 h-1.5 rounded-full bg-green-600 animate-pulse" />
-                  Currently Enrolled
-                </span>
-
-                <h3 className="text-xl sm:text-2xl font-display font-bold mb-1">
-                  Bachelor of Science in Artificial Intelligence
-                </h3>
-                <p className="text-white/90 text-sm mb-3">
-                  Shifa Tameer-e-Millat University, Islamabad
-                </p>
-
-                <div className="flex flex-wrap items-center gap-3 text-xs text-white/85">
-                  <span className="inline-flex items-center gap-1.5">
-                    <Calendar className="w-3.5 h-3.5" />
-                    2024 – Present
-                  </span>
-                  <span className="text-white/40">·</span>
-                  <span className="inline-flex items-center gap-1.5 font-bold">
-                    <span className="w-4 h-4 rounded-full bg-white/25 flex items-center justify-center text-[10px]">
-                      A
-                    </span>
-                    Grade: A
-                  </span>
-                  <span className="text-white/40">·</span>
-                  <span className="font-semibold">4th Semester</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* ============= TIMELINE ============= */}
-        <div className="max-w-3xl mx-auto relative">
-          {/* Vertical connecting line */}
-          <div className="absolute left-[22px] top-2 bottom-2 w-0.5 bg-gradient-to-b from-primary via-primary/40 to-transparent" />
-
-          {EXPERIENCE.map((exp, i) => (
-            <TimelineCard key={`${exp.company}-${i}`} exp={exp} index={i} />
+        <ol className="max-w-5xl">
+          {ENTRIES.map((entry, i) => (
+            <TimelineItem key={entry.key} entry={entry} last={i === ENTRIES.length - 1} />
           ))}
-        </div>
+        </ol>
 
-        {/* ============= BOTTOM CTA ============= */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.3 }}
-          className="text-center mt-14"
-        >
-          <p className="text-sm text-dark-500 mb-4">
-            Want the full details, references & project stats?
-          </p>
-          <a
-            href={SITE_CONFIG.resumeUrl}
-            download
-            className="btn-outline inline-flex"
-          >
-            <Download className="w-4 h-4" />
-            Download Full Resume
+        {/* lines up with the cards: date column (10rem) + gap (2rem) + node (3.5rem) + gap */}
+        <div className="mt-12 lg:pl-[17.5rem]">
+          <a href={SITE_CONFIG.resumeUrl} download className="btn-outline">
+            <Download className="w-4 h-4" aria-hidden="true" />
+            Download full résumé
           </a>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
 }
 
-/* -------------------------------------------------------------------------- */
-/*  TIMELINE CARD                                                             */
-/* -------------------------------------------------------------------------- */
-function TimelineCard({
-  exp,
-  index,
-}: {
-  exp: (typeof EXPERIENCE)[number];
-  index: number;
-}) {
-  const isSecondary = index % 2 === 1;
-
+function TimelineItem({ entry, last }: { entry: Entry; last: boolean }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, x: -20 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.5, delay: index * 0.15 }}
-      className="relative pl-16 pb-10 last:pb-0"
-    >
-      {/* Timeline dot with pulse */}
-      <div className="absolute left-[14px] top-1">
-        <div className="relative">
-          <div
-            className={cn(
-              "w-4 h-4 rounded-full ring-4 ring-dark-50 relative z-10",
-              isSecondary ? "bg-secondary-300" : "bg-primary",
-            )}
-          />
-          <div
-            className={cn(
-              "absolute inset-0 w-4 h-4 rounded-full animate-ping opacity-30",
-              isSecondary ? "bg-secondary-300" : "bg-primary",
-            )}
-            style={{ animationDuration: "2.5s" }}
-          />
+    <li className="flex gap-8">
+      {/* When / where — desktop */}
+      <div className="hidden lg:block w-40 shrink-0 pt-4 text-right">
+        <p className="font-display font-semibold text-dark-900">{dash(entry.period)}</p>
+        <p className="mt-1 text-sm text-dark-500">{entry.location}</p>
+      </div>
+
+      {/* Node + rail */}
+      <div className="hidden sm:flex flex-col items-center shrink-0">
+        <div className="w-14 h-14 rounded-2xl bg-white border border-dark-200 shadow-soft flex items-center justify-center">
+          <BrandLogo name={entry.logo} size={entry.logo === "STMU" ? 44 : 30} square />
         </div>
+        {!last && <div className="flex-1 w-px bg-dark-300/70 my-2" aria-hidden="true" />}
       </div>
 
       {/* Card */}
-      <div className="bg-white rounded-2xl border border-dark-100 shadow-soft hover:shadow-card hover:border-primary/30 hover:-translate-y-1 transition-all duration-300 p-6 group">
-        {/* Period + Location chips */}
-        <div className="flex flex-wrap items-center gap-2 mb-3">
-          <span
-            className={cn(
-              "inline-flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-full",
-              isSecondary
-                ? "bg-secondary-100 text-secondary-800"
-                : "bg-primary/10 text-primary",
+      <article className={last ? "flex-1 min-w-0" : "flex-1 min-w-0 pb-6 sm:pb-10"}>
+        <div className="rounded-2xl bg-white border border-dark-200 p-6 sm:p-7">
+          <div className="sm:hidden mb-4 w-12 h-12 rounded-xl bg-white border border-dark-200 flex items-center justify-center">
+            <BrandLogo name={entry.logo} size={entry.logo === "STMU" ? 38 : 26} square />
+          </div>
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+            <h3 className="font-display text-xl font-bold tracking-tight text-dark-900">{entry.title}</h3>
+            {entry.current && (
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-green-50 border border-green-200 px-2.5 py-0.5 text-xs font-semibold text-green-700">
+                <span className="w-1.5 h-1.5 rounded-full bg-green-500" aria-hidden="true" />
+                Currently enrolled
+              </span>
             )}
-          >
-            <Calendar className="w-3 h-3" />
-            {exp.period}
-          </span>
-          <span className="inline-flex items-center gap-1 text-xs text-dark-500 font-medium">
-            <MapPin className="w-3 h-3" />
-            {exp.location}
-          </span>
-        </div>
+          </div>
 
-        {/* Role */}
-        <h3 className="text-lg sm:text-xl font-display font-bold text-dark-900 mb-1 group-hover:text-primary transition-colors">
-          {exp.role}
-        </h3>
-
-        {/* Company */}
-        <div className="flex items-center gap-1.5 mb-4">
-          <Building2 className="w-4 h-4 text-primary" />
-          <p
-            className={cn(
-              "text-sm font-bold",
-              isSecondary ? "text-secondary-700" : "text-primary",
-            )}
-          >
-            {exp.company}
-          </p>
-        </div>
-
-        {/* Description */}
-        <p className="text-sm text-dark-600 leading-relaxed mb-4">
-          {exp.description}
-        </p>
-
-        {/* Tech tags */}
-        <div className="flex flex-wrap gap-1.5 pt-3 border-t border-dark-100">
-          {exp.tags.map((tag) => (
-            <span
-              key={tag}
-              className={cn(
-                "text-xs px-2.5 py-1 rounded-lg font-semibold border transition-colors",
-                isSecondary
-                  ? "bg-secondary-50 border-secondary-200 text-secondary-800 hover:bg-secondary-300"
-                  : "bg-primary/5 border-primary/20 text-primary-800 hover:bg-primary hover:text-white hover:border-primary",
-              )}
+          {entry.link ? (
+            <a
+              href={entry.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-1 inline-flex items-center gap-1 font-semibold text-primary hover:text-primary-700"
             >
-              {tag}
+              {entry.org}
+              <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
+            </a>
+          ) : (
+            <p className="mt-1 font-semibold text-primary">{entry.org}</p>
+          )}
+
+          {/* When / where — mobile */}
+          <p className="lg:hidden mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-dark-500">
+            <span>{dash(entry.period)}</span>
+            <span className="inline-flex items-center gap-1">
+              <MapPin className="w-3.5 h-3.5" aria-hidden="true" />
+              {entry.location}
             </span>
-          ))}
+          </p>
+
+          {entry.facts && (
+            <ul className="mt-4 flex flex-wrap gap-2">
+              {entry.facts.map((f) => (
+                <li key={f} className="rounded-lg bg-primary/5 border border-primary/15 px-2.5 py-1 text-sm font-semibold text-primary-800">
+                  {f}
+                </li>
+              ))}
+            </ul>
+          )}
+
+          <p className="mt-4 text-dark-600 leading-relaxed max-w-[68ch]">{entry.description}</p>
+
+          <ul className="mt-5 pt-5 border-t border-dark-100 flex flex-wrap gap-2">
+            {entry.tags.map((t) => (
+              <li
+                key={t}
+                className="inline-flex items-center gap-1.5 rounded-lg border border-dark-200 bg-dark-50 px-2.5 py-1 text-sm text-dark-700"
+              >
+                <BrandLogo name={t} size={16} square />
+                {t}
+              </li>
+            ))}
+          </ul>
         </div>
-      </div>
-    </motion.div>
+      </article>
+    </li>
   );
 }

@@ -15,6 +15,7 @@ import {
 
 import { CERTIFICATES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
+import SectionHeader from "@/components/ui/SectionHeader";
 
 type Certificate = (typeof CERTIFICATES)[number];
 
@@ -63,21 +64,10 @@ export default function Certifications() {
       <div className="absolute inset-0 bg-radial-fade pointer-events-none" />
 
       <div className="container-custom relative z-10">
-        {/* HEADER */}
-        <div className="text-center max-w-3xl mx-auto mb-14">
-          <span className="eyebrow flex items-center justify-center gap-2">
-            <Award className="w-4 h-4" />
-            Credentials
-          </span>
-          <h2 className="section-heading heading-underline-center mx-auto mt-2">
-            Verified{" "}
-            <span className="text-gradient-primary">Certifications</span>
-          </h2>
-          <p className="section-subheading mx-auto">
-            Continuous learning matters. These are courses I&apos;ve completed
-            from world-class institutions — each independently verifiable.
-          </p>
-        </div>
+        <SectionHeader
+          title="Certifications"
+          description="Courses and awards I've earned. The online courses link to Coursera so you can check them yourself."
+        />
 
         {/* CARDS GRID */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">

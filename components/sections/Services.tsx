@@ -1,250 +1,227 @@
 "use client";
 
-import { motion } from "framer-motion";
-import {
-  Bot,
-  Globe,
-  Wand2,
-  Brain,
-  Sparkles,
-  Check,
-  ArrowRight,
-  Zap,
-  MessageCircle,
-} from "lucide-react";
+/* eslint-disable @next/next/no-img-element */
+import { useRef, useState } from "react";
+import { AnimatePresence, MotionConfig, motion } from "framer-motion";
+import { ArrowUpRight, Bot, Brain, Check, LineChart, Wand2 } from "lucide-react";
 
-import { SERVICES } from "@/lib/constants";
+import { PROJECTS, SERVICES } from "@/lib/constants";
+import BrandLogo from "@/components/ui/BrandLogo";
+import SectionHeader from "@/components/ui/SectionHeader";
 import { cn } from "@/lib/utils";
 
-/* -------------------------------------------------------------------------- */
-/*  Icon map — resolves string names from constants to real components        */
-/* -------------------------------------------------------------------------- */
-const ICON_MAP = {
-  Bot,
-  Globe,
-  Wand2,
-  Brain,
-} as const;
-
-type IconName = keyof typeof ICON_MAP;
+const ICONS = { Brain, LineChart, Bot, Wand2 } as const;
+type Service = (typeof SERVICES)[number];
+type Project = (typeof PROJECTS)[number];
 
 /* -------------------------------------------------------------------------- */
-/*  SERVICES SECTION                                                          */
+/*  SERVICES — pick a service on the left, details + related work on the right */
 /* -------------------------------------------------------------------------- */
 export default function Services() {
+  const [active, setActive] = useState(0);
+  const tabs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  const select = (i: number, focus = false) => {
+    const next = (i + SERVICES.length) % SERVICES.length;
+    setActive(next);
+    if (focus) tabs.current[next]?.focus();
+  };
+
+  const onKeyDown = (e: React.KeyboardEvent, i: number) => {
+    if (e.key === "ArrowDown" || e.key === "ArrowRight") {
+      e.preventDefault();
+      select(i + 1, true);
+    } else if (e.key === "ArrowUp" || e.key === "ArrowLeft") {
+      e.preventDefault();
+      select(i - 1, true);
+    } else if (e.key === "Home") {
+      e.preventDefault();
+      select(0, true);
+    } else if (e.key === "End") {
+      e.preventDefault();
+      select(SERVICES.length - 1, true);
+    }
+  };
+
+  const service = SERVICES[active];
+  const related = PROJECTS.find((p) => p.id === service.relatedProject);
+
   return (
-    <section
-      id="services"
-      className="section-padding bg-dark-50 relative overflow-hidden"
-    >
-      {/* Decorative background */}
-      <div className="absolute inset-0 bg-dots opacity-30 pointer-events-none" />
-      <div className="blob w-[400px] h-[400px] bg-primary/15 -top-32 -left-32" />
-      <div
-        className="blob w-[350px] h-[350px] bg-secondary-300/25 bottom-0 -right-24"
-        style={{ animationDelay: "3s" }}
-      />
+    <MotionConfig reducedMotion="user">
+      <section id="services" className="section-padding bg-white">
+        <div className="container-custom">
+          <SectionHeader
+            title="Services"
+            description="Four kinds of work I take on. Each one ends with something you can open and use, not just a report."
+          />
 
-      <div className="container-custom relative z-10">
-        {/* -------------------- HEADER -------------------- */}
-        <div className="text-center max-w-3xl mx-auto mb-14">
-          <span className="eyebrow flex items-center justify-center gap-2">
-            <Sparkles className="w-4 h-4" />
-            What I Offer
-          </span>
-          <h2 className="section-heading heading-underline-center mx-auto mt-2">
-            AI Services that{" "}
-            <span className="text-gradient-primary">ship real value</span>
-          </h2>
-          <p className="section-subheading mx-auto">
-            Four focused offerings that combine cutting-edge AI with solid
-            engineering — from chatbots to custom models, delivered with care.
-          </p>
-        </div>
-
-        {/* -------------------- SERVICES GRID -------------------- */}
-        <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
-          {SERVICES.map((service, i) => (
-            <ServiceCard key={service.id} service={service} index={i} />
-          ))}
-        </div>
-
-        {/* -------------------- BOTTOM CTA STRIP -------------------- */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="mt-14 bg-gradient-to-r from-primary to-primary-700 rounded-3xl p-8 sm:p-10 text-white shadow-card-hover overflow-hidden relative"
-        >
-          {/* Decorative sparkles */}
-          <div className="absolute top-4 right-4 opacity-20">
-            <Sparkles className="w-24 h-24" />
-          </div>
-          <div className="absolute bottom-4 left-4 opacity-10">
-            <Zap className="w-32 h-32" />
-          </div>
-
-          <div className="relative flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="text-center md:text-left">
-              <h3 className="text-2xl sm:text-3xl font-display font-bold mb-2">
-                Not sure which service fits?
-              </h3>
-              <p className="text-white/85 max-w-xl">
-                Let&apos;s talk about your idea. Free 30-min discovery call — I
-                help you scope, plan, and estimate before you commit.
-              </p>
-            </div>
-            <a
-              href="#contact"
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-white text-primary font-bold shadow-lg hover:bg-secondary-100 hover:-translate-y-0.5 transition-all shrink-0"
+          <div className="grid lg:grid-cols-12 gap-6 lg:gap-10 items-start">
+            {/* ---------- Service list ---------- */}
+            <div
+              role="tablist"
+              aria-label="Services"
+              className="lg:col-span-4 flex lg:flex-col gap-2 overflow-x-auto no-scrollbar snap-x scroll-px-4 sm:scroll-px-0 -mx-4 px-4 sm:mx-0 sm:px-0 pb-1 lg:pb-0"
             >
-              <MessageCircle className="w-5 h-5" />
-              Start a conversation
-              <ArrowRight className="w-5 h-5" />
+              {SERVICES.map((s, i) => {
+                const Icon = ICONS[s.icon as keyof typeof ICONS] ?? Brain;
+                const on = i === active;
+                return (
+                  <button
+                    key={s.id}
+                    ref={(el) => {
+                      tabs.current[i] = el;
+                    }}
+                    id={`service-tab-${s.id}`}
+                    role="tab"
+                    type="button"
+                    aria-selected={on}
+                    aria-controls="service-panel"
+                    tabIndex={on ? 0 : -1}
+                    onClick={() => select(i)}
+                    onKeyDown={(e) => onKeyDown(e, i)}
+                    className={cn(
+                      "snap-start shrink-0 w-[78%] sm:w-[46%] lg:w-full text-left rounded-2xl border px-5 py-4 transition-colors",
+                      "flex items-start gap-4 focus:outline-none focus-visible:ring-4 focus-visible:ring-primary/30",
+                      on
+                        ? "bg-primary border-primary text-white shadow-button"
+                        : "bg-white border-dark-200 text-dark-900 hover:border-dark-300 hover:bg-dark-50",
+                    )}
+                  >
+                    <span
+                      className={cn(
+                        "w-10 h-10 rounded-xl flex items-center justify-center shrink-0",
+                        on ? "bg-white/15 text-white" : "bg-primary/10 text-primary",
+                      )}
+                    >
+                      <Icon className="w-5 h-5" aria-hidden="true" />
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block font-display font-semibold leading-snug">{s.title}</span>
+                      <span className={cn("block mt-0.5 text-sm", on ? "text-white/75" : "text-dark-500")}>
+                        {s.tagline}
+                      </span>
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* ---------- Detail panel ---------- */}
+            <div className="lg:col-span-8">
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.div
+                  key={service.id}
+                  id="service-panel"
+                  role="tabpanel"
+                  aria-labelledby={`service-tab-${service.id}`}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  transition={{ duration: 0.22, ease: "easeOut" }}
+                  className="rounded-3xl border border-dark-200 bg-white overflow-hidden"
+                >
+                  <ServiceDetail service={service} />
+                  {related && <RelatedWork project={related} />}
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </div>
+
+          {/* ---------- Not sure ---------- */}
+          <div className="mt-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-2xl border border-dashed border-dark-300 px-6 py-5">
+            <p className="text-dark-600">
+              <span className="font-semibold text-dark-900">Not sure which one fits?</span>{" "}
+              Book a free 30-minute call and we&apos;ll scope it together.
+            </p>
+            <a href="#contact" className="btn-outline shrink-0">
+              Book a call
             </a>
           </div>
-        </motion.div>
-      </div>
-    </section>
+        </div>
+      </section>
+    </MotionConfig>
   );
 }
 
-/* -------------------------------------------------------------------------- */
-/*  SERVICE CARD                                                              */
-/* -------------------------------------------------------------------------- */
-function ServiceCard({
-  service,
-  index,
-}: {
-  service: (typeof SERVICES)[number];
-  index: number;
-}) {
-  const Icon = ICON_MAP[service.icon as IconName];
-  // Alternate primary / secondary accent for visual variety
-  const isSecondary = index % 2 === 1;
+function ServiceDetail({ service }: { service: Service }) {
+  return (
+    <div className="p-6 sm:p-8 lg:p-10">
+      <h3 className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-dark-900">
+        {service.title}
+      </h3>
+      <p className="mt-1 font-semibold text-primary">{service.tagline}</p>
+      <p className="mt-4 text-dark-600 leading-relaxed max-w-[60ch]">{service.description}</p>
+
+      <div className="mt-8 grid sm:grid-cols-2 gap-8">
+        <div>
+          <h4 className="text-sm font-semibold text-dark-900">What&apos;s included</h4>
+          <ul className="mt-3 space-y-2.5">
+            {service.features.map((f) => (
+              <li key={f} className="flex items-start gap-2.5 text-sm text-dark-700">
+                <Check className="w-4 h-4 mt-0.5 text-primary shrink-0" strokeWidth={3} aria-hidden="true" />
+                {f}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <h4 className="text-sm font-semibold text-dark-900">{service.toolsLabel}</h4>
+          <ul className="mt-3 flex flex-wrap gap-2">
+            {service.tools.map((t) => (
+              <li
+                key={t}
+                className="inline-flex items-center gap-2 rounded-xl border border-dark-200 bg-white pl-2 pr-3 py-1.5 text-sm font-medium text-dark-800"
+              >
+                <BrandLogo name={t} size={20} square />
+                {t}
+              </li>
+            ))}
+          </ul>
+
+          <h4 className="mt-6 text-sm font-semibold text-dark-900">Good fit for</h4>
+          <p className="mt-1.5 text-sm text-dark-600">{service.idealFor}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function RelatedWork({ project }: { project: Project }) {
+  const contain = "imageFit" in project && project.imageFit === "contain";
+  const live = project.liveUrl && (project.liveUrl as string) !== "#";
 
   return (
-    <motion.article
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.5, delay: index * 0.08 }}
-      className={cn(
-        "group relative bg-white rounded-3xl border border-dark-100 p-6 sm:p-8",
-        "shadow-soft hover:shadow-card-hover hover:-translate-y-2",
-        "hover:border-primary/30 transition-all duration-400 overflow-hidden",
-      )}
-    >
-      {/* Dots pattern reveal on hover */}
-      <div className="absolute inset-0 bg-dots opacity-0 group-hover:opacity-30 transition-opacity duration-500 pointer-events-none" />
-
-      {/* Corner gradient glow on hover */}
-      <div
-        className={cn(
-          "absolute -top-20 -right-20 w-40 h-40 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none",
-          isSecondary ? "bg-secondary-300/40" : "bg-primary/25",
-        )}
-      />
-
-      {/* Big number badge */}
-      <div className="absolute top-4 right-6 select-none pointer-events-none">
-        <span
-          className={cn(
-            "font-display font-black text-6xl leading-none transition-colors duration-300",
-            "text-dark-100 group-hover:text-primary/15",
-          )}
-        >
-          {service.number}
-        </span>
+    <div className="border-t border-dark-200 bg-dark-50 p-6 sm:p-8 flex flex-col sm:flex-row gap-5 sm:gap-6">
+      <div className="w-full sm:w-52 aspect-project rounded-xl overflow-hidden border border-dark-200 bg-white shrink-0">
+        <img
+          src={project.image}
+          alt={`Screenshot of ${project.title}`}
+          loading="lazy"
+          className={cn("w-full h-full", contain ? "object-contain bg-[#0a1e3a]" : "object-cover object-top")}
+        />
       </div>
-
-      {/* CONTENT */}
-      <div className="relative">
-        {/* ICON */}
-        <div
-          className={cn(
-            "relative w-16 h-16 rounded-2xl flex items-center justify-center mb-6",
-            "transition-all duration-400",
-            isSecondary
-              ? "bg-secondary-100 text-secondary-700 group-hover:bg-secondary-300 group-hover:text-dark-900"
-              : "bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white",
-            "group-hover:scale-110 group-hover:rotate-6 group-hover:shadow-lg",
-          )}
-        >
-          {Icon && <Icon className="w-8 h-8" />}
-        </div>
-
-        {/* TITLE + TAGLINE */}
-        <h3 className="text-xl sm:text-2xl font-display font-bold text-dark-900 mb-1 group-hover:text-primary transition-colors">
-          {service.title}
-        </h3>
-        <p
-          className={cn(
-            "text-sm font-bold mb-4",
-            isSecondary ? "text-secondary-700" : "text-primary",
-          )}
-        >
-          {service.tagline}
-        </p>
-
-        {/* DESCRIPTION */}
-        <p className="text-sm text-dark-500 mb-6 leading-relaxed">
-          {service.description}
-        </p>
-
-        {/* FEATURES */}
-        <ul className="space-y-2.5 mb-6">
-          {service.features.map((f) => (
-            <li
-              key={f}
-              className="flex items-start gap-2.5 text-sm text-dark-700"
+      <div className="min-w-0 flex-1">
+        <p className="text-sm text-dark-500">Related work</p>
+        <p className="font-display font-semibold text-lg text-dark-900 leading-snug">{project.title}</p>
+        <p className="mt-1 text-sm text-dark-500 leading-relaxed line-clamp-2">{project.description}</p>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {live && (
+            <a
+              href={project.liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-secondary !px-4 !py-2 text-sm"
             >
-              <div
-                className={cn(
-                  "mt-0.5 w-5 h-5 rounded-full flex items-center justify-center shrink-0",
-                  isSecondary
-                    ? "bg-secondary-100 text-secondary-700"
-                    : "bg-primary/10 text-primary",
-                )}
-              >
-                <Check className="w-3 h-3" strokeWidth={3} />
-              </div>
-              <span>{f}</span>
-            </li>
-          ))}
-        </ul>
-
-        {/* IDEAL FOR + DELIVERABLES */}
-        <div className="pt-5 border-t border-dark-100 mb-5">
-          <p className="text-xs text-dark-500 mb-3">
-            <span className="font-bold text-dark-700">Ideal for:</span>{" "}
-            {service.idealFor}
-          </p>
-          <div className="flex flex-wrap gap-1.5">
-            {service.deliverables && service.deliverables.map((d) => (
-              <span
-                key={d}
-                className="text-xs bg-dark-50 text-dark-600 px-2 py-0.5 rounded-md font-semibold border border-dark-100"
-              >
-                {d}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        {/* CTA */}
-        <a
-          href="#contact"
-          className={cn(
-            "inline-flex items-center gap-1.5 text-sm font-bold group/cta transition-colors",
-            isSecondary ? "text-secondary-700 hover:text-secondary-800" : "text-primary hover:text-primary-700",
+              Open live app
+              <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
+            </a>
           )}
-        >
-          Discuss this project
-          <ArrowRight className="w-4 h-4 group-hover/cta:translate-x-1 transition-transform" />
-        </a>
+          <a href="#contact" className="btn-primary !px-4 !py-2 text-sm">
+            Discuss a project
+          </a>
+        </div>
       </div>
-    </motion.article>
+    </div>
   );
 }
