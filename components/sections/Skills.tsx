@@ -97,7 +97,7 @@ export default function Skills() {
       <div className="container-custom relative z-10">
         {/* HEADER */}
         <div className="text-center max-w-3xl mx-auto mb-14">
-          <span className="eyebrow inline-flex items-center gap-2">
+          <span className="eyebrow flex items-center justify-center gap-2">
             <Zap className="w-4 h-4" />
             My Toolkit
           </span>

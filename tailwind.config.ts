@@ -98,6 +98,8 @@ const config: Config = {
         "slide-in-right": "slideInRight 0.7s ease-out forwards",
         marquee: "marquee 40s linear infinite",
         "marquee-reverse": "marquee 40s linear infinite reverse",
+        // projects strip — slides left → right
+        "marquee-ltr": "marquee-ltr 45s linear infinite",
         float: "float 6s ease-in-out infinite",
         blob: "blob 20s ease-in-out infinite",
         wiggle: "wiggle 1s ease-in-out infinite",
@@ -122,6 +124,10 @@ const config: Config = {
         marquee: {
           "0%": { transform: "translateX(0%)" },
           "100%": { transform: "translateX(-50%)" },
+        },
+        "marquee-ltr": {
+          "0%": { transform: "translateX(-50%)" },
+          "100%": { transform: "translateX(0%)" },
         },
         float: {
           "0%, 100%": { transform: "translateY(0)" },

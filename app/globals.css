@@ -247,6 +247,19 @@
 
   /* ---- Aspect utilities ---- */
   .aspect-project { aspect-ratio: 16 / 10; }
+
+  /* ---- Idle letter ripple (used by <AnimatedText />) ---- */
+  .letter-wave {
+    display: inline-block;
+    animation: letter-wave 7s ease-in-out infinite;
+    animation-delay: calc(var(--i, 0) * 70ms + 3s);
+  }
+}
+
+@keyframes letter-wave {
+  0%, 62%, 100% { transform: translateY(0); color: inherit; }
+  72% { transform: translateY(-0.07em); color: var(--wave, #4854d9); }
+  84% { transform: translateY(0); color: inherit; }
 }
 
 /* =========================================================
@@ -278,4 +291,13 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+
+  /* Projects strip: stop sliding, let people scroll it by hand instead */
+  .marquee-viewport {
+    overflow-x: auto;
+    mask-image: none;
+    -webkit-mask-image: none;
+  }
+  .marquee-track { animation: none !important; transform: none !important; }
+  .marquee-dup { display: none !important; }
 }

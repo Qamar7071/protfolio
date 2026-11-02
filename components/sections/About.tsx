@@ -12,12 +12,19 @@ import {
   Briefcase,
   Award,
   ArrowRight,
+  BadgeCheck,
+  ExternalLink,
 } from "lucide-react";
 
-import { ABOUT, SITE_CONFIG } from "@/lib/constants";
+import { ABOUT, CERTIFICATES, SITE_CONFIG } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 const KEY_POINT_ICONS = [Brain, Server, Code2, Rocket];
+
+/* Verified online certificates only (have a real verify link) — oldest first */
+const LEARNING_PATH = CERTIFICATES.filter((c) => c.verifyUrl !== "#")
+  .map((c) => ({ ...c, time: new Date(c.date).getTime() }))
+  .sort((a, b) => a.time - b.time);
 
 export default function About() {
   return (
@@ -27,7 +34,7 @@ export default function About() {
 
       <div className="container-custom relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-14">
-          <span className="eyebrow inline-flex items-center gap-2">
+          <span className="eyebrow flex items-center justify-center gap-2">
             <User className="w-4 h-4" />
             About Me
           </span>
@@ -49,7 +56,44 @@ export default function About() {
               <QuickFact icon={<GraduationCap className="w-4 h-4" />} label="Education" value="BS AI · Grade A" />
               <QuickFact icon={<MapPin className="w-4 h-4" />} label="Location" value={SITE_CONFIG.location} />
               <QuickFact icon={<Briefcase className="w-4 h-4" />} label="Work" value="Freelance & Independent" />
-              <QuickFact icon={<Award className="w-4 h-4" />} label="Certified" value="IBM Deep Learning" />
+              <QuickFact icon={<Award className="w-4 h-4" />} label="Certified" value={`${LEARNING_PATH.length} verified Coursera certificates`} />
+            </div>
+
+            {/* Learning path — built from the real certificates */}
+            <div className="rounded-2xl border border-dark-100 bg-white p-5 shadow-soft">
+              <h3 className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-dark-400 mb-5">
+                <BadgeCheck className="w-4 h-4 text-primary" />
+                Learning path
+              </h3>
+              <ol className="relative space-y-5 border-l-2 border-primary/15 ml-1.5">
+                {LEARNING_PATH.map((c, i) => (
+                  <motion.li
+                    key={c.id}
+                    initial={{ opacity: 0, x: -14 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.1 + i * 0.12, duration: 0.45 }}
+                    className="relative pl-5"
+                  >
+                    <span className="absolute -left-[7px] top-1.5 h-3 w-3 rounded-full bg-primary ring-4 ring-white" />
+                    <p className="text-[11px] font-bold uppercase tracking-wider text-primary">
+                      {c.date} · {c.provider}
+                    </p>
+                    <p className="mt-0.5 text-sm font-semibold leading-snug text-dark-900">
+                      {c.title}
+                    </p>
+                    <a
+                      href={c.verifyUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-dark-500 hover:text-primary transition-colors"
+                    >
+                      Verify on Coursera
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </motion.li>
+                ))}
+              </ol>
             </div>
           </motion.div>
 

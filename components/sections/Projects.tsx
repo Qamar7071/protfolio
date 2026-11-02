@@ -45,7 +45,7 @@ export default function Projects() {
       <div className="container-custom">
         {/* HEADER */}
         <div className="text-center max-w-3xl mx-auto mb-12">
-          <span className="eyebrow inline-flex items-center gap-2">
+          <span className="eyebrow flex items-center justify-center gap-2">
             <Sparkles className="w-4 h-4" />
             Featured Work
           </span>
@@ -95,23 +95,17 @@ export default function Projects() {
           })}
         </div>
 
-        {/* CARDS GRID */}
-        <motion.div
-          layout
-          className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"
-        >
-          <AnimatePresence mode="popLayout">
-            {filtered.map((project, i) => (
-              <ProjectCard
-                key={project.id}
-                project={project}
-                index={i}
-                onClick={() => setSelectedProject(project)}
-              />
-            ))}
-          </AnimatePresence>
-        </motion.div>
+      </div>
 
+      {/* PROJECTS STRIP — slides left → right, pauses on hover */}
+      <ProjectsStrip
+        key={activeCategory}
+        projects={filtered}
+        paused={selectedProject !== null}
+        onSelect={setSelectedProject}
+      />
+
+      <div className="container-custom">
         {/* BOTTOM CTA */}
         <div className="mt-14 text-center">
           <p className="text-dark-500 mb-4">Want to see more of my work?</p>
@@ -138,30 +132,101 @@ export default function Projects() {
 }
 
 /* -------------------------------------------------------------------------- */
+/*  PROJECTS STRIP — endless left → right slide                               */
+/*  • ≥ 4 projects → marquee (pauses on hover / focus / while a modal is open) */
+/*  • < 4 projects (a narrow filter) → static centred cards, no fake repeats  */
+/* -------------------------------------------------------------------------- */
+const CARD_W = 360;
+const GAP = 24;
+
+function ProjectsStrip({
+  projects,
+  paused,
+  onSelect,
+}: {
+  projects: readonly Project[];
+  paused: boolean;
+  onSelect: (p: Project) => void;
+}) {
+  if (projects.length < 4) {
+    return (
+      <div className="container-custom">
+        <div className="flex flex-wrap justify-center gap-6">
+          {projects.map((p, i) => (
+            <motion.div
+              key={p.id}
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.08, duration: 0.5 }}
+              className="w-full sm:w-[360px]"
+            >
+              <ProjectCard project={p} onSelect={() => onSelect(p)} />
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  // Repeat the list so a single half is always wider than any screen,
+  // then render two identical halves → translateX(-50% → 0) loops seamlessly.
+  const reps = Math.max(1, Math.ceil(2800 / (projects.length * (CARD_W + GAP))));
+  const half = Array.from({ length: reps }, (_, rep) =>
+    projects.map((p) => ({ project: p, rep })),
+  ).flat();
+  const duration = half.length * 7; // seconds — ~7s per card feels calm
+
+  const renderHalf = (isDup: boolean) =>
+    half.map(({ project, rep }) => (
+      <li key={`${project.id}-${rep}`} className="w-[300px] sm:w-[360px] shrink-0">
+        <ProjectCard
+          project={project}
+          onSelect={() => onSelect(project)}
+          decorative={isDup || rep > 0}
+        />
+      </li>
+    ));
+
+  return (
+    <div className="marquee-viewport marquee-mask group/strip overflow-hidden py-6 -my-2">
+      <div
+        className="marquee-track flex w-max animate-marquee-ltr group-hover/strip:[animation-play-state:paused] group-focus-within/strip:[animation-play-state:paused]"
+        style={{
+          animationDuration: `${duration}s`,
+          ...(paused ? { animationPlayState: "paused" } : {}),
+        }}
+      >
+        <ul className="flex gap-6 pr-6 items-stretch">{renderHalf(false)}</ul>
+        <ul className="marquee-dup flex gap-6 pr-6 items-stretch" aria-hidden="true">
+          {renderHalf(true)}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
 /*  PROJECT CARD                                                              */
 /* -------------------------------------------------------------------------- */
 function ProjectCard({
   project,
-  index,
-  onClick,
+  onSelect,
+  decorative = false,
 }: {
   project: Project;
-  index: number;
-  onClick: () => void;
+  onSelect: () => void;
+  /** repeated copy inside the marquee — mouse-clickable, but skipped by keyboard / screen readers */
+  decorative?: boolean;
 }) {
   const [imgFailed, setImgFailed] = useState(false);
   const hasLive = project.liveUrl && (project.liveUrl as string) !== "#";
   const hasCode = project.githubUrl && (project.githubUrl as string) !== "#";
+  const tab = decorative ? -1 : 0;
 
   return (
-    <motion.article
-      layout
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0.9 }}
-      transition={{ delay: Math.min(index * 0.05, 0.3), duration: 0.4 }}
-      onClick={onClick}
-      className="group cursor-pointer bg-white rounded-2xl border border-dark-100 overflow-hidden shadow-soft hover:shadow-card-hover hover:-translate-y-1 transition-all duration-300 flex flex-col"
+    <article
+      onClick={onSelect}
+      className="group/card h-full w-full cursor-pointer bg-white rounded-2xl border border-dark-100 overflow-hidden shadow-soft hover:shadow-card-hover hover:-translate-y-1 transition-all duration-300 flex flex-col"
     >
       {/* IMAGE */}
       <div className="relative aspect-project overflow-hidden bg-gradient-to-br from-primary/10 to-secondary-100">
@@ -169,12 +234,14 @@ function ProjectCard({
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={project.image}
-            alt={project.title}
+            alt={decorative ? "" : project.title}
+            loading="lazy"
+            draggable={false}
             className={`w-full h-full ${
               "imageFit" in project && project.imageFit === "contain"
                 ? "object-contain bg-[#0a1e3a]"
                 : "object-cover"
-            } group-hover:scale-105 transition-transform duration-500`}
+            } group-hover/card:scale-105 transition-transform duration-500`}
             onError={() => setImgFailed(true)}
           />
         ) : (
@@ -201,7 +268,7 @@ function ProjectCard({
           </div>
         )}
 
-        <div className="absolute inset-0 bg-gradient-to-t from-dark-900/85 via-dark-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+        <div className="absolute inset-0 bg-gradient-to-t from-dark-900/85 via-dark-900/20 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 flex items-end p-4">
           <span className="text-white text-sm font-semibold inline-flex items-center gap-1.5">
             View Details
             <ArrowUpRight className="w-4 h-4" />
@@ -211,7 +278,7 @@ function ProjectCard({
 
       {/* CONTENT */}
       <div className="p-5 flex-1 flex flex-col">
-        <h3 className="font-display font-bold text-lg text-dark-900 mb-2 group-hover:text-primary transition-colors line-clamp-1">
+        <h3 className="font-display font-bold text-lg text-dark-900 mb-2 group-hover/card:text-primary transition-colors line-clamp-1">
           {project.title}
         </h3>
         <p className="text-sm text-dark-500 line-clamp-2 mb-4 leading-relaxed">
@@ -242,6 +309,7 @@ function ProjectCard({
               href={project.liveUrl}
               target="_blank"
               rel="noopener noreferrer"
+              tabIndex={tab}
               onClick={(e) => e.stopPropagation()}
               className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-dark-600 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors"
             >
@@ -254,6 +322,7 @@ function ProjectCard({
               href={project.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
+              tabIndex={tab}
               onClick={(e) => e.stopPropagation()}
               className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-dark-600 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors"
             >
@@ -261,13 +330,21 @@ function ProjectCard({
               Code
             </a>
           )}
-          <span className="ml-auto text-xs font-semibold text-primary group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
+          <button
+            type="button"
+            tabIndex={tab}
+            onClick={(e) => {
+              e.stopPropagation();
+              onSelect();
+            }}
+            className="ml-auto text-xs font-semibold text-primary group-hover/card:translate-x-1 transition-transform inline-flex items-center gap-1 rounded-lg px-2 py-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+          >
             Details
             <ArrowUpRight className="w-3 h-3" />
-          </span>
+          </button>
         </div>
       </div>
-    </motion.article>
+    </article>
   );
 }
 

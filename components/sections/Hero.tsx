@@ -1,11 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowRight, Download, Sparkles, MapPin, Award, GraduationCap, Clock } from "lucide-react";
 
 import { SITE_CONFIG, ROTATING_TITLES } from "@/lib/constants";
 import SocialLinks from "@/components/ui/SocialLinks";
+import AnimatedText from "@/components/ui/AnimatedText";
 
 /* -------------------------------------------------------------------------- */
 /*  Typewriter hook — cycles through ROTATING_TITLES                          */
@@ -45,23 +47,10 @@ function useTypewriter(words: readonly string[], speed = 90, pause = 1600) {
 }
 
 /* -------------------------------------------------------------------------- */
-/*  Avatar candidates — tries each format until one loads                     */
-/* -------------------------------------------------------------------------- */
-const AVATAR_CANDIDATES = [
-  "/avatar.png",
-  "/avatar_jpg.png",
-  "/avatar.jpg",
-  "/avatar.jpeg",
-  "/avatar.webp",
-];
-
-/* -------------------------------------------------------------------------- */
 /*  HERO                                                                      */
 /* -------------------------------------------------------------------------- */
 export default function Hero() {
   const typed = useTypewriter(ROTATING_TITLES);
-  const [avatarIdx, setAvatarIdx] = useState(0);
-  const avatarFailed = avatarIdx >= AVATAR_CANDIDATES.length;
 
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
@@ -107,14 +96,39 @@ export default function Hero() {
               </span>
             </motion.div>
 
-            {/* Headline — "Hi, I'm Qamar" + specific role title */}
+            {/* Headline — kinetic text reveal (screen readers get the plain text) */}
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.1] tracking-tight">
-              <span className="block text-dark-900">Hi, I&apos;m Qamar</span>
-              <span className="block text-gradient-primary mt-2">
-                AI/ML Engineer
+              <span className="sr-only">
+                Hi, I&apos;m Qamar — AI/ML Engineer | Python Developer
               </span>
-              <span className="block text-dark-700 text-3xl sm:text-4xl lg:text-5xl mt-1">
-                | Python Developer
+              <span aria-hidden="true" className="block text-dark-900">
+                <AnimatedText
+                  text="Hi, I'm Qamar"
+                  variant="bounce"
+                  delay={0.25}
+                  waveColor="#4854d9"
+                />
+              </span>
+              <span aria-hidden="true" className="block text-primary mt-2">
+                <AnimatedText
+                  text="AI/ML Engineer"
+                  variant="slide"
+                  delay={0.85}
+                  stagger={0.045}
+                  waveColor="#8189f8"
+                />
+              </span>
+              <span
+                aria-hidden="true"
+                className="block text-dark-700 text-3xl sm:text-4xl lg:text-5xl mt-1"
+              >
+                <AnimatedText
+                  text="| Python Developer"
+                  variant="blur"
+                  delay={1.55}
+                  stagger={0.03}
+                  wave={false}
+                />
               </span>
             </h1>
 
@@ -192,6 +206,9 @@ export default function Hero() {
             className="order-1 lg:order-2 flex justify-center lg:justify-end"
           >
             <div className="relative">
+              {/* Soft glow behind the shield */}
+              <div className="absolute -inset-6 rounded-[2.5rem] bg-gradient-to-tr from-primary/25 via-transparent to-secondary-300/35 blur-2xl pointer-events-none" />
+
               <div className="relative">
                 <div
                   className="relative w-[240px] h-[290px] sm:w-[290px] sm:h-[350px] lg:w-[320px] lg:h-[385px] bg-primary shadow-card-hover"
@@ -207,24 +224,23 @@ export default function Hero() {
                         "polygon(0% 0%, 100% 0%, 100% 82%, 50% 100%, 0% 82%)",
                     }}
                   >
-                    {!avatarFailed ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={AVATAR_CANDIDATES[avatarIdx]}
+                    {/* Photo settles in: slight zoom + blur → sharp */}
+                    <motion.div
+                      initial={{ opacity: 0, scale: 1.12, filter: "blur(14px)" }}
+                      animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                      transition={{ duration: 1.1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                      className="absolute inset-0"
+                    >
+                      <Image
+                        src="/avatar-hq.webp"
                         alt={`${SITE_CONFIG.fullName} — ${SITE_CONFIG.title}`}
-                        className="absolute inset-0 w-full h-full object-cover object-[center_30%] scale-125"
-                        onError={() => setAvatarIdx((i) => i + 1)}
+                        fill
+                        priority
+                        quality={95}
+                        sizes="(min-width: 1024px) 320px, (min-width: 640px) 290px, 240px"
+                        className="object-cover object-[center_22%]"
                       />
-                    ) : (
-                      <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-primary/10 to-secondary-200 flex flex-col items-center justify-center gap-2">
-                        <span className="text-7xl font-display font-bold text-primary/50">
-                          Q
-                        </span>
-                        <span className="text-xs font-semibold text-dark-400 px-4 text-center">
-                          Add avatar.png to /public
-                        </span>
-                      </div>
-                    )}
+                    </motion.div>
                   </div>
                 </div>
               </div>
@@ -234,7 +250,7 @@ export default function Hero() {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.6 }}
-                className="absolute -left-4 sm:-left-8 top-16 card-flat !p-3 flex items-center gap-2.5 bg-white shadow-card animate-float"
+                className="absolute -left-4 sm:-left-8 bottom-5 sm:bottom-16 card-flat !p-3 flex items-center gap-2.5 bg-white shadow-card animate-float"
               >
                 <span className="icon-box !w-10 !h-10">
                   <Sparkles className="w-5 h-5" />
@@ -252,7 +268,7 @@ export default function Hero() {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.75 }}
-                className="absolute -right-2 sm:-right-6 bottom-24 card-flat !p-3 flex items-center gap-2.5 bg-white shadow-card animate-float"
+                className="absolute -right-2 sm:-right-6 top-6 card-flat !p-3 flex items-center gap-2.5 bg-white shadow-card animate-float"
                 style={{ animationDelay: "1.5s" }}
               >
                 <span className="icon-box-yellow !w-10 !h-10">🎓</span>

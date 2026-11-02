@@ -77,16 +77,17 @@ export const STATS = [
 export const ABOUT = {
   heading: "Get to know me",
   intro:
-    "I'm Qamar Abbas — an AI/ML Engineer and Python Developer who builds, evaluates, and deploys practical machine-learning applications. Currently pursuing my BS in Artificial Intelligence at Shifa Tameer-e-Millat University while shipping real ML systems to production.",
+    "I'm Qamar Abbas — an AI/ML Engineer and Python Developer who turns real datasets into working, deployed applications. I'm pursuing my BS in Artificial Intelligence at Shifa Tameer-e-Millat University and ship what I learn as live projects.",
   paragraphs: [
-    "I focus on end-to-end machine learning applications using Python, scikit-learn, TensorFlow, and Keras — from training models on real datasets to deploying them as live web applications with Flask, Vercel, and Render.",
-    "Based in Islamabad, Pakistan, I'm open to freelance opportunities and internships where I can grow while contributing to meaningful projects. I'm actively learning through hands-on projects, Fiverr freelance work, and industry certifications like IBM's Deep Learning course and Andrew Ng's Supervised ML course.",
+    "My foundation is hands-on machine learning. I've completed IBM's Deep Learning & Neural Networks with Keras and Andrew Ng's Supervised Machine Learning course (DeepLearning.AI × Stanford Online), and I apply that work in scikit-learn, TensorFlow, and Keras — from preprocessing and model comparison to honest train/test evaluation.",
+    "Lately I've been moving from models to AI products. Vanderbilt University's courses on building custom GPT assistants and on agentic AI shaped projects like Raahi AI, a travel-concierge agent for Northern Pakistan, and the OpenAI-powered USWA school assistant.",
+    "Every project goes live on Flask with Vercel or Render. Based in Islamabad, Pakistan, I'm open to remote freelance work and internships where I can contribute to real projects while I keep growing.",
   ],
   keyPoints: [
-    { title: "AI/ML Applications", desc: "Trained and deployed 5+ end-to-end machine learning models on real datasets." },
-    { title: "Python Ecosystem", desc: "Comfortable with scikit-learn, TensorFlow, Keras, Pandas, and NumPy for data science." },
-    { title: "Modern Deployment", desc: "Ship live apps using Flask, Vercel, and Render — no just-in-my-laptop projects." },
-    { title: "Always Learning", desc: "IBM-certified in Deep Learning, pursuing BS AI, freelancing on Fiverr." },
+    { title: "Machine Learning", desc: "Regression, classification, and deep learning — 5+ end-to-end models trained and evaluated on real datasets." },
+    { title: "AI Agents & Assistants", desc: "Custom GPTs, OpenAI API chatbots, and agent-style apps like Raahi AI." },
+    { title: "Shipped, Not Shelved", desc: "Live apps on Flask, Vercel, and Render — no just-on-my-laptop demos." },
+    { title: "Always Learning", desc: "4 Coursera certificates from IBM, DeepLearning.AI, and Vanderbilt — all verifiable." },
   ],
 } as const;
 
