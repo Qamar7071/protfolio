@@ -64,7 +64,7 @@ function CategoryRow({ category }: { category: Category }) {
           />
           <span>
             {learning ? "Learning" : "Daily use"}
-            <span className="text-dark-400 font-normal">
+            <span className="text-dark-500 font-normal">
               , {tools.length} {tools.length === 1 ? "tool" : "tools"}
             </span>
           </span>

@@ -45,7 +45,7 @@ export default function Projects() {
       <div className="container-custom">
         <SectionHeader
           title="Selected projects"
-          description="Deployed apps with the dataset, method and evaluation written up. Source code is linked where it's public."
+          description="Deployed AI and ML apps. Open any project for its dataset, method and results, with code linked where it's public."
         />
 
         {/* CATEGORY FILTER */}
@@ -96,8 +96,8 @@ export default function Projects() {
 
       <div className="container-custom">
         {/* BOTTOM CTA */}
-        <div className="mt-14 text-center">
-          <p className="text-dark-500 mb-4">Want to see more of my work?</p>
+        <div className="mt-14 flex flex-wrap items-center gap-x-5 gap-y-3">
+          <p className="text-dark-500">Want to see more of my work?</p>
           <a
             href={SOCIAL_LINKS.github}
             target="_blank"
@@ -285,7 +285,7 @@ function ProjectCard({
             </span>
           ))}
           {project.tech.length > 4 && (
-            <span className="text-xs text-dark-400 px-2 py-0.5">
+            <span className="text-xs text-dark-500 px-2 py-0.5">
               +{project.tech.length - 4}
             </span>
           )}
@@ -459,9 +459,9 @@ function ProjectModal({
 
               {/* Tech stack */}
               <div className="mb-6">
-                <h3 className="text-xs font-bold text-dark-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+                <h3 className="text-sm font-semibold text-dark-500 mb-3 flex items-center gap-2">
                   <Layers className="w-4 h-4" />
-                  Tech Stack
+                  Tech stack
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {project.tech.map((t) => (
@@ -475,7 +475,7 @@ function ProjectModal({
               {/* Dataset */}
               {dataset && (
                 <div className="mb-6 p-4 bg-primary/5 rounded-xl border border-primary/10">
-                  <h3 className="text-xs font-bold text-primary uppercase tracking-wider mb-2 flex items-center gap-2">
+                  <h3 className="text-sm font-semibold text-primary mb-2 flex items-center gap-2">
                     <Database className="w-4 h-4" />
                     Dataset
                   </h3>
@@ -488,7 +488,7 @@ function ProjectModal({
               {/* Methodology */}
               {methodology && (
                 <div className="mb-6 p-4 bg-dark-50 rounded-xl border border-dark-100">
-                  <h3 className="text-xs font-bold text-dark-700 uppercase tracking-wider mb-2 flex items-center gap-2">
+                  <h3 className="text-sm font-semibold text-dark-700 mb-2 flex items-center gap-2">
                     <Microscope className="w-4 h-4" />
                     Methodology
                   </h3>
@@ -501,9 +501,9 @@ function ProjectModal({
               {/* Evaluation */}
               {evaluation && evaluation.length > 0 && (
                 <div className="mb-6 p-4 bg-secondary-50 rounded-xl border border-secondary-200">
-                  <h3 className="text-xs font-bold text-dark-700 uppercase tracking-wider mb-3 flex items-center gap-2">
+                  <h3 className="text-sm font-semibold text-dark-700 mb-3 flex items-center gap-2">
                     <BarChart3 className="w-4 h-4" />
-                    Evaluation & Metrics
+                    Results
                   </h3>
                   <ul className="space-y-1.5">
                     {evaluation.map((item, i) => (
@@ -519,9 +519,9 @@ function ProjectModal({
               {/* Disclaimer */}
               {disclaimer && (
                 <div className="mb-6 p-4 bg-amber-50 rounded-xl border border-amber-200">
-                  <h3 className="text-xs font-bold text-amber-700 uppercase tracking-wider mb-2 flex items-center gap-2">
+                  <h3 className="text-sm font-semibold text-amber-700 mb-2 flex items-center gap-2">
                     <AlertTriangle className="w-4 h-4" />
-                    Important Notice
+                    Note
                   </h3>
                   <p className="text-sm text-dark-700 leading-relaxed">
                     {disclaimer}
@@ -540,7 +540,7 @@ function ProjectModal({
                       className="btn-primary"
                     >
                       <ExternalLink className="w-4 h-4" />
-                      Live Demo
+                      Live demo
                       <ArrowUpRight className="w-4 h-4" />
                     </a>
                   )}
@@ -553,7 +553,7 @@ function ProjectModal({
                         className="btn-secondary"
                       >
                         <Github className="w-4 h-4" />
-                        Source Code
+                        Source code
                       </a>
                       <a
                         href={`${project.githubUrl}#readme`}
@@ -575,11 +575,10 @@ function ProjectModal({
                   <Rocket className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                   <div>
                     <p className="font-semibold text-dark-700 mb-0.5">
-                      Proprietary / Client Project
+                      Not published yet
                     </p>
                     <p>
-                      Details and demo available on request. Reach out via the
-                      Contact section!
+                      Ask me for a walkthrough through the Contact section.
                     </p>
                   </div>
                 </div>

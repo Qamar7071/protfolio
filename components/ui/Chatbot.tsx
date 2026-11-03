@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import toast from "react-hot-toast";
 import {
@@ -98,7 +99,7 @@ function getBotResponse(
   // About / who
   if (/^(who|about|introduce|yourself|qamar)$/.test(q) || /who\s(is|are)/.test(q) || /tell.+about/.test(q)) {
     return {
-      text: `**Qamar Abbas** is an ambitious AI/ML student and Python developer based in ${SITE_CONFIG.location} 🇵🇰\n\n• 🎓 Pursuing **BS in Artificial Intelligence** (Grade A) at Shifa Tameer-e-Millat University since 2024\n• 🚀 Built and deployed **5+ AI/ML applications** on real datasets\n• 🏆 **IBM-certified** in Deep Learning & Neural Networks (Coursera, 2026)\n• 💼 Active **freelancer on Fiverr** offering ML and prompt engineering services\n• 🔥 Passionate about turning ideas into production ML systems\n\nWant to know about his projects, skills, or how to hire him?`,
+      text: `**Qamar Abbas** is an ambitious AI/ML student and Python developer based in ${SITE_CONFIG.location} 🇵🇰\n\n• 🎓 Pursuing **BS in Artificial Intelligence** (Grade A) at Shifa Tameer-e-Millat University since 2024\n• 🚀 Built and deployed **5+ AI/ML applications**, including a multi-agent trip planner\n• 🏆 **IBM-certified** in Deep Learning & Neural Networks (Coursera, 2026)\n• 💼 Active **freelancer on Fiverr** offering ML and prompt engineering services\n• 🔥 Passionate about turning ideas into production ML systems\n\nWant to know about his projects, skills, or how to hire him?`,
       topic: "about",
     };
   }
@@ -185,7 +186,7 @@ function getBotResponse(
   }
   if (/cat|dog|image\s?class|cnn|convolution|computer\s?vision/.test(q)) {
     return {
-      text: `**Image Classification (Cat vs Dog)** 🐱🐶\n\nA **Convolutional Neural Network** that classifies images as cats or dogs. Built with TensorFlow/Keras and OpenCV.\n\nCovers: image preprocessing, CNN architecture, feature extraction, model training, and evaluation. Great foundation for more advanced computer vision work.`,
+      text: `**Image Classification (Cat vs Dog)** 🐱🐶\n\nA **Convolutional Neural Network** that classifies images as cats or dogs. Built with TensorFlow/Keras and OpenCV.\n\nCovers: image preprocessing, augmentation, CNN architecture, training and evaluation. It's a learning project and the code isn't published yet.`,
       topic: "cnn",
     };
   }
@@ -196,7 +197,7 @@ function getBotResponse(
       (c) => `• **${c.title}** — ${c.provider} (${c.date})`,
     ).join("\n");
     return {
-      text: `Qamar has **${CERTIFICATES.length} certifications** 🏆\n\n${list}\n\nAll verified. The IBM Deep Learning cert is verifiable on Coursera. See the Certifications section for details!`,
+      text: `Qamar has **${CERTIFICATES.length} certifications** 🏆\n\n${list}\n\nThe 4 Coursera certificates (IBM, DeepLearning.AI and Vanderbilt) each have a verification link. See the Certifications section for details!`,
       topic: "certifications",
     };
   }
@@ -204,7 +205,7 @@ function getBotResponse(
   // Experience
   if (/experience|year|career|history|background|previous|role|job\s?history|internship/.test(q)) {
     return {
-      text: `Qamar's experience so far:\n\n**Freelance Python & ML Developer** at Fiverr (2024 – Present)\nData analysis, ML modeling, and prompt engineering services for global clients.\n\n**Independent AI/ML Developer** (2024 – Present)\nBuilt and deployed 5+ end-to-end ML applications on real datasets.\n\nAs an AI/ML student, he's actively building his career through hands-on projects and freelance work.`,
+      text: `Qamar's experience so far:\n\n**Freelance Python & ML Developer** at Fiverr (2024 – Present)\nData analysis, ML modeling, and prompt engineering services for global clients.\n\n**Independent AI/ML Developer** (2024 – Present)\nBuilt and deployed 5+ end-to-end ML and AI applications, most of them live.\n\nAs an AI/ML student, he's actively building his career through hands-on projects and freelance work.`,
       topic: "experience",
     };
   }
@@ -238,7 +239,7 @@ function getBotResponse(
   // Resume
   if (/resume|\bcv\b|download|pdf/.test(q)) {
     return {
-      text: `You can download Qamar's professional resume from the **"Resume" button** in the top-right of the navbar. 📄\n\nIt covers his:\n• Education (BS AI at Shifa University)\n• 5 deployed AI/ML projects with live links\n• IBM Deep Learning certification\n• Freelance experience on Fiverr\n• Complete technical skill set`,
+      text: `Qamar's one-page resume is at **/resume** (open it from the **Resume** button in the navbar), with a PDF download. 📄\n\nIt covers:\n• BS Artificial Intelligence at Shifa Tameer-e-Millat University\n• Raahi, KKH Road Status and four more deployed projects, with live and code links\n• Freelance work on Fiverr\n• 4 verifiable Coursera certificates (IBM, DeepLearning.AI, Vanderbilt)\n• Skills grouped by area`,
       topic: "resume",
     };
   }
@@ -332,7 +333,14 @@ function sendLeadToWhatsApp(name: string, email: string, message: string) {
 /* -------------------------------------------------------------------------- */
 /*  CHATBOT                                                                   */
 /* -------------------------------------------------------------------------- */
+/* Hidden on the printable resume page */
 export default function Chatbot() {
+  const pathname = usePathname();
+  if (pathname?.startsWith("/resume")) return null;
+  return <ChatbotWidget />;
+}
+
+function ChatbotWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);

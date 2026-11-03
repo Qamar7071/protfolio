@@ -1,127 +1,115 @@
-"use client";
+import { Mail, MapPin, Phone } from "lucide-react";
 
-import { Mail, Phone, MapPin, Heart, ArrowUpRight, Download } from "lucide-react";
-import { SITE_CONFIG, SOCIAL_LINKS, FOOTER_LINKS } from "@/lib/constants";
+import { FOOTER_LINKS, SITE_CONFIG, SOCIAL_LINKS } from "@/lib/constants";
 import SocialLinks from "@/components/ui/SocialLinks";
+
+const SOURCE_URL = "https://github.com/Qamar7071/protfolio";
 
 export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-dark-900 text-white relative overflow-hidden">
-      <div className="border-b border-white/10">
-        <div className="container-custom py-8">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div>
-              <h3 className="text-xl sm:text-2xl font-display font-bold">
-                Have an AI project in mind?
-              </h3>
-              <p className="text-sm text-dark-300 mt-1">
-                Let&apos;s turn your idea into a deployed reality.
-              </p>
-            </div>
-            <a href="#contact" className="btn-primary shrink-0">
-              Start a project
-              <ArrowUpRight className="w-4 h-4" />
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div className="container-custom py-12">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-          <div className="col-span-2 lg:col-span-1">
-            <a href="#home" className="inline-flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center font-display font-black text-lg shadow-button">
-                Q
-              </div>
-              <div>
-                <p className="font-display font-black text-lg leading-none">
-                  {SITE_CONFIG.name}<span className="text-secondary-300">.</span>
-                </p>
-                <p className="text-xs text-dark-400 mt-0.5">AI/ML · Full-Stack</p>
-              </div>
-            </a>
-            <p className="text-sm text-dark-400 leading-relaxed mb-4">
-              {SITE_CONFIG.tagline}
+    <footer className="bg-dark-900 text-white">
+      <div className="container-custom pt-16 pb-12">
+        <div className="grid lg:grid-cols-12 gap-12">
+          {/* Sign-off */}
+          <div className="lg:col-span-5">
+            <p className="font-display font-bold text-3xl sm:text-4xl tracking-[-0.03em] leading-[1.05]">
+              {SITE_CONFIG.fullName}
+              <span className="text-secondary-300" aria-hidden="true">.</span>
             </p>
-            <SocialLinks size="sm" />
+            <p className="mt-3 text-dark-300 leading-relaxed max-w-[40ch]">
+              {SITE_CONFIG.role} and Python developer. {SITE_CONFIG.tagline}
+            </p>
+            <div className="mt-6">
+              <SocialLinks size="sm" />
+            </div>
           </div>
 
-          <div>
-            <h4 className="text-sm font-bold uppercase tracking-wider mb-4 text-white">
-              Navigate
-            </h4>
-            <ul className="space-y-2.5">
-              {FOOTER_LINKS.navigate.map((link) => (
-                <li key={link.name}>
-                  <a href={link.href} className="text-sm text-dark-400 hover:text-secondary-300 transition-colors">
-                    {link.name}
+          {/* Link columns */}
+          <nav aria-label="Footer" className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-[1fr_1fr_1.35fr] gap-8">
+            <div>
+              <h2 className="text-sm font-semibold text-white">Sections</h2>
+              <ul className="mt-4 space-y-2.5">
+                {FOOTER_LINKS.navigate.map((link) => (
+                  <li key={link.name}>
+                    <a href={link.href} className="text-sm text-dark-300 hover:text-secondary-300 transition-colors">
+                      {link.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div>
+              <h2 className="text-sm font-semibold text-white">Resume and profiles</h2>
+              <ul className="mt-4 space-y-2.5">
+                {FOOTER_LINKS.work.map((link) => {
+                  const external = link.href.startsWith("http");
+                  return (
+                    <li key={link.name}>
+                      <a
+                        href={link.href}
+                        {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                        {...(link.href.endsWith(".pdf") ? { download: SITE_CONFIG.resumeFileName } : {})}
+                        className="text-sm text-dark-300 hover:text-secondary-300 transition-colors"
+                      >
+                        {link.name}
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+
+            <div className="col-span-2 sm:col-span-1">
+              <h2 className="text-sm font-semibold text-white">Contact</h2>
+              <ul className="mt-4 space-y-3">
+                <li>
+                  <a
+                    href={`mailto:${SITE_CONFIG.email}`}
+                    className="flex items-start gap-2 text-sm text-dark-300 hover:text-secondary-300 transition-colors"
+                  >
+                    <Mail className="w-4 h-4 mt-0.5 shrink-0 text-primary-300" aria-hidden="true" />
+                    <span className="break-words">{SITE_CONFIG.email}</span>
                   </a>
                 </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-sm font-bold uppercase tracking-wider mb-4 text-white">
-              Services
-            </h4>
-            <ul className="space-y-2.5">
-              {FOOTER_LINKS.services.map((link) => (
-                <li key={link.name}>
-                  <a href={link.href} className="text-sm text-dark-400 hover:text-secondary-300 transition-colors">
-                    {link.name}
+                <li>
+                  <a
+                    href={SOCIAL_LINKS.whatsapp}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-sm text-dark-300 hover:text-secondary-300 transition-colors"
+                  >
+                    <Phone className="w-4 h-4 shrink-0 text-primary-300" aria-hidden="true" />
+                    <span>{SITE_CONFIG.phoneDisplay}</span>
                   </a>
                 </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-sm font-bold uppercase tracking-wider mb-4 text-white">
-              Get in touch
-            </h4>
-            <ul className="space-y-3">
-              <li>
-                <a href={`mailto:${SITE_CONFIG.email}`} className="flex items-start gap-2 text-sm text-dark-400 hover:text-secondary-300 transition-colors group">
-                  <Mail className="w-4 h-4 mt-0.5 shrink-0 text-primary group-hover:text-secondary-300" />
-                  <span className="break-all">{SITE_CONFIG.email}</span>
-                </a>
-              </li>
-              <li>
-                <a href={SOCIAL_LINKS.whatsapp} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-dark-400 hover:text-secondary-300 transition-colors group">
-                  <Phone className="w-4 h-4 shrink-0 text-primary group-hover:text-secondary-300" />
-                  <span>{SITE_CONFIG.phone}</span>
-                </a>
-              </li>
-              <li>
-                <div className="flex items-center gap-2 text-sm text-dark-400">
-                  <MapPin className="w-4 h-4 shrink-0 text-primary" />
+                <li className="flex items-center gap-2 text-sm text-dark-300">
+                  <MapPin className="w-4 h-4 shrink-0 text-primary-300" aria-hidden="true" />
                   <span>{SITE_CONFIG.location}</span>
-                </div>
-              </li>
-              <li className="pt-2">
-                <a href={SITE_CONFIG.resumeUrl} download className="inline-flex items-center gap-1.5 text-xs font-bold text-secondary-300 hover:text-secondary-400 transition-colors">
-                  <Download className="w-3.5 h-3.5" />
-                  Download Resume
-                </a>
-              </li>
-            </ul>
-          </div>
+                </li>
+              </ul>
+            </div>
+          </nav>
         </div>
       </div>
 
       <div className="border-t border-white/10">
-        <div className="container-custom py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-xs text-dark-400 text-center sm:text-left">
-            © {year} {SITE_CONFIG.fullName}. All rights reserved.
+        <div className="container-custom py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-dark-400 text-center sm:text-left">
+          <p>
+            © {year} {SITE_CONFIG.fullName}
           </p>
-          <p className="text-xs text-dark-400 flex items-center gap-1.5 flex-wrap justify-center">
-            Built with <Heart className="w-3 h-3 fill-red-500 text-red-500" /> using
-            <span className="text-white font-semibold">Next.js</span>·
-            <span className="text-white font-semibold">Tailwind CSS</span>·
-            <span className="text-white font-semibold">Framer Motion</span>
+          <p>
+            Built with Next.js, Tailwind CSS and Framer Motion.{" "}
+            <a
+              href={SOURCE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-dark-200 hover:text-secondary-300 underline-offset-4 hover:underline"
+            >
+              Source on GitHub
+            </a>
           </p>
         </div>
       </div>

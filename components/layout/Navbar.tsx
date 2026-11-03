@@ -6,9 +6,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Menu,
   X,
-  Download,
+  FileText,
   ArrowRight,
-  Sparkles,
   MapPin,
 } from "lucide-react";
 
@@ -124,15 +123,15 @@ export default function Navbar() {
                   {SITE_CONFIG.name}
                   <span className="text-primary">.</span>
                 </span>
-                <span className="text-[10px] text-dark-500 font-semibold uppercase tracking-wider">
-                  AI/ML · Full-Stack
+                <span className="text-xs text-dark-500 font-medium">
+                  {SITE_CONFIG.role}
                 </span>
               </span>
             </Link>
 
             {/* ------------------- DESKTOP NAV LINKS ------------------- */}
-            <ul className="hidden lg:flex items-center gap-1">
-              {NAV_LINKS.map((link) => {
+            <ul className="hidden xl:flex items-center gap-0.5">
+              {NAV_LINKS.filter((l) => l.href !== "#home").map((link) => {
                 const isActive =
                   activeSection === link.href.replace("#", "");
 
@@ -145,7 +144,7 @@ export default function Navbar() {
                         handleNavClick(link.href);
                       }}
                       className={cn(
-                        "relative px-4 py-2 text-sm font-semibold rounded-lg transition-colors duration-200",
+                        "relative px-3 py-2 text-sm font-semibold rounded-lg transition-colors duration-200",
                         isActive
                           ? "text-primary"
                           : "text-dark-700 hover:text-primary",
@@ -170,14 +169,9 @@ export default function Navbar() {
             </ul>
 
             {/* --------------------- DESKTOP CTAs --------------------- */}
-            <div className="hidden lg:flex items-center gap-2">
-              <a
-                href={SITE_CONFIG.resumeUrl}
-                download
-                className="btn-ghost text-sm"
-                aria-label="Download Resume"
-              >
-                <Download className="w-4 h-4" />
+            <div className="hidden xl:flex items-center gap-2">
+              <a href={SITE_CONFIG.resumePage} className="btn-ghost text-sm">
+                <FileText className="w-4 h-4" aria-hidden="true" />
                 Resume
               </a>
               <a
@@ -188,9 +182,7 @@ export default function Navbar() {
                 }}
                 className="btn-primary text-sm py-2.5"
               >
-                <Sparkles className="w-4 h-4" />
-                Hire Me
-                <ArrowRight className="w-4 h-4" />
+                Hire me
               </a>
             </div>
 
@@ -198,7 +190,7 @@ export default function Navbar() {
             <button
               type="button"
               onClick={() => setIsMobileOpen(true)}
-              className="lg:hidden inline-flex items-center justify-center w-10 h-10 rounded-lg text-dark-700 hover:bg-dark-100 hover:text-primary transition-colors"
+              className="xl:hidden inline-flex items-center justify-center w-10 h-10 rounded-lg text-dark-700 hover:bg-dark-100 hover:text-primary transition-colors"
               aria-label="Open menu"
               aria-expanded={isMobileOpen}
               aria-controls="mobile-drawer"
@@ -220,7 +212,7 @@ export default function Navbar() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
               onClick={() => setIsMobileOpen(false)}
-              className="fixed inset-0 z-50 bg-dark-900/50 backdrop-blur-sm lg:hidden"
+              className="fixed inset-0 z-50 bg-dark-900/50 backdrop-blur-sm xl:hidden"
               aria-hidden="true"
             />
 
@@ -231,7 +223,7 @@ export default function Navbar() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", stiffness: 300, damping: 32 }}
-              className="fixed top-0 right-0 bottom-0 z-50 w-[85%] max-w-sm bg-white shadow-2xl lg:hidden flex flex-col overflow-y-auto"
+              className="fixed top-0 right-0 bottom-0 z-50 w-[85%] max-w-sm bg-white shadow-2xl xl:hidden flex flex-col overflow-y-auto"
               role="dialog"
               aria-modal="true"
               aria-label="Mobile navigation"
@@ -309,14 +301,9 @@ export default function Navbar() {
 
               {/* Drawer CTAs */}
               <div className="p-5 border-t border-dark-100 space-y-3 shrink-0">
-                <a
-                  href={SITE_CONFIG.resumeUrl}
-                  download
-                  onClick={() => setIsMobileOpen(false)}
-                  className="btn-secondary w-full text-sm"
-                >
-                  <Download className="w-4 h-4" />
-                  Download Resume
+                <a href={SITE_CONFIG.resumePage} className="btn-secondary w-full text-sm">
+                  <FileText className="w-4 h-4" aria-hidden="true" />
+                  View resume
                 </a>
                 <a
                   href="#contact"
@@ -326,8 +313,7 @@ export default function Navbar() {
                   }}
                   className="btn-primary w-full text-sm"
                 >
-                  <Sparkles className="w-4 h-4" />
-                  Hire Me
+                  Hire me
                 </a>
                 <p className="text-xs text-dark-500 text-center pt-1">
                   {SITE_CONFIG.availability}

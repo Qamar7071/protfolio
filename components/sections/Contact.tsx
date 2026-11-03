@@ -265,7 +265,7 @@ export default function Contact() {
 
                   {/* Personal Info */}
                   <div className="grid sm:grid-cols-2 gap-4">
-                    <Field label="Your Name" required icon={<User className="w-4 h-4" />}>
+                    <Field label="Your name" required icon={<User className="w-4 h-4" />}>
                       <input
                         type="text"
                         value={data.name}
@@ -334,7 +334,7 @@ export default function Contact() {
                   </Field>
 
                   {/* Project title */}
-                  <Field label="Project Title" required icon={<Sparkles className="w-4 h-4" />}>
+                  <Field label="Project title" required icon={<Sparkles className="w-4 h-4" />}>
                     <input
                       type="text"
                       value={data.projectTitle}
@@ -347,7 +347,7 @@ export default function Contact() {
 
                   {/* Description */}
                   <Field
-                    label="Project Description"
+                    label="Project description"
                     required
                     icon={<MessageSquare className="w-4 h-4" />}
                     hint={`${data.description.length}/500 chars · min 20`}
@@ -397,7 +397,7 @@ export default function Contact() {
                   </div>
 
                   {/* Notes */}
-                  <Field label="Additional Notes" hint="Optional">
+                  <Field label="Additional notes" hint="Optional">
                     <textarea
                       value={data.notes}
                       onChange={(e) => update("notes", e.target.value.slice(0, 300))}
@@ -433,7 +433,7 @@ export default function Contact() {
                     )}
                   </button>
 
-                  <p className="text-[11px] text-dark-400 text-center">
+                  <p className="text-[11px] text-dark-500 text-center">
                     Hit Send in WhatsApp to deliver it. Nothing is stored on this site.
                   </p>
                 </form>
@@ -519,7 +519,7 @@ function Field({
           {label}
           {required && <span className="text-primary">*</span>}
         </label>
-        {hint && <span className="text-[10px] text-dark-400">{hint}</span>}
+        {hint && <span className="text-[10px] text-dark-500">{hint}</span>}
       </div>
       {children}
     </div>

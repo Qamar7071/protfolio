@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { ArrowRight, Download, MapPin, Award, GraduationCap, Clock } from "lucide-react";
+import { ArrowRight, FileText, MapPin, Award, GraduationCap } from "lucide-react";
 
 import { SITE_CONFIG, ROTATING_TITLES } from "@/lib/constants";
 import SocialLinks from "@/components/ui/SocialLinks";
@@ -15,7 +15,7 @@ import { useIntroDone } from "@/components/ui/IntroProvider";
 /* -------------------------------------------------------------------------- */
 function useTypewriter(words: readonly string[], speed = 90, pause = 1600) {
   const [index, setIndex] = useState(0);
-  const [text, setText] = useState("");
+  const [text, setText] = useState<string>(words[0] ?? "");
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
@@ -143,63 +143,48 @@ export default function Hero() {
               I build, evaluate, and deploy practical machine-learning applications.
             </p>
 
-            {/* Typewriter role line */}
-            <p className="mt-4 text-base sm:text-lg text-dark-500 font-medium h-7">
-              <span>Also known as a </span>
+            {/* Typewriter focus line */}
+            <p className="mt-3 text-base sm:text-lg text-dark-500 font-medium h-7" aria-live="off">
+              <span>Focused on </span>
               <span className="text-primary font-bold">{typed}</span>
-              <span className="inline-block w-0.5 h-5 bg-primary ml-0.5 align-middle animate-pulse" />
-            </p>
-
-            {/* Location + availability line */}
-            <p className="mt-4 text-sm sm:text-base text-dark-500 max-w-xl mx-auto lg:mx-0 leading-relaxed">
-              Based in{" "}
-              <span className="inline-flex items-center gap-1 font-semibold text-dark-700">
-                <MapPin className="w-4 h-4 text-primary" />
-                {SITE_CONFIG.location}
-              </span>
-              , open to remote freelance projects and internships worldwide.
+              <span className="inline-block w-0.5 h-5 bg-primary ml-0.5 align-middle animate-pulse" aria-hidden="true" />
             </p>
 
             {/* CTAs */}
             <div className="mt-8 flex flex-wrap items-center justify-center lg:justify-start gap-4">
               <button
+                type="button"
                 onClick={() => scrollTo("projects")}
                 className="btn-primary text-base px-7 py-3.5"
               >
-                <span className="text-secondary-300">Explore</span> My Projects
-                <ArrowRight className="w-5 h-5" />
+                View projects
+                <ArrowRight className="w-5 h-5" aria-hidden="true" />
               </button>
-              <a
-                href={SITE_CONFIG.resumeUrl}
-                download
-                className="btn-secondary text-base px-7 py-3.5"
-              >
-                <Download className="w-5 h-5" />
+              <a href={SITE_CONFIG.resumePage} className="btn-secondary text-base px-7 py-3.5">
+                <FileText className="w-5 h-5" aria-hidden="true" />
                 Resume
               </a>
             </div>
 
             {/* Social links */}
             <div className="mt-8 flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
-              <span className="text-sm font-semibold text-dark-400 uppercase tracking-wider">
-                Connect
-              </span>
+              <span className="text-sm font-medium text-dark-500">Find me on</span>
               <SocialLinks />
             </div>
 
             {/* Trust indicators — honest credentials */}
             <div className="mt-8 flex flex-wrap items-center gap-2 justify-center lg:justify-start">
               <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-dark-200 shadow-soft">
-                <Award className="w-3.5 h-3.5 text-primary" />
-                <span className="text-xs font-bold text-dark-700">IBM Certified</span>
+                <MapPin className="w-3.5 h-3.5 text-primary" aria-hidden="true" />
+                <span className="text-xs font-bold text-dark-700">{SITE_CONFIG.location}</span>
               </div>
               <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-dark-200 shadow-soft">
-                <GraduationCap className="w-3.5 h-3.5 text-primary" />
-                <span className="text-xs font-bold text-dark-700">BS AI · Shifa University</span>
+                <GraduationCap className="w-3.5 h-3.5 text-primary" aria-hidden="true" />
+                <span className="text-xs font-bold text-dark-700">BS AI, Shifa University</span>
               </div>
               <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-dark-200 shadow-soft">
-                <Clock className="w-3.5 h-3.5 text-primary" />
-                <span className="text-xs font-bold text-dark-700">24hr Response</span>
+                <Award className="w-3.5 h-3.5 text-primary" aria-hidden="true" />
+                <span className="text-xs font-bold text-dark-700">4 Coursera certificates</span>
               </div>
             </div>
           </motion.div>

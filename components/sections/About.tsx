@@ -63,7 +63,7 @@ export default function About() {
               <a href="#contact" className="btn-primary">
                 Start a project
               </a>
-              <a href={SITE_CONFIG.resumeUrl} download className="btn-secondary">
+              <a href={SITE_CONFIG.resumeUrl} download={SITE_CONFIG.resumeFileName} className="btn-secondary">
                 <Download className="w-4 h-4" aria-hidden="true" />
                 Download résumé
               </a>
@@ -101,7 +101,7 @@ export default function About() {
             <div className="rounded-3xl border border-dark-200 p-6 sm:p-7">
               <div className="flex items-baseline justify-between gap-4">
                 <h3 className="font-display font-semibold text-lg text-dark-900">Learning path</h3>
-                <span className="text-sm text-dark-400">
+                <span className="text-sm text-dark-500">
                   {LEARNING_PATH.length} verified on Coursera
                 </span>
               </div>
@@ -168,7 +168,7 @@ function ProfileRow({
       <div className="min-w-0 flex-1">
         <p className="font-semibold text-dark-900 leading-snug">{title}</p>
         <p className="text-sm text-dark-500 leading-snug">{subtitle}</p>
-        {meta && <p className="mt-0.5 text-sm text-dark-400">{meta}</p>}
+        {meta && <p className="mt-0.5 text-sm text-dark-500">{meta}</p>}
       </div>
       {href && (
         <a
@@ -176,7 +176,7 @@ function ProfileRow({
           target="_blank"
           rel="noopener noreferrer"
           aria-label={linkLabel ?? title}
-          className="w-9 h-9 rounded-full flex items-center justify-center text-dark-400 hover:text-primary hover:bg-white transition-colors shrink-0"
+          className="w-9 h-9 rounded-full flex items-center justify-center text-dark-500 hover:text-primary hover:bg-white transition-colors shrink-0"
         >
           <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
         </a>

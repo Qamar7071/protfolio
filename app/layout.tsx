@@ -78,7 +78,6 @@ export const metadata: Metadata = {
     title: `${SITE_CONFIG.fullName} — ${SITE_CONFIG.title}`,
     description: SITE_CONFIG.description,
     images: [SITE_CONFIG.ogImage],
-    creator: "@qamar",
   },
   robots: {
     index: true,
@@ -98,7 +97,6 @@ export const metadata: Metadata = {
     ],
     apple: "/apple-icon.png",
   },
-  manifest: "/site.webmanifest",
   category: "technology",
 };
 
@@ -131,6 +129,10 @@ const jsonLd = {
     addressLocality: "Islamabad",
     addressCountry: "PK",
   },
+  alumniOf: {
+    "@type": "CollegeOrUniversity",
+    name: "Shifa Tameer-e-Millat University",
+  },
   sameAs: [
     SOCIAL_LINKS.github,
     SOCIAL_LINKS.linkedin,
@@ -150,9 +152,9 @@ const jsonLd = {
   ],
 };
 
-/* Runs before first paint: play the page intro only on the first visit of a
-   session, and never for people who prefer reduced motion. */
-const INTRO_SCRIPT = `try{if(!sessionStorage.getItem("intro-seen")&&!window.matchMedia("(prefers-reduced-motion: reduce)").matches){document.documentElement.setAttribute("data-intro","on")}}catch(e){}`;
+/* Runs before first paint: play the page intro only on the home page, on the
+   first visit of a session, and never for people who prefer reduced motion. */
+const INTRO_SCRIPT = `try{if(location.pathname==="/"&&!sessionStorage.getItem("intro-seen")&&!window.matchMedia("(prefers-reduced-motion: reduce)").matches){document.documentElement.setAttribute("data-intro","on")}}catch(e){}`;
 
 /* -------------------------------------------------------------------------- */
 /*  ROOT LAYOUT                                                               */

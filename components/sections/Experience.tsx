@@ -66,7 +66,7 @@ export default function Experience() {
 
         {/* lines up with the cards: date column (10rem) + gap (2rem) + node (3.5rem) + gap */}
         <div className="mt-12 lg:pl-[17.5rem]">
-          <a href={SITE_CONFIG.resumeUrl} download className="btn-outline">
+          <a href={SITE_CONFIG.resumeUrl} download={SITE_CONFIG.resumeFileName} className="btn-outline">
             <Download className="w-4 h-4" aria-hidden="true" />
             Download full résumé
           </a>

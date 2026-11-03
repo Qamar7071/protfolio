@@ -1,0 +1,325 @@
+/* ==========================================================
+   One-page A4 resume. Exact A4 in print; reflows on phones.
+   ========================================================== */
+@page {
+  size: A4;
+  margin: 0;
+}
+
+.page {
+  min-height: 100vh;
+  background: #e9edf4;
+  padding: 88px 16px 56px;
+}
+
+/* ---------- screen toolbar ---------- */
+.toolbar {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid #e2e8f0;
+}
+.toolbarInner {
+  max-width: 210mm;
+  margin: 0 auto;
+  height: 64px;
+  padding: 0 4px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+  margin-right: auto;
+}
+.back:hover {
+  color: #4854d9;
+}
+
+/* ---------- the sheet ---------- */
+.sheet {
+  width: 210mm;
+  min-height: 297mm;
+  margin: 0 auto;
+  padding: 11mm 14mm 9mm;
+  background: #fff;
+  color: #1e293b;
+  box-shadow: 0 30px 60px -30px rgba(15, 23, 42, 0.35), 0 0 0 1px rgba(15, 23, 42, 0.04);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-size: 8.9pt;
+  line-height: 1.4;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.sheet a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ---------- header ---------- */
+.header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 6mm;
+  align-items: end;
+  padding-bottom: 4.5mm;
+  border-bottom: 0.6mm solid #4854d9;
+}
+.name {
+  font-family: var(--font-space-grotesk), system-ui, sans-serif;
+  font-size: 26pt;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: #0f172a;
+}
+.dot {
+  color: #ffb930;
+}
+.role {
+  white-space: nowrap;
+  margin-top: 2.2mm;
+  font-size: 11pt;
+  font-weight: 600;
+  color: #4854d9;
+}
+.contacts {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  gap: 1.3mm 6mm;
+  font-size: 8.2pt;
+  color: #334155;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.contact {
+  display: flex;
+  align-items: center;
+  gap: 1.8mm;
+  white-space: nowrap;
+}
+.contact svg {
+  width: 3.2mm;
+  height: 3.2mm;
+  color: #4854d9;
+  flex-shrink: 0;
+}
+
+/* ---------- sections ---------- */
+.section {
+  margin-top: 3.4mm;
+}
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 3mm;
+  margin: 0 0 2mm;
+  font-family: var(--font-space-grotesk), system-ui, sans-serif;
+  font-size: 10.6pt;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #0f172a;
+}
+.sectionTitle::after {
+  content: "";
+  flex: 1;
+  height: 0.25mm;
+  background: #e2e8f0;
+}
+.summary {
+  margin: 0;
+  color: #334155;
+}
+
+/* skills — one "Label: values" line each, so ATS parsers read them in order */
+.skills {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  color: #334155;
+}
+.skills li + li {
+  margin-top: 0.7mm;
+}
+.skills strong {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+/* projects / experience items */
+.item + .item {
+  margin-top: 2.2mm;
+}
+.itemHead {
+  display: flex;
+  align-items: baseline;
+  gap: 3mm;
+}
+.itemTitle {
+  font-weight: 700;
+  font-size: 9.6pt;
+  white-space: nowrap;
+  color: #0f172a;
+}
+.itemSub {
+  color: #475569;
+}
+.itemMeta {
+  margin-left: auto;
+  display: flex;
+  gap: 2.5mm;
+  white-space: nowrap;
+  font-size: 8.3pt;
+  color: #64748b;
+}
+.itemMeta a {
+  color: #4854d9;
+  font-weight: 600;
+}
+.itemLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 3.2mm;
+  margin: 0.2mm 0 0;
+  font-size: 8.1pt;
+  color: #64748b;
+}
+.itemLinks a {
+  color: #4854d9;
+  font-weight: 600;
+}
+.bullets {
+  margin: 1mm 0 0;
+  padding: 0;
+  list-style: none;
+}
+.bullets li {
+  position: relative;
+  padding-left: 3.6mm;
+  color: #334155;
+}
+.bullets li + li {
+  margin-top: 0.5mm;
+}
+.bullets li::before {
+  content: "";
+  position: absolute;
+  left: 0.4mm;
+  top: 0.62em;
+  width: 1.3mm;
+  height: 1.3mm;
+  border-radius: 50%;
+  background: #4854d9;
+}
+
+/* bottom two columns */
+.columns {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 0 7mm;
+}
+.certs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.certs li + li {
+  margin-top: 1.1mm;
+}
+.certTitle {
+  font-weight: 600;
+  color: #0f172a;
+  line-height: 1.3;
+}
+.certMeta {
+  font-size: 8.3pt;
+  color: #64748b;
+}
+.certMeta a {
+  color: #4854d9;
+  font-weight: 600;
+}
+.muted {
+  color: #475569;
+}
+
+/* ---------- phones: reflow instead of a tiny A4 ---------- */
+@media screen and (max-width: 840px) {
+  .page {
+    padding: 80px 0 32px;
+    background: #fff;
+  }
+  .sheet {
+    width: auto;
+    min-height: 0;
+    padding: 20px 16px 28px;
+    box-shadow: none;
+    font-size: 10.5pt;
+  }
+  .header {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+  .contacts {
+    grid-template-columns: 1fr;
+  }
+  .contact {
+    white-space: normal;
+  }
+  .sheet,
+  .sheet * {
+    overflow-wrap: anywhere;
+  }
+  .role,
+  .itemTitle {
+    white-space: normal;
+  }
+  .itemTitle {
+    font-size: 11.5pt;
+  }
+  .toolbarInner {
+    padding: 0 12px;
+    gap: 8px;
+  }
+  .back span {
+    display: none;
+  }
+  .itemHead {
+    flex-wrap: wrap;
+  }
+  .itemMeta {
+    margin-left: 0;
+    width: 100%;
+  }
+  .columns {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- print: only the sheet ---------- */
+@media print {
+  .page {
+    padding: 0;
+    background: #fff;
+    min-height: 0;
+  }
+  .toolbar {
+    display: none;
+  }
+  .sheet {
+    box-shadow: none;
+    margin: 0;
+    width: 210mm;
+    height: 297mm;
+    overflow: hidden;
+  }
+}

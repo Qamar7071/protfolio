@@ -1,20 +1,27 @@
 /* =========================================================
    SITE CONFIG — Qamar's personal portfolio branding
    ========================================================= */
+/* Live URL: set NEXT_PUBLIC_SITE_URL on Vercel if the domain changes */
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://protfolio-4wo9.vercel.app").replace(/\/$/, "");
+
 export const SITE_CONFIG = {
   name: "Qamar",
   fullName: "Qamar Abbas",
   title: "AI/ML Engineer | Python Developer",
+  role: "AI/ML Engineer",
   tagline: "I build, evaluate, and deploy practical machine-learning applications.",
   description:
-    "Portfolio of Qamar Abbas — AI/ML Engineer and Python Developer based in Islamabad, Pakistan. I build, evaluate, and deploy practical machine-learning applications while pursuing my BS in Artificial Intelligence at Shifa Tameer-e-Millat University.",
-  url: "https://qamar.dev",
+    "Portfolio of Qamar Abbas, an AI/ML engineer and Python developer in Islamabad, Pakistan. Deployed machine-learning apps, a multi-agent trip planner and a Karakoram Highway road-risk model, built while studying BS Artificial Intelligence at Shifa Tameer-e-Millat University.",
+  url: SITE_URL,
   ogImage: "/og-image.png",
   location: "Islamabad, Pakistan",
   email: "qamarjamal7071@gmail.com",
   phone: "+923408280700",
-  availability: "Available for freelance & internships",
+  phoneDisplay: "+92 340 8280700",
+  availability: "Open to roles, internships and freelance work",
   resumeUrl: "/resume.pdf",
+  resumePage: "/resume",
+  resumeFileName: "Qamar-Abbas-Resume.pdf",
 } as const;
 
 /* =========================================================
@@ -47,28 +54,10 @@ export const NAV_LINKS = [
    HERO — rotating titles
    ========================================================= */
 export const ROTATING_TITLES = [
-  "AI/ML Engineer",
-  "Python Developer",
-  "Data Scientist",
-  "ML Model Builder",
-  "Problem Solver",
-] as const;
-
-export const HERO_HIGHLIGHTS = [
-  "Deployed ML applications",
-  "IBM-certified in Deep Learning",
-  "BS Artificial Intelligence",
-  "Freelancing on Fiverr",
-] as const;
-
-/* =========================================================
-   STATS — real, honest numbers
-   ========================================================= */
-export const STATS = [
-  { value: "5+", label: "Deployed Projects", icon: "Rocket" },
-  { value: "10+", label: "Technologies", icon: "Code2" },
-  { value: "9", label: "Certifications", icon: "Award" },
-  { value: "4", label: "Semesters Completed", icon: "GraduationCap" },
+  "machine-learning apps",
+  "multi-agent AI systems",
+  "Python backends and APIs",
+  "data analysis",
 ] as const;
 
 /* =========================================================
@@ -80,13 +69,13 @@ export const ABOUT = {
     "I'm Qamar Abbas — an AI/ML Engineer and Python Developer who turns real datasets into working, deployed applications. I'm pursuing my BS in Artificial Intelligence at Shifa Tameer-e-Millat University and ship what I learn as live projects.",
   paragraphs: [
     "My foundation is hands-on machine learning. I've completed IBM's Deep Learning & Neural Networks with Keras and Andrew Ng's Supervised Machine Learning course (DeepLearning.AI × Stanford Online), and I apply that work in scikit-learn, TensorFlow, and Keras — from preprocessing and model comparison to honest train/test evaluation.",
-    "Lately I've been moving from models to AI products. Vanderbilt University's courses on building custom GPT assistants and on agentic AI shaped projects like Raahi AI, a travel-concierge agent for Northern Pakistan, and the OpenAI-powered USWA school assistant.",
-    "Every project goes live on Flask with Vercel or Render. Based in Islamabad, Pakistan, I'm open to remote freelance work and internships where I can contribute to real projects while I keep growing.",
+    "Lately I've been moving from models to AI products. Vanderbilt University's courses on custom GPT assistants and agentic AI shaped Raahi, a multi-agent trip planner for Northern Pakistan, and the OpenAI-powered USWA school assistant. I also built a calibrated road-risk model for the Karakoram Highway.",
+    "I put my work online so people can try it: most projects run as live apps on Vercel or Render, with the code on GitHub. Based in Islamabad, Pakistan, I'm looking for an entry-level role or internship in Python, backend or AI engineering, and I take freelance work.",
   ],
   keyPoints: [
-    { title: "Machine Learning", desc: "Regression, classification, and deep learning — 5+ end-to-end models trained and evaluated on real datasets." },
-    { title: "AI Agents & Assistants", desc: "Custom GPTs, OpenAI API chatbots, and agent-style apps like Raahi AI." },
-    { title: "Shipped, Not Shelved", desc: "Live apps on Flask, Vercel, and Render — no just-on-my-laptop demos." },
+    { title: "Machine Learning", desc: "Regression, classification, ensembles and CNNs, each trained, compared and evaluated end to end." },
+    { title: "AI Agents & Assistants", desc: "Custom GPTs, OpenAI API chatbots, and Raahi, a planner run by a team of specialist agents." },
+    { title: "Shipped, Not Shelved", desc: "Live apps on Vercel and Render that anyone can open, not demos that only run on my laptop." },
     { title: "Always Learning", desc: "4 Coursera certificates from IBM, DeepLearning.AI, and Vanderbilt — all verifiable." },
   ],
 } as const;
@@ -139,42 +128,47 @@ export const SKILL_CATEGORIES = [
    ========================================================= */
 export const PROJECTS = [
   {
-    id: "rh-labs-digital-solutions",
-    title: "RH Labs — Intelligent Digital Solutions",
-    category: "Web Development",
-    description:
-      "A software house website for RH Labs, an Islamabad-based team offering AI chatbots, AI agents, and modern websites. It presents their services, process, portfolio, and consultation options for businesses.",
-    image: "/projects/rh-labs.png",
-    imageFit: "contain",
-    tech: ["AI Chatbots", "AI Agents", "Websites & Web Apps"],
-    liveUrl: "https://rh-labs.vercel.app/",
-    githubUrl: "#",
-    featured: true,
-  },
-  {
     id: "raahi-ai-travel-concierge",
-    title: "Raahi AI — Travel Concierge",
+    title: "Raahi — Multi-Agent Trip Planner",
     category: "AI Agent",
     description:
-      "An AI travel concierge for Northern Pakistan that helps travelers discover destinations and plan personalised trips around real routes, seasons, and budgets.",
-    image: "/projects/raahi-ai.png",
+      "Plans trips across Northern Pakistan with a team of specialist AI agents. Tell it where, when, who and the budget, and it builds a day-by-day plan around real roads, daylight, season and cost, which you can then change by chat or by hand.",
+    image: "/projects/raahi-ai.webp",
     imageFit: "contain",
-    tech: ["AI Agent", "Travel Planning", "Northern Pakistan"],
+    tech: ["Python", "Multi-agent orchestration", "LLM tool calling", "JavaScript"],
     liveUrl: "https://north-kappa-ivory.vercel.app/",
-    githubUrl: "#",
+    githubUrl: "https://github.com/Qamar7071/Agent",
+    methodology:
+      "A master orchestrator picks only the agents a request needs (itinerary, weather, route, budget, stays, safety, packing, validation) and runs independent ones in parallel. The chat agent calls 12 server-side tools and can fall back to a second LLM provider (OpenAI, Groq or Gemini).",
+    evaluation: [
+      "Travel Twin tests a plan against what-if scenarios on a copy before you accept changes",
+      "Journey Guardian re-checks a trip and scores each day's risk from documented factors",
+      "\"How the agents decided\" shows every run as a readable conversation between the agents",
+    ],
     featured: true,
   },
   {
     id: "kkh-road-status",
     title: "KKH Road Status — Havelian to Khunjerab",
-    category: "Travel Tools",
+    category: "AI / ML",
     description:
-      "A road-status and trip-planning dashboard for the 805 km Karakoram Highway. Explore eight route segments, check forecast risk and road reports, and plan a journey from Havelian to Khunjerab.",
-    image: "/projects/kkh-road-status.png",
+      "Forecasts next-day blockage risk for 8 segments of the 805 km Karakoram Highway with a calibrated gradient-boosting model, alongside a route planner and a what-if simulator that re-runs the same model in the browser.",
+    image: "/projects/kkh-road-status.webp",
     imageFit: "contain",
-    tech: ["Interactive Risk Map", "Route Planning", "Weather Forecasts", "Community Reports"],
+    tech: ["Python", "scikit-learn", "Gradient Boosting", "Open-Meteo"],
     liveUrl: "https://kkh-road-status.vercel.app/",
-    githubUrl: "#",
+    githubUrl: "https://github.com/Qamar7071/KKH-Road-Status",
+    dataset:
+      "Bootstrap dataset of simulated weather and closures, calibrated to documented KKH patterns (monsoon peaks, Feb–Apr rain-on-snow, the Khunjerab winter closure). The pipeline can rebuild on real Open-Meteo and NASA landslide data.",
+    methodology:
+      "Gradient boosting with monotonic constraints (more rain, snow, melt or slide reports can never lower the risk) and probability calibration, so a 30% forecast means 30%. One feature function is shared by training and serving, and the trees are exported to JSON for the in-browser simulator.",
+    evaluation: [
+      "ROC-AUC 0.944 and PR-AUC 0.347, about 14× chance (blockages hit ~2.4% of segment-days)",
+      "Beats a logistic-regression baseline (0.928) and a season-only baseline (0.717)",
+      "Every live forecast is logged so real-world accuracy can be measured later",
+    ],
+    disclaimer:
+      "The scores come from the simulated bootstrap dataset and show the pipeline works end to end; they are not real-world accuracy. Check official road updates before travelling.",
     featured: true,
   },
   {
@@ -182,21 +176,21 @@ export const PROJECTS = [
     title: "Diabetes Risk Assessment",
     category: "AI / ML",
     description:
-      "A clinical screening tool that predicts diabetes probability from 8 routine health measurements. Compares ensemble ML models — Random Forest, Logistic Regression, and Gradient Boosting — on the Pima Indians Diabetes dataset.",
-    image: "/projects/diabetes.png",
-    tech: ["Python", "Scikit-learn", "Random Forest", "Flask", "Vercel"],
+      "Estimates the probability of diabetes from 8 routine health measurements. Logistic Regression, Random Forest and Gradient Boosting were compared on the Pima Indians dataset, and the best model reaches 77.92% test accuracy.",
+    image: "/projects/diabetes.webp",
+    tech: ["Python", "scikit-learn", "Random Forest", "Flask", "Vercel"],
     liveUrl: "https://diabetes-prediction-app-rho.vercel.app/",
     githubUrl: "https://github.com/Qamar7071/diabetes-prediction-app",
-    dataset: "Pima Indians Diabetes Database (UCI / Kaggle) — 768 records, 8 health features.",
+    dataset: "Pima Indians Diabetes Database: 768 records, 8 clinical features.",
     methodology:
-      "80/20 train-test split with stratified sampling. StandardScaler for feature normalization. Compared Random Forest, Logistic Regression, and Gradient Boosting using 5-fold cross-validation. Selected best-performing model based on accuracy and ROC-AUC on held-out test set.",
+      "Biologically invalid zeros (glucose, blood pressure, skin thickness, insulin, BMI) replaced with column medians, then an 80/20 stratified split with StandardScaler. Three models trained and the best kept by test accuracy, served by a Flask JSON API (/predict, /api/info) behind an animated risk gauge.",
     evaluation: [
-      "Train/test split: 80/20 stratified",
-      "Cross-validation: 5-fold",
-      "Metrics tracked: Accuracy, Precision, Recall, ROC-AUC",
+      "Test accuracy: 77.92% (best of three models)",
+      "Train/test split: 80/20, stratified",
+      "Model metrics and feature importances served from /api/info",
     ],
     disclaimer:
-      "Educational project for learning purposes only. NOT a medical device. Not for clinical diagnosis — always consult a licensed healthcare provider.",
+      "Educational project, not a medical device. Not for diagnosis: always consult a licensed healthcare provider.",
     featured: true,
   },
   {
@@ -204,21 +198,21 @@ export const PROJECTS = [
     title: "USWA AI Assistant",
     category: "AI / ML",
     description:
-      "A knowledge-base chatbot built for the Uswa Yultar Education System in Gilgit-Baltistan. Helps students and parents get instant answers about admissions, fees, class timings, subjects, teachers, and holidays using the OpenAI API.",
-    image: "/projects/uswa.png",
-    tech: ["Python", "OpenAI API", "Flask", "JavaScript", "Render"],
+      "A knowledge-base chatbot for the Uswa Yultar Education System in Gilgit-Baltistan. Students and parents get instant answers about admissions, fees, class timings, subjects, teachers and holidays.",
+    image: "/projects/uswa.webp",
+    tech: ["Python", "Flask", "OpenAI API", "SQLite", "Render"],
     liveUrl: "https://uswa-ai-assistant-2.onrender.com/",
     githubUrl: "https://github.com/Qamar7071/uswa-ai-assistant",
-    dataset: "Custom knowledge base compiled from Uswa Yultar Education System's official information.",
+    dataset: "Custom knowledge base compiled from the Uswa Yultar Education System's official information.",
     methodology:
-      "Flask backend wrapping the OpenAI API with a scoped system prompt that restricts responses to school-related queries. Context-aware conversation handling, deployed on Render with a lightweight JavaScript frontend.",
+      "Flask backend wrapping the OpenAI API with a scoped system prompt that keeps answers on school topics. Chat history is stored in SQLite, with an admin dashboard and a lightweight JavaScript front end, deployed on Render.",
     evaluation: [
-      "Tested with 50+ real student/parent questions",
-      "Scope restriction prevents off-topic responses",
-      "Response time: < 3 seconds",
+      "Tested with 50+ real student and parent questions",
+      "Scope restriction keeps it from answering off-topic questions",
+      "Response time under 3 seconds",
     ],
     disclaimer:
-      "Independent educational project for Uswa Yultar Education System. Not an official product of USWA institution.",
+      "Independent project for the Uswa Yultar Education System, not an official product of the institution.",
     featured: true,
   },
   {
@@ -226,22 +220,21 @@ export const PROJECTS = [
     title: "Scholarly — GPA Predictor",
     category: "AI / ML",
     description:
-      "An academic prediction engine that estimates student GPA using Linear Regression. Analyzes 8 lifestyle factors — study hours, sleep, attendance, previous GPA, assignments, participation, extracurriculars, and social media — with feature-impact analysis.",
-    image: "/projects/gpa.png",
-    tech: ["Python", "Flask", "Scikit-learn", "Linear Regression", "Vercel"],
+      "Estimates a student's GPA with Linear Regression from 8 lifestyle factors (study hours, sleep, attendance, previous GPA, assignments, participation, extracurriculars, social media) and shows how much each one moves the result.",
+    image: "/projects/gpa.webp",
+    tech: ["Python", "Flask", "scikit-learn", "Linear Regression", "Vercel"],
     liveUrl: "https://gpa-predictor-woad.vercel.app/",
-    githubUrl: "https://github.com/Qamar7071/gpa-predictor",
-    dataset:
-      "Synthetic student lifestyle dataset — 1,500 records with 8 features (publicly available on Kaggle).",
+    githubUrl: "https://github.com/Qamar7071/gpa_predictor",
+    dataset: "Synthetic dataset of 1,500 student records with 8 features, generated for the project.",
     methodology:
-      "Linear Regression trained on 80% of 1,500 records. Features standardized with StandardScaler. Model coefficients used for feature-impact visualization. Evaluated on 20% held-out test set using R² and RMSE.",
+      "Linear Regression trained on 80% of the records with StandardScaler features; the coefficients drive the feature-impact chart. Evaluated on the held-out 20% with R² and RMSE.",
     evaluation: [
-      "R² Score: 0.608 (test set)",
-      "RMSE: 0.247 (on 0 – 4.0 GPA scale)",
+      "R² 0.608 on the test set",
+      "RMSE 0.247 on a 0–4.0 GPA scale",
       "Train/test split: 80/20",
     ],
     disclaimer:
-      "Educational project trained on a synthetic / public dataset. Predictions are for self-reflection, NOT official academic guidance.",
+      "Trained on synthetic data. Predictions are for self-reflection, not official academic guidance.",
     featured: true,
   },
   {
@@ -249,44 +242,76 @@ export const PROJECTS = [
     title: "LoanCheck — Educational Prototype",
     category: "AI / ML",
     description:
-      "An educational loan-eligibility prototype that uses Logistic Regression trained on a public loan dataset. Users can explore how factors like income, loan terms, education, credit history, and property area influence a model's approval prediction.",
-    image: "/projects/loan.png",
-    tech: ["Python", "Flask", "Scikit-learn", "Logistic Regression", "Vercel"],
+      "A loan-eligibility prototype using Logistic Regression. Explore how income, loan term, education, credit history and property area change the model's approval prediction.",
+    image: "/projects/loan.webp",
+    tech: ["Python", "Flask", "scikit-learn", "Logistic Regression", "Vercel"],
     liveUrl: "https://loan-predictor-sigma.vercel.app/",
-    githubUrl: "https://github.com/Qamar7071/loan-predictor",
-    dataset:
-      "Public loan approval dataset (Kaggle) — ~2,000 records with income, loan amount, credit history, and demographic features.",
+    githubUrl: "https://github.com/Qamar7071/loan_predictor",
+    dataset: "Synthetic dataset of 2,000+ loan applications in PKR, generated for the project.",
     methodology:
-      "Logistic Regression trained on 80% of ~2,000 records. Categorical features encoded with LabelEncoder, numerical features scaled with StandardScaler. Evaluated on 20% test set with accuracy, confusion matrix, and ROC-AUC.",
+      "Logistic Regression on label-encoded categorical and StandardScaler-scaled numeric features. Evaluated on a 20% test split with accuracy, a confusion matrix and ROC-AUC.",
     evaluation: [
-      "Accuracy: 84% (test set)",
-      "ROC-AUC: 0.93",
+      "Accuracy 84% on the test set",
+      "ROC-AUC 0.93",
       "Train/test split: 80/20",
     ],
     disclaimer:
-      "⚠️ EDUCATIONAL PROTOTYPE ONLY. This is a personal learning project — it has NO affiliation with Bank AL Habib or any financial institution. The styling is for UI practice. NOT for real loan decisions. Always consult a licensed bank for actual loan assessments.",
+      "Educational prototype only, with no affiliation to Bank AL Habib or any financial institution; the styling is UI practice. Not for real loan decisions.",
     featured: true,
+  },
+  {
+    id: "unipredict-pakistan",
+    title: "UniPredict — University Admission Predictor",
+    category: "AI / ML",
+    description:
+      "Estimates a student's admission chances at 20+ Pakistani universities with two models, Logistic Regression and a Decision Tree, and flags where they disagree. Includes sign-in and a model dashboard with 7 training charts.",
+    image: "/projects/unipredict.webp",
+    imageFit: "contain",
+    tech: ["Python", "Flask", "scikit-learn", "Matplotlib"],
+    liveUrl: "#",
+    githubUrl: "https://github.com/Qamar7071/unipredict-pakistan",
+    dataset: "Synthetic dataset of 9,000 admission records built on published merit patterns for 20+ universities.",
+    methodology:
+      "Logistic Regression (with StandardScaler) and a Decision Tree trained on the same features. The final chance is the average of both, with an agreement indicator per university.",
+    evaluation: [
+      "Logistic Regression: ~87.8% accuracy, ROC-AUC ~0.95",
+      "Decision Tree: ~84.9% accuracy, ROC-AUC ~0.93",
+      "Charts include model comparison, confusion matrices, ROC curves and the tree itself",
+    ],
+    disclaimer: "Trained on synthetic data. Use official merit lists for real admission decisions.",
+    featured: false,
+  },
+  {
+    id: "rh-labs-digital-solutions",
+    title: "RH Labs — Software House Website",
+    category: "Web Development",
+    description:
+      "Website for RH Labs, an Islamabad-based team offering AI chatbots, AI agents and websites. It presents their services, process, portfolio and consultation options for businesses.",
+    image: "/projects/rh-labs.webp",
+    imageFit: "contain",
+    tech: ["HTML", "CSS", "JavaScript", "SEO"],
+    liveUrl: "https://rh-labs.vercel.app/",
+    githubUrl: "https://github.com/Qamar7071/rh-labs",
+    featured: false,
   },
   {
     id: "image-classifier-cnn",
     title: "Image Classification (Cat vs Dog)",
     category: "AI / ML",
     description:
-      "A Convolutional Neural Network image classifier that categorizes images as cats or dogs. Covers image preprocessing, feature extraction, CNN architecture, model training, and evaluation using TensorFlow/Keras and OpenCV.",
-    image: "/projects/cnn.png",
+      "A convolutional neural network that classifies images as cats or dogs, covering preprocessing, augmentation, CNN architecture, training and evaluation with TensorFlow/Keras and OpenCV.",
+    image: "/projects/cnn.webp",
     tech: ["Python", "TensorFlow", "Keras", "OpenCV", "CNN"],
     liveUrl: "#",
-    githubUrl: "https://github.com/Qamar7071/image-classification-cnn",
-    dataset: "Kaggle Dogs vs Cats dataset — labeled images for binary classification.",
+    githubUrl: "#",
+    dataset: "Kaggle Dogs vs Cats dataset: labelled images for binary classification.",
     methodology:
-      "CNN with 3 convolutional blocks (Conv2D + MaxPooling), followed by dense layers with dropout for regularization. Images resized to 150×150, normalized, and augmented with rotation/flipping. Trained with Adam optimizer and binary cross-entropy loss.",
+      "Three convolutional blocks (Conv2D + MaxPooling) followed by dense layers with dropout. Images resized to 150×150, normalised and augmented with rotation and flips; trained with Adam and binary cross-entropy.",
     evaluation: [
-      "Validation accuracy: tracked per epoch",
+      "Validation accuracy tracked per epoch",
       "Loss curves monitored for overfitting",
-      "Image preprocessing with OpenCV",
     ],
-    disclaimer:
-      "Beginner-friendly computer vision project — a learning foundation for more advanced vision work.",
+    disclaimer: "Learning project; the code isn't published yet.",
     featured: false,
   },
 ] as const;
@@ -295,7 +320,6 @@ export const PROJECT_CATEGORIES = [
   "All",
   "AI / ML",
   "AI Agent",
-  "Travel Tools",
   "Web Development",
 ] as const;
 
@@ -305,103 +329,112 @@ export const PROJECT_CATEGORIES = [
 export const CERTIFICATES = [
   {
     id: "ibm-deep-learning-keras",
+    kind: "course",
     title: "Introduction to Deep Learning & Neural Networks with Keras",
     provider: "IBM",
     platform: "Coursera",
     date: "Jul 14, 2026",
     verifyUrl: "https://coursera.org/verify/GYNJY9XS0VZY",
-    image: "/certificates/ibm-deep-learning.png",
+    image: "/certificates/ibm-deep-learning.webp",
     skills: ["Deep Learning", "Neural Networks", "Keras", "TensorFlow"],
     featured: true,
   },
   {
     id: "supervised-machine-learning",
+    kind: "course",
     title: "Supervised Machine Learning: Regression and Classification",
     provider: "DeepLearning.AI",
     platform: "Stanford Online · Coursera",
     date: "Oct 2, 2026",
     verifyUrl: "https://coursera.org/verify/3JO81G8D17LT",
-    image: "",
+    image: "/certificates/supervised-machine-learning.webp",
     pdfUrl: "/certificates/supervised-machine-learning.pdf",
     skills: ["Machine Learning", "Regression", "Classification"],
     featured: true,
   },
   {
     id: "openai-gpts",
+    kind: "course",
     title: "OpenAI GPTs: Creating Your Own Custom AI Assistants",
     provider: "Vanderbilt University",
     platform: "Coursera",
     date: "Oct 12, 2026",
     verifyUrl: "https://coursera.org/verify/4G7MV5J8LE59",
-    image: "",
+    image: "/certificates/openai-gpts.webp",
     pdfUrl: "/certificates/openai-gpts.pdf",
     skills: ["Generative AI", "GPTs", "AI Assistants"],
     featured: true,
   },
   {
     id: "agentic-ai-agents",
+    kind: "course",
     title: "Agentic AI and AI Agents: A Primer for Leaders",
     provider: "Vanderbilt University",
     platform: "Coursera",
     date: "Oct 3, 2026",
     verifyUrl: "https://coursera.org/verify/HCI08C4938PS",
-    image: "",
+    image: "/certificates/agentic-ai-agents.webp",
     pdfUrl: "/certificates/agentic-ai-agents.pdf",
     skills: ["Agentic AI", "AI Agents", "AI Leadership"],
     featured: true,
   },
   {
     id: "python-programming-course",
+    kind: "course",
     title: "Python Programming Course",
     provider: "Uswa Public School",
     platform: "Certificate of Appreciation",
     date: "2020",
     verifyUrl: "#",
-    image: "/certificates/python-course.png",
+    image: "/certificates/python-course.webp",
     skills: ["Python", "Programming Fundamentals"],
     featured: true,
   },
   {
     id: "arduino-basic-course",
+    kind: "course",
     title: "Basic Arduino Course",
     provider: "Uswa Public School & College",
     platform: "Yultar, Skardu",
     date: "2019",
     verifyUrl: "#",
-    image: "/certificates/arduino.png",
+    image: "/certificates/arduino.webp",
     skills: ["Arduino", "Electronics", "Hardware"],
     featured: false,
   },
   {
     id: "best-award-2022",
+    kind: "award",
     title: "Best Award — Naat, Art Competition & Scientific Exhibition",
     provider: "Uswa Public School & College",
     platform: "Yultar, Skardu",
     date: "Mar 17, 2022",
     verifyUrl: "#",
-    image: "/certificates/naat-2022.png",
+    image: "/certificates/naat-2022.webp",
     skills: ["Leadership", "Creativity", "Public Speaking"],
     featured: false,
   },
   {
     id: "naat-art-science-2017",
+    kind: "award",
     title: "Naat, Art & Scientific Exhibition — Certificate of Appreciation",
     provider: "Uswa Public School & College",
     platform: "Yultar, Skardu",
     date: "May 20, 2017",
     verifyUrl: "#",
-    image: "/certificates/naat-2017.png",
+    image: "/certificates/naat-2017.webp",
     skills: ["Public Speaking", "Art"],
     featured: false,
   },
   {
     id: "oxford-art-competition",
+    kind: "award",
     title: "Art Competition Participant",
     provider: "Oxford University Press",
     platform: "Pakistan",
     date: "May 20, 2017",
     verifyUrl: "#",
-    image: "/certificates/oxford-art.png",
+    image: "/certificates/oxford-art.webp",
     skills: ["Art", "Creativity"],
     featured: false,
   },
@@ -430,8 +463,8 @@ export const EXPERIENCE = [
     period: "2024 — Present",
     location: "Islamabad, Pakistan",
     description:
-      "Built and deployed 5+ end-to-end machine learning applications including diabetes risk prediction, GPA forecasting, loan eligibility assessment, and educational AI chatbots. All projects are live on Vercel and Render with real-world use cases.",
-    tags: ["Python", "Flask", "TensorFlow", "Keras", "Vercel", "Render"],
+      "Built and deployed end-to-end ML and AI applications: a multi-agent trip planner, a calibrated road-risk model for the Karakoram Highway, diabetes, GPA and loan predictors, and a school chatbot. Most run live on Vercel or Render, with code on GitHub.",
+    tags: ["Python", "Flask", "scikit-learn", "OpenAI API", "Vercel", "Render"],
   },
 ] as const;
 
@@ -447,26 +480,6 @@ export const EDUCATION = {
     "Coursework so far covers linear algebra, sorting and searching algorithms in C++, and core AI concepts. The projects and certificates on this page are what I build alongside it.",
   tags: ["Linear Algebra", "C++ Algorithms", "AI Fundamentals"],
 } as const;
-
-/* =========================================================
-   TESTIMONIALS — will grow with real clients
-   ========================================================= */
-export const TESTIMONIALS: {
-  name: string;
-  role: string;
-  avatar: string;
-  quote: string;
-  rating: number;
-}[] = [];
-
-/* =========================================================
-   TECH MARQUEE — logos row (what I actually use)
-   ========================================================= */
-export const TECH_MARQUEE = [
-  "Python", "TensorFlow", "Keras", "scikit-learn",
-  "Flask", "Pandas", "NumPy", "Vercel", "Render",
-  "Git", "GitHub", "Jupyter", "VS Code",
-] as const;
 
 /* =========================================================
    SERVICES — AI-focused offerings
@@ -555,49 +568,21 @@ export const SERVICES = [
 ] as const;
 
 /* =========================================================
-   FAQ
-   ========================================================= */
-export const FAQS = [
-  {
-    q: "What kind of projects do you take on?",
-    a: "AI/ML applications, Python-based data analysis, prompt engineering, and machine learning model development. I especially enjoy projects that involve real-world datasets and end-to-end deployment.",
-  },
-  {
-    q: "Do you work remotely?",
-    a: "Yes. I'm based in Islamabad, Pakistan, and work remotely with clients worldwide through Fiverr and direct engagements.",
-  },
-  {
-    q: "Are you available for internships?",
-    a: "Yes! As an AI/ML student, I'm actively looking for internship opportunities where I can contribute to real projects while learning from experienced teams.",
-  },
-  {
-    q: "How quickly can you start?",
-    a: "For freelance projects, usually within a few days. For internships, I balance university commitments — please reach out and we can discuss schedule.",
-  },
-] as const;
-
-/* =========================================================
    FOOTER LINKS
    ========================================================= */
 export const FOOTER_LINKS = {
-  navigate: [
-    { name: "Home", href: "#home" },
-    { name: "About", href: "#about" },
-    { name: "Skills", href: "#skills" },
-    { name: "Projects", href: "#projects" },
-    { name: "Certifications", href: "#certifications" },
-    { name: "Contact", href: "#contact" },
+  navigate: NAV_LINKS,
+  work: [
+    { name: "Resume (web)", href: "/resume" },
+    { name: "Resume (PDF)", href: "/resume.pdf" },
+    { name: "GitHub", href: SOCIAL_LINKS.github },
+    { name: "Fiverr", href: SOCIAL_LINKS.fiverr },
+    { name: "LinkedIn", href: SOCIAL_LINKS.linkedin },
   ],
   services: [
     { name: "ML Model Development", href: "#services" },
     { name: "Python Data Analysis", href: "#services" },
     { name: "AI Chatbots", href: "#services" },
     { name: "Prompt Engineering", href: "#services" },
-  ],
-  resources: [
-    { name: "Resume", href: SITE_CONFIG.resumeUrl },
-    { name: "GitHub", href: SOCIAL_LINKS.github },
-    { name: "LinkedIn", href: SOCIAL_LINKS.linkedin },
-    { name: "Fiverr", href: SOCIAL_LINKS.fiverr },
   ],
 } as const;
