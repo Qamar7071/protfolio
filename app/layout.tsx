@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Inter, Instrument_Serif, Space_Grotesk } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 
 import "./globals.css";
@@ -19,6 +19,14 @@ const inter = Inter({
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   variable: "--font-space-grotesk",
+  display: "swap",
+});
+
+const instrumentSerif = Instrument_Serif({
+  subsets: ["latin"],
+  weight: "400",
+  style: ["italic"],
+  variable: "--font-serif",
   display: "swap",
 });
 
@@ -105,8 +113,8 @@ export const metadata: Metadata = {
 /* -------------------------------------------------------------------------- */
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)",  color: "#ffffff" },
+    { media: "(prefers-color-scheme: light)", color: "#05050a" },
+    { media: "(prefers-color-scheme: dark)", color: "#05050a" },
   ],
   width: "device-width",
   initialScale: 1,
@@ -167,7 +175,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${spaceGrotesk.variable}`}
+      className={`${inter.variable} ${spaceGrotesk.variable} ${instrumentSerif.variable}`}
       suppressHydrationWarning
     >
       <head>
@@ -178,12 +186,12 @@ export default function RootLayout({
         />
       </head>
 
-      <body className="min-h-screen bg-white text-dark-900 font-sans antialiased">
+      <body className="min-h-screen bg-ink-950 text-white/90 font-sans antialiased">
         {/* Skip-to-content for accessibility */}
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50
-                     focus:bg-primary focus:text-white focus:px-4 focus:py-2 focus:rounded-lg"
+                     focus:bg-secondary-300 focus:text-ink-950 focus:px-4 focus:py-2 focus:rounded-full"
         >
           Skip to main content
         </a>
@@ -202,18 +210,19 @@ export default function RootLayout({
           toastOptions={{
             duration: 4000,
             style: {
-              background: "#0f172a",
+              background: "#13141f",
               color: "#ffffff",
-              borderRadius: "12px",
+              border: "1px solid rgba(255,255,255,0.1)",
+              borderRadius: "14px",
               padding: "12px 16px",
               fontSize: "14px",
               fontWeight: 500,
-              boxShadow: "0 10px 30px -6px rgba(72, 84, 217, 0.35)",
+              boxShadow: "0 20px 50px -12px rgba(0, 0, 0, 0.7)",
             },
             success: {
               iconTheme: {
-                primary: "#4854d9",
-                secondary: "#ffffff",
+                primary: "#ffd166",
+                secondary: "#05050a",
               },
             },
             error: {

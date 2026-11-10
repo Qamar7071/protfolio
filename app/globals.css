@@ -3,207 +3,259 @@
 @tailwind utilities;
 
 /* =========================================================
-   BASE LAYER
+   BASE LAYER — dark theme
    ========================================================= */
 @layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 222 47% 11%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
-    --border: 214 32% 91%;
-    --primary: 234 65% 56%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 41 100% 70%;
-    --secondary-foreground: 222 47% 11%;
-    --radius: 0.875rem;
-  }
-
   * {
-    @apply border-dark-200;
+    @apply border-white/10;
   }
 
   html {
-    scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     scroll-padding-top: 5rem;
+    background-color: #05050a;
+    color-scheme: dark;
+  }
+
+  /* native smooth scrolling only when Lenis is not driving the scroll */
+  html:not(.lenis) {
+    scroll-behavior: smooth;
   }
 
   body {
-    @apply bg-white text-dark-900 font-sans antialiased overflow-x-hidden;
+    @apply bg-ink-950 text-white/90 font-sans antialiased overflow-x-hidden;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-display font-bold tracking-tight text-dark-900;
+    @apply font-display font-bold tracking-tight;
   }
 
   ::selection {
-    @apply bg-primary/25 text-primary-800;
+    background: #ffd166;
+    color: #05050a;
+  }
+
+  :focus-visible {
+    outline: 2px solid #ffd166;
+    outline-offset: 3px;
   }
 }
 
 /* =========================================================
-   COMPONENT LAYER — reusable classes
+   LENIS (smooth scroll) — from lenis/dist/lenis.css
+   ========================================================= */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+  overflow: clip;
+}
+.lenis [data-lenis-prevent],
+.lenis [data-lenis-prevent-wheel],
+.lenis [data-lenis-prevent-touch] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+/* =========================================================
+   COMPONENT LAYER
    ========================================================= */
 @layer components {
-  /* ---- Container / spacing ---- */
   .container-custom {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
   .section-padding {
-    @apply py-16 md:py-24 lg:py-28;
+    @apply py-20 md:py-28 lg:py-32;
   }
 
-  /* ---- Buttons — Apna College style ---- */
-  .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl
-           bg-primary text-white font-semibold shadow-button
-           hover:bg-primary-600 hover:shadow-button-hover hover:-translate-y-0.5
-           active:translate-y-0 transition-all duration-200
-           focus:outline-none focus:ring-4 focus:ring-primary/30;
-  }
-  .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl
-           bg-white text-dark-900 font-semibold border-2 border-dark-200
-           hover:border-primary hover:text-primary hover:-translate-y-0.5
-           active:translate-y-0 transition-all duration-200
-           focus:outline-none focus:ring-4 focus:ring-primary/20;
-  }
+  /* ---- Buttons: pill + colour fill that sweeps up on hover ---- */
+  .btn-fill,
+  .btn-primary,
+  .btn-light,
+  .btn-secondary,
   .btn-outline {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl
-           border-2 border-primary text-primary font-semibold bg-white
-           hover:bg-primary hover:text-white hover:-translate-y-0.5
-           transition-all duration-200
-           focus:outline-none focus:ring-4 focus:ring-primary/30;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
   }
-  .btn-yellow {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl
-           bg-secondary-300 text-dark-900 font-semibold shadow-yellow
-           hover:bg-secondary-400 hover:-translate-y-0.5
-           active:translate-y-0 transition-all duration-200;
+  .btn-fill::before,
+  .btn-primary::before,
+  .btn-light::before,
+  .btn-secondary::before,
+  .btn-outline::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    z-index: -1;
+    border-radius: inherit;
+    background: #ffd166;
+    transform: translateY(101%);
+    transition: transform 0.55s cubic-bezier(0.76, 0, 0.24, 1);
+  }
+  .btn-fill:hover::before,
+  .btn-primary:hover::before,
+  .btn-light:hover::before,
+  .btn-secondary:hover::before,
+  .btn-outline:hover::before,
+  .btn-fill:focus-visible::before,
+  .btn-primary:focus-visible::before,
+  .btn-light:focus-visible::before,
+  .btn-secondary:focus-visible::before,
+  .btn-outline:focus-visible::before {
+    transform: translateY(0);
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full
+           bg-primary-500 text-white font-semibold
+           transition-[color,box-shadow] duration-300
+           hover:text-ink-950 hover:shadow-[0_12px_40px_-12px_rgba(255,209,102,0.7)]
+           focus:outline-none focus-visible:ring-4 focus-visible:ring-secondary-300/40;
+  }
+  .btn-light {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full
+           bg-white text-ink-950 font-semibold
+           transition-[color,box-shadow] duration-300
+           hover:shadow-[0_12px_40px_-12px_rgba(255,209,102,0.7)]
+           focus:outline-none focus-visible:ring-4 focus-visible:ring-secondary-300/40;
+  }
+  .btn-secondary,
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full
+           border border-white/20 text-white font-semibold
+           transition-[color,border-color] duration-300
+           hover:text-ink-950 hover:border-secondary-300
+           focus:outline-none focus-visible:ring-4 focus-visible:ring-secondary-300/30;
   }
   .btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg
-           text-dark-700 font-semibold hover:bg-dark-100 hover:text-primary
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full
+           text-white/70 font-semibold hover:text-white hover:bg-white/5
            transition-colors duration-200;
   }
 
-  /* ---- Cards ---- */
-  .card {
-    @apply bg-white rounded-2xl border border-dark-100 shadow-soft p-6
-           hover:shadow-card-hover hover:-translate-y-1
-           transition-all duration-300;
-  }
-  .card-flat {
-    @apply bg-white rounded-2xl border border-dark-100 p-6
-           hover:border-primary/30 transition-colors duration-300;
-  }
-  .card-tinted {
-    @apply bg-dark-50 rounded-2xl border border-dark-100 p-6
-           hover:bg-white hover:border-primary/30 hover:shadow-soft
-           transition-all duration-300;
-  }
-  .card-highlight {
-    @apply relative bg-white rounded-2xl border-2 border-primary shadow-card p-6
-           hover:shadow-card-hover transition-all duration-300;
+  /* ---- Surfaces ---- */
+  .card-dark {
+    @apply rounded-3xl border border-white/10 bg-white/[0.03];
   }
 
-  /* ---- Chips / Badges ---- */
+  /* Pointer-following glow + glowing border (Cursor.tsx feeds --mx / --my) */
+  .spotlight {
+    position: relative;
+    isolation: isolate;
+  }
+  .spotlight::before,
+  .spotlight::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .spotlight::before {
+    z-index: -1;
+    background: radial-gradient(
+      420px circle at var(--mx, 50%) var(--my, 50%),
+      rgba(129, 137, 248, 0.16),
+      transparent 45%
+    );
+  }
+  .spotlight::after {
+    padding: 1px;
+    background: radial-gradient(
+      280px circle at var(--mx, 50%) var(--my, 50%),
+      rgba(255, 209, 102, 0.6),
+      transparent 45%
+    );
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+  .spotlight:hover::before,
+  .spotlight:hover::after {
+    opacity: 1;
+  }
+
+  /* ---- Chips ---- */
   .chip {
     @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full
-           bg-primary/10 text-primary text-xs font-semibold;
+           border border-white/10 bg-white/[0.04] text-white/80 text-xs font-medium;
   }
-  .chip-secondary {
+  .chip-accent {
     @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full
-           bg-secondary-100 text-secondary-800 text-xs font-semibold uppercase tracking-wide;
-  }
-  .chip-outline {
-    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full
-           border border-dark-200 text-dark-700 text-xs font-semibold;
-  }
-  .chip-dark {
-    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full
-           bg-dark-900 text-white text-xs font-semibold uppercase tracking-wide;
+           bg-secondary-300 text-ink-950 text-xs font-bold;
   }
 
-  /* ---- Section headings ---- */
+  /* ---- Typography helpers ---- */
   .eyebrow {
-    @apply inline-block text-primary font-bold uppercase tracking-widest text-sm mb-3;
+    @apply inline-flex items-center gap-3 text-[11px] sm:text-xs font-semibold uppercase tracking-[0.28em] text-white/50;
   }
-  .section-heading {
-    @apply text-3xl md:text-4xl lg:text-5xl font-bold text-dark-900 leading-tight;
+  .accent {
+    font-family: var(--font-serif), Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.01em;
   }
-  .section-subheading {
-    @apply text-base md:text-lg text-dark-500 max-w-2xl leading-relaxed mt-4;
-  }
-
-  /* ---- Text utilities ---- */
   .text-gradient {
-    @apply bg-gradient-to-r from-primary via-primary-600 to-secondary-500
-           bg-clip-text text-transparent;
+    background: linear-gradient(100deg, #a5b0fc 0%, #c4b5fd 45%, #ffd166 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
-  .text-gradient-primary {
-    @apply bg-gradient-to-r from-primary-600 to-primary bg-clip-text text-transparent;
-  }
-  .text-highlight {
-    @apply relative inline-block;
-  }
-  .text-highlight::before {
-    content: '';
-    @apply absolute left-0 right-0 bottom-1 h-3 bg-secondary-300/60 -z-10 rounded-sm;
+  .text-outline {
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.85);
   }
 
-  /* ---- Underline accent — Apna College hallmark ---- */
-  .heading-underline {
-    @apply relative inline-block pb-3;
+  /* ---- Animated underline link ---- */
+  .link-underline {
+    @apply relative inline-flex items-center gap-1;
   }
-  .heading-underline::after {
-    content: '';
-    @apply absolute -bottom-0 left-0 w-20 h-1.5 bg-primary rounded-full;
+  .link-underline::after {
+    content: "";
+    @apply absolute left-0 -bottom-0.5 h-px w-full bg-current;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.5s cubic-bezier(0.76, 0, 0.24, 1);
   }
-  .heading-underline-center {
-    @apply relative inline-block pb-3;
-  }
-  .heading-underline-center::after {
-    content: '';
-    @apply absolute -bottom-0 left-1/2 -translate-x-1/2 w-20 h-1.5 bg-primary rounded-full;
-  }
-
-  /* ---- Animated link underline ---- */
-  .link-hover {
-    @apply relative inline-block text-dark-700 hover:text-primary transition-colors;
-  }
-  .link-hover::after {
-    content: '';
-    @apply absolute -bottom-0.5 left-0 w-0 h-0.5 bg-primary transition-all duration-300;
-  }
-  .link-hover:hover::after {
-    @apply w-full;
+  .link-underline:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
   }
 
-  /* ---- Nav link (Apna College navbar style) ---- */
-  .nav-link {
-    @apply relative px-3 py-2 text-sm font-semibold text-dark-700
-           hover:text-primary transition-colors duration-200;
+  /* ---- Form fields (contact + chatbot) ---- */
+  .form-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.875rem;
+    font-size: 0.9rem;
+    color: #fff;
+    transition: border-color 0.2s, background-color 0.2s, box-shadow 0.2s;
   }
-  .nav-link-active {
-    @apply text-primary;
+  .form-input:focus {
+    outline: none;
+    border-color: #ffd166;
+    background: rgba(255, 255, 255, 0.06);
+    box-shadow: 0 0 0 4px rgba(255, 209, 102, 0.12);
   }
-
-  /* ---- Icon container ---- */
-  .icon-box {
-    @apply inline-flex items-center justify-center w-12 h-12 rounded-xl
-           bg-primary/10 text-primary;
+  .form-input:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
   }
-  .icon-box-lg {
-    @apply inline-flex items-center justify-center w-16 h-16 rounded-2xl
-           bg-primary/10 text-primary;
+  .form-input::placeholder {
+    color: rgba(255, 255, 255, 0.35);
   }
-  .icon-box-yellow {
-    @apply inline-flex items-center justify-center w-12 h-12 rounded-xl
-           bg-secondary-100 text-secondary-700;
+  select.form-input option {
+    background: #13141f;
+    color: #fff;
   }
 }
 
@@ -211,44 +263,24 @@
    UTILITY LAYER
    ========================================================= */
 @layer utilities {
-  /* ---- Backgrounds ---- */
-  .bg-grid {
+  .bg-grid-dark {
     background-image:
-      linear-gradient(to right, #f1f5f9 1px, transparent 1px),
-      linear-gradient(to bottom, #f1f5f9 1px, transparent 1px);
-    background-size: 60px 60px;
-  }
-  .bg-dots {
-    background-image: radial-gradient(circle at 1px 1px, rgba(72,84,217,0.2) 1px, transparent 0);
-    background-size: 24px 24px;
-  }
-  .bg-dots-dark {
-    background-image: radial-gradient(circle at 1px 1px, rgba(15,23,42,0.15) 1px, transparent 0);
-    background-size: 24px 24px;
-  }
-  .bg-radial-fade {
-    background: radial-gradient(ellipse at top, rgba(72,84,217,0.08) 0%, transparent 60%);
+      linear-gradient(to right, rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+    background-size: 72px 72px;
   }
 
-  /* ---- Decorative blob ---- */
-  .blob {
-    @apply absolute rounded-full filter blur-3xl opacity-30 pointer-events-none;
-  }
-
-  /* ---- Hide scrollbar (used by marquee) ---- */
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-  /* ---- Marquee wrapper (with edge fades) ---- */
   .marquee-mask {
-    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
-    -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
   }
 
-  /* ---- Aspect utilities ---- */
   .aspect-project { aspect-ratio: 16 / 10; }
 
-  /* ---- Idle letter ripple (used by <AnimatedText />) ---- */
+  /* Idle letter ripple (used by <AnimatedText />) */
   .letter-wave {
     display: inline-block;
     animation: letter-wave 7s ease-in-out infinite;
@@ -258,8 +290,41 @@
 
 @keyframes letter-wave {
   0%, 62%, 100% { transform: translateY(0); color: inherit; }
-  72% { transform: translateY(-0.07em); color: var(--wave, #4854d9); }
+  72% { transform: translateY(-0.07em); color: var(--wave, #ffd166); }
   84% { transform: translateY(0); color: inherit; }
+}
+
+/* =========================================================
+   FILM GRAIN — static noise texture over the home page
+   ========================================================= */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* =========================================================
+   CUSTOM CURSOR — native cursor hidden only once the custom
+   one is running (Cursor.tsx adds .has-cursor), never on touch.
+   Form fields keep the native text cursor.
+   ========================================================= */
+@media (hover: hover) and (pointer: fine) {
+  html.has-cursor,
+  html.has-cursor * {
+    cursor: none !important;
+  }
+  html.has-cursor input,
+  html.has-cursor textarea,
+  html.has-cursor select,
+  html.has-cursor [contenteditable="true"] {
+    cursor: text !important;
+  }
+  html.has-cursor select {
+    cursor: pointer !important;
+  }
 }
 
 /* =========================================================
@@ -274,7 +339,7 @@ html[data-intro="on"] body::before {
   position: fixed;
   inset: 0;
   z-index: 99;
-  background: #4854d9;
+  background: #0a0a12;
   animation: intro-cover-failsafe 0.01s linear 8s forwards;
 }
 @keyframes intro-cover-failsafe {
@@ -282,22 +347,37 @@ html[data-intro="on"] body::before {
 }
 
 /* =========================================================
-   CUSTOM SCROLLBAR (global, outside layers so it applies always)
+   SCROLLBAR
    ========================================================= */
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: #f8fafc;
+  background: #05050a;
 }
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #262838;
   border-radius: 9999px;
-  border: 2px solid #f8fafc;
+  border: 2px solid #05050a;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #4854d9;
+  background: #ffd166;
+}
+
+/* =========================================================
+   PRINT — the resume page prints on white paper
+   ========================================================= */
+@media print {
+  html,
+  body {
+    background: #fff !important;
+    color-scheme: light;
+  }
+  .grain,
+  .cursor-layer {
+    display: none !important;
+  }
 }
 
 /* =========================================================
@@ -311,7 +391,7 @@ html[data-intro="on"] body::before {
     scroll-behavior: auto !important;
   }
 
-  /* Projects strip: stop sliding, let people scroll it by hand instead */
+  /* logo strips: stop sliding, let people scroll them by hand instead */
   .marquee-viewport {
     overflow-x: auto;
     mask-image: none;

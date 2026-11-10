@@ -1,70 +1,31 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  Award,
-  ArrowUpRight,
-  ExternalLink,
-  Calendar,
-  X,
-  ShieldCheck,
-  Eye,
-  Trophy,
-} from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowUpRight, Award, Calendar, ExternalLink, ShieldCheck, Trophy, X } from "lucide-react";
 
 import { CERTIFICATES } from "@/lib/constants";
-import { cn } from "@/lib/utils";
+import { lockScroll, unlockScroll } from "@/lib/scroll";
+import BrandLogo from "@/components/ui/BrandLogo";
 import SectionHeader from "@/components/ui/SectionHeader";
+import { Reveal } from "@/components/fx/Reveal";
 
 type Certificate = (typeof CERTIFICATES)[number];
 
 const verifiable = (c: Certificate) => Boolean(c.verifyUrl) && c.verifyUrl !== "#";
+const VERIFIED = CERTIFICATES.filter(verifiable);
+const OTHERS = CERTIFICATES.filter((c) => !verifiable(c));
 
-function StatusBadge({ cert }: { cert: Certificate }) {
-  if (verifiable(cert)) {
-    return (
-      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-green-600 text-white text-xs font-bold shadow-lg">
-        <ShieldCheck className="w-3 h-3" aria-hidden="true" />
-        Verified
-      </span>
-    );
-  }
-  return (
-    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-dark-900/80 backdrop-blur text-white text-xs font-bold">
-      {cert.kind === "award" ? (
-        <Trophy className="w-3 h-3" aria-hidden="true" />
-      ) : (
-        <Award className="w-3 h-3" aria-hidden="true" />
-      )}
-      {cert.kind === "award" ? "Award" : "Course"}
-    </span>
-  );
-}
-
-/* -------------------------------------------------------------------------- */
-/*  Image candidates helper — same pattern as Projects                        */
-/* -------------------------------------------------------------------------- */
+/* Try the given image, then the same name with other extensions */
 function useImageCandidates(originalPath: string) {
-  const candidates = (() => {
-    if (!originalPath) return [];
-    const lastDot = originalPath.lastIndexOf(".");
-    const base = lastDot > 0 ? originalPath.slice(0, lastDot) : originalPath;
-    return Array.from(
-      new Set([
-        originalPath,
-        `${base}.png`,
-        `${base}.jpg`,
-        `${base}.jpeg`,
-        `${base}.webp`,
-      ]),
-    );
-  })();
+  const lastDot = originalPath.lastIndexOf(".");
+  const base = lastDot > 0 ? originalPath.slice(0, lastDot) : originalPath;
+  const candidates = originalPath
+    ? Array.from(new Set([originalPath, `${base}.webp`, `${base}.png`, `${base}.jpg`]))
+    : [];
 
   const [idx, setIdx] = useState(0);
-  useEffect(() => {
-    setIdx(0);
-  }, [originalPath]);
+  useEffect(() => setIdx(0), [originalPath]);
 
   return {
     src: idx >= candidates.length ? "" : candidates[idx],
@@ -74,197 +35,166 @@ function useImageCandidates(originalPath: string) {
 }
 
 /* -------------------------------------------------------------------------- */
-/*  CERTIFICATIONS SECTION                                                    */
+/*  CERTIFICATIONS                                                            */
 /* -------------------------------------------------------------------------- */
 export default function Certifications() {
-  const [selectedCert, setSelectedCert] = useState<Certificate | null>(null);
+  const [selected, setSelected] = useState<Certificate | null>(null);
+  const close = useCallback(() => setSelected(null), []);
 
   return (
-    <section
-      id="certifications"
-      className="section-padding bg-white relative overflow-hidden"
-    >
-      <div className="absolute inset-0 bg-radial-fade pointer-events-none" />
-
-      <div className="container-custom relative z-10">
+    <section id="certifications" className="relative section-padding overflow-hidden">
+      <div
+        aria-hidden="true"
+        className="absolute -left-40 top-1/3 w-[620px] h-[620px] rounded-full bg-[radial-gradient(circle,rgba(167,139,250,0.12),transparent_65%)] pointer-events-none"
+      />
+      <div className="container-custom relative">
         <SectionHeader
-          title="Certifications"
+          index="04"
+          label="Certifications"
+          title="Proof of *learning*"
           description="Courses and awards I've earned. The four Coursera certificates carry a verification link you can check yourself."
         />
 
-        {/* CARDS GRID */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {CERTIFICATES.map((cert, i) => (
-            <CertificateCard
-              key={cert.id}
-              cert={cert}
-              index={i}
-              onView={() => setSelectedCert(cert)}
-            />
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {VERIFIED.map((cert, i) => (
+            <Reveal key={cert.id} delay={i * 0.08} className="h-full">
+              <VerifiedCard cert={cert} onView={() => setSelected(cert)} />
+            </Reveal>
           ))}
         </div>
+
+        <Reveal className="mt-24">
+          <h3 className="eyebrow mb-6">School courses & awards</h3>
+        </Reveal>
+        <ul className="border-t border-white/10">
+          {OTHERS.map((cert, i) => (
+            <Reveal as="li" key={cert.id} delay={i * 0.05} y={20} className="border-b border-white/10">
+              <AwardRow cert={cert} onView={() => setSelected(cert)} />
+            </Reveal>
+          ))}
+        </ul>
       </div>
 
-      {/* MODAL */}
-      <CertificateModal
-        cert={selectedCert}
-        onClose={() => setSelectedCert(null)}
-      />
+      <CertificateModal cert={selected} onClose={close} />
     </section>
   );
 }
 
 /* -------------------------------------------------------------------------- */
-/*  CERTIFICATE CARD                                                          */
+/*  VERIFIED CARD                                                             */
 /* -------------------------------------------------------------------------- */
-function CertificateCard({
-  cert,
-  index,
-  onView,
-}: {
-  cert: Certificate;
-  index: number;
-  onView: () => void;
-}) {
-  const pdfUrl = "pdfUrl" in cert ? cert.pdfUrl : undefined;
+function VerifiedCard({ cert, onView }: { cert: Certificate; onView: () => void }) {
   const img = useImageCandidates(cert.image);
 
   return (
-    <motion.article
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.4, delay: index * 0.08 }}
-      className="group bg-white rounded-2xl border border-dark-100 overflow-hidden shadow-soft hover:shadow-card-hover hover:-translate-y-1 hover:border-primary/30 transition-all duration-300 flex flex-col"
-    >
-      {/* Certificate thumbnail */}
-      <div
-        className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-dark-50 to-dark-100 cursor-pointer"
+    <article className="group spotlight card-dark overflow-hidden h-full flex flex-col">
+      <button
+        type="button"
         onClick={onView}
+        data-cursor="view"
+        aria-label={`View certificate: ${cert.title}`}
+        className="relative block w-full aspect-[4/3] overflow-hidden bg-ink-800"
       >
-        {cert.image && !img.failed ? (
+        {!img.failed ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={img.src}
-            alt={cert.title}
+            alt=""
             loading="lazy"
-            className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
             onError={img.next}
+            className="w-full h-full object-cover object-top transition-transform duration-[1.2s] ease-[cubic-bezier(.16,1,.3,1)] group-hover:scale-[1.06]"
           />
         ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center gap-3 p-6">
-            <Award className="w-14 h-14 text-primary/40" />
-            <p className="text-sm font-semibold text-primary/60 text-center">
-              {pdfUrl ? "PDF Certificate" : cert.provider}
-            </p>
-          </div>
-        )}
-
-        {/* Status badge — "Verified" only where a verification link exists */}
-        <div className="absolute top-3 left-3">
-          <StatusBadge cert={cert} />
-        </div>
-
-        {/* View overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-dark-900/70 via-dark-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-          <span className="text-white text-sm font-semibold inline-flex items-center gap-1.5">
-            <Eye className="w-4 h-4" aria-hidden="true" />
-            View certificate
+          <span className="w-full h-full grid place-items-center">
+            <Award className="w-14 h-14 text-white/20" aria-hidden="true" />
           </span>
-        </div>
-      </div>
-
-      {/* Content */}
-      <div className="p-5 flex-1 flex flex-col">
-        {/* Provider */}
-        <p className="text-sm mb-2">
-          <span className="font-semibold text-primary">{cert.provider}</span>
-          <span className="text-dark-500">, {cert.platform}</span>
-        </p>
-
-        {/* Title */}
-        <h3 className="font-display font-bold text-dark-900 mb-3 leading-snug line-clamp-2 min-h-[3rem]">
-          {cert.title}
-        </h3>
-
-        {/* Date */}
-        <div className="flex items-center gap-1.5 text-xs text-dark-500 mb-4">
-          <Calendar className="w-3.5 h-3.5" />
-          <span className="font-medium">Issued {cert.date}</span>
-        </div>
-
-        {/* Skills earned */}
-        {cert.skills.length > 0 && (
-          <div className="flex flex-wrap gap-1.5 mb-4">
-            {cert.skills.slice(0, 3).map((s) => (
-              <span
-                key={s}
-                className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-md font-semibold"
-              >
-                {s}
-              </span>
-            ))}
-            {cert.skills.length > 3 && (
-              <span className="text-xs text-dark-500 px-2 py-0.5">
-                +{cert.skills.length - 3}
-              </span>
-            )}
-          </div>
         )}
+        <span className="absolute top-3 left-3 inline-flex items-center gap-1 rounded-full bg-emerald-400 text-ink-950 text-xs font-bold px-2.5 py-1">
+          <ShieldCheck className="w-3 h-3" aria-hidden="true" />
+          Verified
+        </span>
+      </button>
 
-        {/* Actions */}
-        <div className="mt-auto flex items-center gap-2 pt-3 border-t border-dark-100">
-          {verifiable(cert) && (
-            <a
-              href={cert.verifyUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-bold bg-primary text-white rounded-lg hover:bg-primary-600 transition-colors"
-            >
-              <ShieldCheck className="w-3.5 h-3.5" aria-hidden="true" />
-              Verify on Coursera
-              <ArrowUpRight className="w-3 h-3" aria-hidden="true" />
-            </a>
-          )}
-          <button
-            type="button"
-            onClick={onView}
-            className={cn(
-              "inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-bold text-dark-700 border border-dark-200 rounded-lg hover:border-primary hover:text-primary transition-colors",
-              !verifiable(cert) && "flex-1",
-            )}
-          >
-            <Eye className="w-3.5 h-3.5" />
-            View
-          </button>
+      <div className="p-5 flex-1 flex flex-col">
+        <div className="flex items-center gap-2.5">
+          <span className="grid place-items-center w-8 h-8 rounded-lg bg-white shrink-0">
+            <BrandLogo name={cert.provider} size={20} square />
+          </span>
+          <span className="text-sm text-white/60">{cert.provider}</span>
         </div>
+        <h3 className="mt-4 font-display text-lg font-semibold text-white leading-snug">{cert.title}</h3>
+        <p className="mt-2 text-xs text-white/45">Issued {cert.date}</p>
+        <a
+          href={cert.verifyUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="link-underline self-start mt-auto pt-6 text-sm font-semibold text-secondary-300"
+        >
+          Verify on Coursera
+          <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
+        </a>
       </div>
-    </motion.article>
+    </article>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/*  AWARD ROW — hover list                                                    */
+/* -------------------------------------------------------------------------- */
+function AwardRow({ cert, onView }: { cert: Certificate; onView: () => void }) {
+  const img = useImageCandidates(cert.image);
+  const Icon = cert.kind === "award" ? Trophy : Award;
+
+  return (
+    <button
+      type="button"
+      onClick={onView}
+      data-cursor="view"
+      className="group w-full grid grid-cols-[4.5rem_1fr_auto] sm:grid-cols-[6rem_1fr_auto_auto] items-center gap-4 sm:gap-8 py-5 text-left"
+    >
+      <span className="relative block aspect-[4/3] rounded-xl overflow-hidden bg-ink-800 border border-white/10">
+        {!img.failed && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={img.src}
+            alt=""
+            loading="lazy"
+            onError={img.next}
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+          />
+        )}
+      </span>
+      <span className="min-w-0">
+        <span className="block font-display text-lg sm:text-2xl font-semibold tracking-tight text-white transition-all duration-500 group-hover:text-secondary-300 group-hover:translate-x-2">
+          {cert.title}
+        </span>
+        <span className="mt-1 flex items-center gap-1.5 text-sm text-white/45">
+          <Icon className="w-3.5 h-3.5" aria-hidden="true" />
+          {cert.provider}, {cert.platform}
+        </span>
+      </span>
+      <span className="hidden sm:block text-sm text-white/45 tabular-nums">{cert.date}</span>
+      <span className="grid place-items-center w-10 h-10 rounded-full border border-white/15 text-white/70 transition-all duration-500 group-hover:bg-secondary-300 group-hover:text-ink-950 group-hover:border-secondary-300 group-hover:-rotate-45">
+        <ArrowUpRight className="w-4 h-4 rotate-45" aria-hidden="true" />
+      </span>
+    </button>
   );
 }
 
 /* -------------------------------------------------------------------------- */
 /*  CERTIFICATE MODAL                                                         */
 /* -------------------------------------------------------------------------- */
-function CertificateModal({
-  cert,
-  onClose,
-}: {
-  cert: Certificate | null;
-  onClose: () => void;
-}) {
+function CertificateModal({ cert, onClose }: { cert: Certificate | null; onClose: () => void }) {
   const pdfUrl = cert && "pdfUrl" in cert ? cert.pdfUrl : undefined;
   const img = useImageCandidates(cert?.image ?? "");
 
   useEffect(() => {
     if (!cert) return;
-    document.body.style.overflow = "hidden";
-    const onEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
+    lockScroll();
+    const onEsc = (e: KeyboardEvent) => e.key === "Escape" && onClose();
     window.addEventListener("keydown", onEsc);
     return () => {
-      document.body.style.overflow = "";
+      unlockScroll();
       window.removeEventListener("keydown", onEsc);
     };
   }, [cert, onClose]);
@@ -277,104 +207,79 @@ function CertificateModal({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
-          className="fixed inset-0 z-50 bg-dark-900/70 backdrop-blur-sm flex items-center justify-center p-4"
+          data-lenis-prevent
+          className="fixed inset-0 z-[80] bg-ink-950/80 backdrop-blur-md flex items-end sm:items-center justify-center sm:p-6 overflow-y-auto"
           role="dialog"
           aria-modal="true"
+          aria-labelledby="cert-modal-title"
         >
           <motion.div
-            initial={{ opacity: 0, scale: 0.92, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.92, y: 20 }}
-            transition={{ type: "spring", stiffness: 300, damping: 28 }}
+            initial={{ opacity: 0, y: 80, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 60, scale: 0.97 }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             onClick={(e) => e.stopPropagation()}
-            className="bg-white rounded-3xl overflow-hidden max-w-4xl w-full max-h-[92vh] overflow-y-auto shadow-2xl"
+            className="relative w-full max-w-4xl max-h-[92vh] overflow-y-auto rounded-t-[2rem] sm:rounded-[2rem] border border-white/10 bg-ink-900 shadow-[0_40px_120px_-20px_rgba(0,0,0,0.8)]"
           >
-            {/* Cert image full */}
-            <div className="relative bg-dark-50 min-h-[12rem]">
+            <div className="relative bg-ink-800 min-h-[12rem]">
               {cert.image && !img.failed ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={img.src}
-                  alt={cert.title}
-                  className="w-full h-auto"
-                  onError={img.next}
-                />
+                <img src={img.src} alt={cert.title} className="w-full h-auto" onError={img.next} />
               ) : (
-                <div className="aspect-[4/3] flex items-center justify-center">
-                  <Award className="w-24 h-24 text-primary/40" />
+                <div className="aspect-[4/3] grid place-items-center">
+                  <Award className="w-24 h-24 text-white/20" aria-hidden="true" />
                 </div>
               )}
-
               <button
                 type="button"
                 onClick={onClose}
-                className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/95 backdrop-blur shadow-soft flex items-center justify-center hover:bg-white hover:scale-110 transition-all"
+                className="absolute top-4 right-4 grid place-items-center w-11 h-11 rounded-full bg-ink-950/70 backdrop-blur border border-white/15 text-white hover:bg-secondary-300 hover:text-ink-950 transition-colors"
                 aria-label="Close"
               >
-                <X className="w-5 h-5 text-dark-700" />
+                <X className="w-5 h-5" />
               </button>
-
-              <div className="absolute top-4 left-4">
-                <StatusBadge cert={cert} />
-              </div>
             </div>
 
-            {/* Info */}
-            <div className="p-6 sm:p-8">
-              <p className="text-sm mb-2">
-                <span className="font-semibold text-primary">{cert.provider}</span>
-                <span className="text-dark-500">, {cert.platform}</span>
+            <div className="p-6 sm:p-9">
+              <p className="text-sm">
+                <span className="font-semibold text-secondary-300">{cert.provider}</span>
+                <span className="text-white/50">, {cert.platform}</span>
               </p>
-
-              <h2 className="text-xl sm:text-2xl font-display font-bold text-dark-900 mb-3">
+              <h2 id="cert-modal-title" className="mt-2 font-display text-2xl sm:text-3xl font-bold tracking-tight text-white">
                 {cert.title}
               </h2>
+              <p className="mt-3 flex items-center gap-1.5 text-sm text-white/50">
+                <Calendar className="w-4 h-4" aria-hidden="true" />
+                Issued {cert.date}
+              </p>
 
-              <div className="flex items-center gap-1.5 text-sm text-dark-500 mb-6">
-                <Calendar className="w-4 h-4" />
-                <span className="font-medium">Issued {cert.date}</span>
-              </div>
-
-              {/* Skills */}
               {cert.skills.length > 0 && (
-                <div className="mb-6">
-                  <h3 className="text-sm font-semibold text-dark-900 mb-3">Skills covered</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {cert.skills.map((s) => (
-                      <span key={s} className="chip">
-                        {s}
-                      </span>
-                    ))}
-                  </div>
+                <div className="mt-6 flex flex-wrap gap-2">
+                  {cert.skills.map((s) => (
+                    <span key={s} className="chip">
+                      {s}
+                    </span>
+                  ))}
                 </div>
               )}
 
-              {/* Actions */}
-              <div className="flex flex-wrap gap-3 pt-6 border-t border-dark-100">
-                {verifiable(cert) && (
-                  <a
-                    href={cert.verifyUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-primary"
-                  >
-                    <ShieldCheck className="w-4 h-4" aria-hidden="true" />
-                    Verify on Coursera
-                    <ExternalLink className="w-4 h-4" aria-hidden="true" />
-                  </a>
-                )}
-                {pdfUrl && (
-                  <a
-                    href={pdfUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-secondary"
-                  >
-                    Open certificate PDF
-                    <ExternalLink className="w-4 h-4" />
-                  </a>
-                )}
-              </div>
+              {(verifiable(cert) || pdfUrl) && (
+                <div className="mt-8 pt-8 border-t border-white/10 flex flex-wrap gap-3">
+                  {verifiable(cert) && (
+                    <a href={cert.verifyUrl} target="_blank" rel="noopener noreferrer" className="btn-light">
+                      <ShieldCheck className="w-4 h-4" aria-hidden="true" />
+                      Verify on Coursera
+                      <ExternalLink className="w-4 h-4" aria-hidden="true" />
+                    </a>
+                  )}
+                  {pdfUrl && (
+                    <a href={pdfUrl} target="_blank" rel="noopener noreferrer" className="btn-secondary">
+                      Open certificate PDF
+                      <ExternalLink className="w-4 h-4" aria-hidden="true" />
+                    </a>
+                  )}
+                </div>
+              )}
             </div>
           </motion.div>
         </motion.div>

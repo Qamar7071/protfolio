@@ -52,6 +52,17 @@ const config: Config = {
           900: "#7a340e",
           950: "#461902",
         },
+        // Near-black surfaces for the dark theme
+        ink: {
+          DEFAULT: "#07070d",
+          950: "#05050a",
+          900: "#0a0a12",
+          850: "#0e0f18",
+          800: "#13141f",
+          700: "#1b1c2a",
+          600: "#262838",
+          500: "#3a3c52",
+        },
         // Dark / neutrals
         dark: {
           DEFAULT: "#0f172a",
@@ -71,6 +82,7 @@ const config: Config = {
       fontFamily: {
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],
         display: ["var(--font-space-grotesk)", "system-ui", "sans-serif"],
+        serif: ["var(--font-serif)", "Georgia", "serif"],
       },
       backgroundImage: {
         "hero-dots":
@@ -104,6 +116,9 @@ const config: Config = {
         float: "float 6s ease-in-out infinite",
         blob: "blob 20s ease-in-out infinite",
         wiggle: "wiggle 1s ease-in-out infinite",
+        aurora: "aurora 18s ease-in-out infinite alternate",
+        "scroll-line": "scroll-line 2.2s cubic-bezier(0.76,0,0.24,1) infinite",
+        "spin-slower": "spin 24s linear infinite",
       },
       keyframes: {
         fadeIn: {
@@ -142,6 +157,17 @@ const config: Config = {
         wiggle: {
           "0%, 100%": { transform: "rotate(-2deg)" },
           "50%": { transform: "rotate(2deg)" },
+        },
+        aurora: {
+          "0%": { transform: "translate3d(-8%, -4%, 0) rotate(0deg) scale(1)" },
+          "50%": { transform: "translate3d(6%, 4%, 0) rotate(8deg) scale(1.12)" },
+          "100%": { transform: "translate3d(-4%, 8%, 0) rotate(-6deg) scale(0.96)" },
+        },
+        "scroll-line": {
+          "0%": { transform: "scaleY(0)", transformOrigin: "top" },
+          "45%": { transform: "scaleY(1)", transformOrigin: "top" },
+          "55%": { transform: "scaleY(1)", transformOrigin: "bottom" },
+          "100%": { transform: "scaleY(0)", transformOrigin: "bottom" },
         },
       },
       borderRadius: {

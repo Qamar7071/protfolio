@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { animate, motion } from "framer-motion";
 
 import AnimatedText from "@/components/ui/AnimatedText";
+import { lockScroll, unlockScroll } from "@/lib/scroll";
 
 /* -------------------------------------------------------------------------- */
 /*  IntroOverlay — page intro inspired by three Jitter templates              */
@@ -40,9 +41,7 @@ export default function IntroOverlay({ onReveal, onFinish }: IntroOverlayProps) 
      blocks are on screen. Also lock scroll while the intro plays. */
   useEffect(() => {
     document.documentElement.removeAttribute("data-intro");
-
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    lockScroll();
 
     const failsafe = setTimeout(startExit, 6000);
     const onKey = (e: KeyboardEvent) => {
@@ -51,7 +50,7 @@ export default function IntroOverlay({ onReveal, onFinish }: IntroOverlayProps) 
     window.addEventListener("keydown", onKey);
 
     return () => {
-      document.body.style.overflow = prevOverflow;
+      unlockScroll();
       clearTimeout(failsafe);
       window.removeEventListener("keydown", onKey);
     };
@@ -97,7 +96,7 @@ export default function IntroOverlay({ onReveal, onFinish }: IntroOverlayProps) 
           <motion.div
             key={i}
             // 6px taller than the screen: the yellow lip stays hidden until the block lifts
-            className="h-[calc(100%+6px)] flex-1 bg-primary border-b-[6px] border-secondary-300 shadow-[1px_0_0_0_#4854d9]"
+            className="h-[calc(100%+6px)] flex-1 bg-ink-900 border-b-[6px] border-secondary-300 shadow-[1px_0_0_0_#0a0a12]"
             initial={false}
             animate={{ y: exiting ? "-100%" : "0%" }}
             transition={{
@@ -111,7 +110,7 @@ export default function IntroOverlay({ onReveal, onFinish }: IntroOverlayProps) 
 
       {/* CONTENT */}
       <motion.div
-        className="absolute inset-0 flex flex-col text-white"
+        className="absolute inset-0 flex flex-col text-white bg-[radial-gradient(ellipse_at_50%_45%,rgba(99,102,241,0.28),transparent_60%)]"
         animate={exiting ? { opacity: 0, y: -40 } : { opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: "easeIn" }}
       >
@@ -160,7 +159,7 @@ export default function IntroOverlay({ onReveal, onFinish }: IntroOverlayProps) 
         {/* counter */}
         <div className="px-6 sm:px-10 pb-8 sm:pb-10 flex items-end justify-between">
           <div className="flex items-start font-display font-bold leading-none tabular-nums">
-            <span className="inline-block min-w-[3ch] text-7xl sm:text-9xl">{count}</span>
+            <span className="inline-block text-7xl sm:text-9xl tabular-nums">{count}</span>
             <span className="mt-2 sm:mt-4 ml-1 text-3xl sm:text-5xl text-secondary-300">%</span>
           </div>
           <span className="hidden sm:block pb-2 text-xs font-semibold uppercase tracking-[0.25em] text-white/50">

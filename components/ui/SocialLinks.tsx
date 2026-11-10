@@ -83,7 +83,7 @@ const SOCIALS: SocialItem[] = [
     name: "GitHub",
     href: SOCIAL_LINKS.github,
     Icon: GitHubIcon,
-    brand: "#181717",
+    brand: "#ffffff",
   },
   {
     name: "LinkedIn",
@@ -134,8 +134,8 @@ export default function SocialLinks({
           title={name}
           className={cn(
             "group inline-flex items-center justify-center rounded-xl",
-            "bg-white border border-dark-200 text-dark-500 shadow-soft",
-            "transition-all duration-200 hover:-translate-y-1 hover:shadow-card hover:border-transparent",
+            "bg-white/[0.04] border border-white/10 text-white/60 backdrop-blur-md",
+            "transition-all duration-300 hover:-translate-y-1 hover:border-white/25 hover:bg-white/[0.08]",
             boxSize,
           )}
           style={{ ["--brand" as string]: brand }}

@@ -1,9 +1,10 @@
 "use client";
 
 import { Fragment } from "react";
-import { motion, useReducedMotion, type Variants } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 
 import { cn } from "@/lib/utils";
+import { useReducedMotionSafe } from "@/lib/useReducedMotionSafe";
 
 /* -------------------------------------------------------------------------- */
 /*  AnimatedText — kinetic-typography reveal (Jitter-style)                   */
@@ -78,7 +79,7 @@ export default function AnimatedText({
   waveColor = "#4854d9",
   play = true,
 }: AnimatedTextProps) {
-  const reduce = useReducedMotion();
+  const reduce = useReducedMotionSafe();
 
   if (reduce) {
     return <span className={className}>{text}</span>;

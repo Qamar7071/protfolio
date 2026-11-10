@@ -1,8 +1,14 @@
+"use client";
+
+import { useRef } from "react";
+import { motion, useScroll, useSpring } from "framer-motion";
 import { ArrowUpRight, Download, MapPin } from "lucide-react";
 
 import { EDUCATION, EXPERIENCE, SITE_CONFIG } from "@/lib/constants";
 import BrandLogo from "@/components/ui/BrandLogo";
 import SectionHeader from "@/components/ui/SectionHeader";
+import Magnetic from "@/components/fx/Magnetic";
+import { Reveal } from "@/components/fx/Reveal";
 
 type Entry = {
   key: string;
@@ -47,30 +53,48 @@ const ENTRIES: Entry[] = [
 const dash = (s: string) => s.replace("—", "–");
 
 /* -------------------------------------------------------------------------- */
-/*  EXPERIENCE & EDUCATION — timeline with organisation logos as the nodes    */
+/*  EXPERIENCE & EDUCATION — the timeline rail draws itself as you scroll     */
 /* -------------------------------------------------------------------------- */
 export default function Experience() {
+  const listRef = useRef<HTMLOListElement>(null);
+  const { scrollYProgress } = useScroll({ target: listRef, offset: ["start 0.75", "end 0.55"] });
+  const scaleY = useSpring(scrollYProgress, { stiffness: 120, damping: 30, mass: 0.4 });
+
   return (
-    <section id="experience" className="section-padding bg-dark-50">
+    <section id="experience" className="relative section-padding">
       <div className="container-custom">
         <SectionHeader
-          title="Experience and education"
+          index="06"
+          label="Experience"
+          title="Experience & *education*"
           description="Where I study, and where I've been putting it to work."
         />
 
-        <ol className="max-w-5xl">
+        <ol ref={listRef} className="relative max-w-5xl">
+          {/* rail: date column (10rem) + gap (2rem) + half a node (1.75rem) on desktop */}
+          <div
+            aria-hidden="true"
+            className="absolute top-3 bottom-3 left-6 sm:left-7 lg:left-[13.75rem] w-px bg-white/10"
+          >
+            <motion.div
+              style={{ scaleY }}
+              className="absolute inset-0 origin-top bg-gradient-to-b from-secondary-300 via-violet-400 to-primary-400"
+            />
+          </div>
+
           {ENTRIES.map((entry, i) => (
             <TimelineItem key={entry.key} entry={entry} last={i === ENTRIES.length - 1} />
           ))}
         </ol>
 
-        {/* lines up with the cards: date column (10rem) + gap (2rem) + node (3.5rem) + gap */}
-        <div className="mt-12 lg:pl-[17.5rem]">
-          <a href={SITE_CONFIG.resumeUrl} download={SITE_CONFIG.resumeFileName} className="btn-outline">
-            <Download className="w-4 h-4" aria-hidden="true" />
-            Download full résumé
-          </a>
-        </div>
+        <Reveal className="mt-14 lg:pl-[17.5rem]">
+          <Magnetic>
+            <a href={SITE_CONFIG.resumeUrl} download={SITE_CONFIG.resumeFileName} className="btn-light">
+              <Download className="w-4 h-4" aria-hidden="true" />
+              Download full résumé
+            </a>
+          </Magnetic>
+        </Reveal>
       </div>
     </section>
   );
@@ -78,32 +102,34 @@ export default function Experience() {
 
 function TimelineItem({ entry, last }: { entry: Entry; last: boolean }) {
   return (
-    <li className="flex gap-8">
-      {/* When / where — desktop */}
-      <div className="hidden lg:block w-40 shrink-0 pt-4 text-right">
-        <p className="font-display font-semibold text-dark-900">{dash(entry.period)}</p>
-        <p className="mt-1 text-sm text-dark-500">{entry.location}</p>
+    <li className={last ? "relative flex gap-4 sm:gap-8" : "relative flex gap-4 sm:gap-8 pb-10 sm:pb-14"}>
+      {/* when / where (desktop) */}
+      <Reveal y={20} className="hidden lg:block w-40 shrink-0 pt-3 text-right">
+        <p className="font-display font-semibold text-white">{dash(entry.period)}</p>
+        <p className="mt-1 text-sm text-white/45">{entry.location}</p>
+      </Reveal>
+
+      {/* node */}
+      <div className="relative z-10 shrink-0">
+        <motion.div
+          initial={{ scale: 0, rotate: -20 }}
+          whileInView={{ scale: 1, rotate: 0 }}
+          viewport={{ once: true, margin: "0px 0px -15% 0px" }}
+          transition={{ type: "spring", stiffness: 260, damping: 18 }}
+          className="grid place-items-center w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white ring-8 ring-ink-950"
+        >
+          <BrandLogo name={entry.logo} size={entry.logo === "STMU" ? 40 : 28} square />
+        </motion.div>
       </div>
 
-      {/* Node + rail */}
-      <div className="hidden sm:flex flex-col items-center shrink-0">
-        <div className="w-14 h-14 rounded-2xl bg-white border border-dark-200 shadow-soft flex items-center justify-center">
-          <BrandLogo name={entry.logo} size={entry.logo === "STMU" ? 44 : 30} square />
-        </div>
-        {!last && <div className="flex-1 w-px bg-dark-300/70 my-2" aria-hidden="true" />}
-      </div>
-
-      {/* Card */}
-      <article className={last ? "flex-1 min-w-0" : "flex-1 min-w-0 pb-6 sm:pb-10"}>
-        <div className="rounded-2xl bg-white border border-dark-200 p-6 sm:p-7">
-          <div className="sm:hidden mb-4 w-12 h-12 rounded-xl bg-white border border-dark-200 flex items-center justify-center">
-            <BrandLogo name={entry.logo} size={entry.logo === "STMU" ? 38 : 26} square />
-          </div>
+      {/* card */}
+      <Reveal className="flex-1 min-w-0">
+        <article className="spotlight card-dark p-6 sm:p-8">
           <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-            <h3 className="font-display text-xl font-bold tracking-tight text-dark-900">{entry.title}</h3>
+            <h3 className="font-display text-xl sm:text-2xl font-bold tracking-tight text-white">{entry.title}</h3>
             {entry.current && (
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-green-50 border border-green-200 px-2.5 py-0.5 text-xs font-semibold text-green-700">
-                <span className="w-1.5 h-1.5 rounded-full bg-green-500" aria-hidden="true" />
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-2.5 py-0.5 text-xs font-semibold text-emerald-300">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" aria-hidden="true" />
                 Currently enrolled
               </span>
             )}
@@ -114,17 +140,16 @@ function TimelineItem({ entry, last }: { entry: Entry; last: boolean }) {
               href={entry.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-1 inline-flex items-center gap-1 font-semibold text-primary hover:text-primary-700"
+              className="link-underline mt-1 font-semibold text-secondary-300"
             >
               {entry.org}
               <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
             </a>
           ) : (
-            <p className="mt-1 font-semibold text-primary">{entry.org}</p>
+            <p className="mt-1 font-semibold text-secondary-300">{entry.org}</p>
           )}
 
-          {/* When / where — mobile */}
-          <p className="lg:hidden mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-dark-500">
+          <p className="lg:hidden mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-white/45">
             <span>{dash(entry.period)}</span>
             <span className="inline-flex items-center gap-1">
               <MapPin className="w-3.5 h-3.5" aria-hidden="true" />
@@ -133,30 +158,26 @@ function TimelineItem({ entry, last }: { entry: Entry; last: boolean }) {
           </p>
 
           {entry.facts && (
-            <ul className="mt-4 flex flex-wrap gap-2">
+            <ul className="mt-5 flex flex-wrap gap-2">
               {entry.facts.map((f) => (
-                <li key={f} className="rounded-lg bg-primary/5 border border-primary/15 px-2.5 py-1 text-sm font-semibold text-primary-800">
+                <li key={f} className="chip-accent">
                   {f}
                 </li>
               ))}
             </ul>
           )}
 
-          <p className="mt-4 text-dark-600 leading-relaxed max-w-[68ch]">{entry.description}</p>
+          <p className="mt-5 text-white/60 leading-relaxed max-w-[68ch]">{entry.description}</p>
 
-          <ul className="mt-5 pt-5 border-t border-dark-100 flex flex-wrap gap-2">
+          <ul className="mt-6 pt-6 border-t border-white/10 flex flex-wrap gap-2">
             {entry.tags.map((t) => (
-              <li
-                key={t}
-                className="inline-flex items-center gap-1.5 rounded-lg border border-dark-200 bg-dark-50 px-2.5 py-1 text-sm text-dark-700"
-              >
-                <BrandLogo name={t} size={16} square />
+              <li key={t} className="chip">
                 {t}
               </li>
             ))}
           </ul>
-        </div>
-      </article>
+        </article>
+      </Reveal>
     </li>
   );
 }

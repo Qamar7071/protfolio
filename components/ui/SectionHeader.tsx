@@ -1,43 +1,49 @@
 import { cn } from "@/lib/utils";
+import { LineReveal, Reveal, SplitText } from "@/components/fx/Reveal";
 
 /* -------------------------------------------------------------------------- */
-/*  SectionHeader — left-aligned heading with the brand's saffron full stop   */
-/*  (same mark as the "Qamar." logo and the intro), description on the right  */
-/*  on wide screens, hairline rule underneath.                                */
+/*  SectionHeader — "(01) ── About" index line, a big title whose words      */
+/*  slide up out of a mask (wrap a word in *asterisks* for the serif accent), */
+/*  and an optional description on the right.                                 */
 /* -------------------------------------------------------------------------- */
 export default function SectionHeader({
+  index,
+  label,
   title,
   description,
   className,
   children,
 }: {
+  index: string;
+  label: string;
   title: string;
   description?: React.ReactNode;
   className?: string;
-  /** optional controls that sit under the description (e.g. filters) */
   children?: React.ReactNode;
 }) {
   return (
-    <header
-      className={cn(
-        "grid gap-5 lg:grid-cols-12 lg:items-end pb-8 mb-10 lg:mb-14 border-b border-dark-200",
-        className,
-      )}
-    >
-      <h2 className="lg:col-span-7 font-display font-bold text-dark-900 text-[2.5rem] leading-[1.02] sm:text-5xl lg:text-[3.5rem] tracking-[-0.035em]">
-        {title}
-        <span className="text-secondary-400" aria-hidden="true">
-          .
-        </span>
-      </h2>
-      {description && (
-        <div className="lg:col-span-5 lg:pb-2">
-          <p className="text-base sm:text-lg text-dark-500 leading-relaxed max-w-[48ch]">
-            {description}
-          </p>
-          {children}
-        </div>
-      )}
+    <header className={cn("mb-14 lg:mb-20", className)}>
+      <Reveal y={16} className="eyebrow mb-6 sm:mb-8">
+        <span className="text-secondary-300">({index})</span>
+        <span className="h-px w-10 bg-white/25" aria-hidden="true" />
+        <span>{label}</span>
+      </Reveal>
+
+      <div className="grid gap-6 lg:grid-cols-12 lg:items-end">
+        <SplitText
+          as="h2"
+          text={title}
+          className="lg:col-span-8 font-display font-bold text-white text-[clamp(2.75rem,8vw,6.5rem)] leading-[0.92] tracking-[-0.045em]"
+        />
+        {description && (
+          <Reveal delay={0.25} className="lg:col-span-4 lg:pb-3">
+            <p className="text-base sm:text-lg text-white/60 leading-relaxed max-w-[46ch]">{description}</p>
+            {children}
+          </Reveal>
+        )}
+      </div>
+
+      <LineReveal className="mt-10 lg:mt-14" delay={0.2} />
     </header>
   );
 }

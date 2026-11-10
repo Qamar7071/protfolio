@@ -13,7 +13,21 @@ Personal portfolio of **Qamar Abbas**, an AI/ML engineer and Python developer in
 
 ## Stack
 
-Next.js 14 (App Router) · TypeScript · Tailwind CSS · Framer Motion · deployed on Vercel.
+Next.js 14 (App Router) · TypeScript · Tailwind CSS · Framer Motion · Lenis (smooth scroll) · deployed on Vercel.
+
+### Motion & interaction
+
+Dark, editorial design with award-site style motion, all of it switched off or simplified for people who prefer reduced motion:
+
+- Preloader with a 0 → 100 counter and a curtain reveal
+- Inertia smooth scrolling (Lenis) and a reading-progress bar
+- Custom cursor that grows over links and turns into a "View / Open" disc over projects
+- Hero with an interactive neural-network canvas, masked letter reveals, a text-scramble line, a 3D-tilt portrait and magnetic buttons
+- Crossed marquee tapes that speed up and flip direction with the scroll
+- Scroll-linked word highlighting, split-word section titles and count-up stats
+- Projects pinned in a horizontal-scroll gallery on desktop (stacked list on phones)
+- Service rows that fill with colour on hover, with a preview of related work following the mouse
+- Timeline rail that draws itself as you scroll
 
 ## Run locally
 
@@ -32,6 +46,7 @@ npm run build && npm run start
 | `lib/logos.ts` | Name → logo map for tool and organisation logos in `public/logos` |
 | `app/resume/` | The printable resume page |
 | `components/sections/` | One component per section of the home page |
+| `components/fx/` | Motion building blocks: smooth scroll, cursor, reveals, marquee, neural canvas, tilt, magnetic |
 | `public/projects`, `public/certificates` | Screenshots and certificates (WebP) |
 
 ## Updating the resume PDF

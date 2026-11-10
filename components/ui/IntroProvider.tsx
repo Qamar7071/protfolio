@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
+import { MotionConfig } from "framer-motion";
 
 import IntroOverlay from "@/components/ui/IntroOverlay";
 
@@ -46,9 +47,11 @@ export default function IntroProvider({ children }: { children: React.ReactNode 
   }, []);
 
   return (
-    <IntroContext.Provider value={done}>
-      {children}
-      {active && <IntroOverlay onReveal={reveal} onFinish={finish} />}
-    </IntroContext.Provider>
+    <MotionConfig reducedMotion="user">
+      <IntroContext.Provider value={done}>
+        {children}
+        {active && <IntroOverlay onReveal={reveal} onFinish={finish} />}
+      </IntroContext.Provider>
+    </MotionConfig>
   );
 }
