@@ -16,6 +16,14 @@ const verifiable = (c: Certificate) => Boolean(c.verifyUrl) && c.verifyUrl !== "
 const VERIFIED = CERTIFICATES.filter(verifiable);
 const OTHERS = CERTIFICATES.filter((c) => !verifiable(c));
 
+const WORDS = ["no", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"];
+const VERIFIED_COUNT = WORDS[VERIFIED.length] ?? String(VERIFIED.length);
+
+/* Bento on a 6-column grid: rows of three cards, and when the count leaves
+   two over, the first two cards (the most relevant) take half a row each. */
+const LEAD = VERIFIED.length % 3 === 2 ? 2 : VERIFIED.length % 3 === 1 ? 4 : 0;
+const isLarge = (i: number) => i < LEAD;
+
 /* Try the given image, then the same name with other extensions */
 function useImageCandidates(originalPath: string) {
   const lastDot = originalPath.lastIndexOf(".");
@@ -52,13 +60,17 @@ export default function Certifications() {
           index="04"
           label="Certifications"
           title="Proof of *learning*"
-          description="Courses and awards I've earned. The four Coursera certificates carry a verification link you can check yourself."
+          description={`Courses and awards I've earned. The ${VERIFIED_COUNT} Coursera certificates carry a verification link you can check yourself.`}
         />
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-6 gap-5">
           {VERIFIED.map((cert, i) => (
-            <Reveal key={cert.id} delay={i * 0.08} className="h-full">
-              <VerifiedCard cert={cert} onView={() => setSelected(cert)} />
+            <Reveal
+              key={cert.id}
+              delay={(i % 3) * 0.08}
+              className={isLarge(i) ? "h-full lg:col-span-3" : "h-full lg:col-span-2"}
+            >
+              <VerifiedCard cert={cert} large={isLarge(i)} onView={() => setSelected(cert)} />
             </Reveal>
           ))}
         </div>
@@ -83,7 +95,7 @@ export default function Certifications() {
 /* -------------------------------------------------------------------------- */
 /*  VERIFIED CARD                                                             */
 /* -------------------------------------------------------------------------- */
-function VerifiedCard({ cert, onView }: { cert: Certificate; onView: () => void }) {
+function VerifiedCard({ cert, large = false, onView }: { cert: Certificate; large?: boolean; onView: () => void }) {
   const img = useImageCandidates(cert.image);
 
   return (
@@ -93,7 +105,7 @@ function VerifiedCard({ cert, onView }: { cert: Certificate; onView: () => void 
         onClick={onView}
         data-cursor="view"
         aria-label={`View certificate: ${cert.title}`}
-        className="relative block w-full aspect-[4/3] overflow-hidden bg-ink-800"
+        className={`relative block w-full overflow-hidden bg-ink-800 ${large ? "aspect-[4/3] lg:aspect-[16/9]" : "aspect-[4/3]"}`}
       >
         {!img.failed ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -122,7 +134,11 @@ function VerifiedCard({ cert, onView }: { cert: Certificate; onView: () => void 
           </span>
           <span className="text-sm text-white/60">{cert.provider}</span>
         </div>
-        <h3 className="mt-4 font-display text-lg font-semibold text-white leading-snug">{cert.title}</h3>
+        <h3
+          className={`mt-4 font-display font-semibold text-white leading-snug ${large ? "text-lg lg:text-2xl lg:tracking-tight" : "text-lg"}`}
+        >
+          {cert.title}
+        </h3>
         <p className="mt-2 text-xs text-white/45">Issued {cert.date}</p>
         <a
           href={cert.verifyUrl}

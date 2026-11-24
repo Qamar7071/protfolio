@@ -192,12 +192,12 @@ function getBotResponse(
   }
 
   // Certifications
-  if (/certifi|credenti|award|coursera|ibm|badge|arduino/.test(q)) {
+  if (/certifi|credenti|award|coursera|ibm|microsoft|badge|arduino/.test(q)) {
     const list = CERTIFICATES.map(
       (c) => `• **${c.title}** — ${c.provider} (${c.date})`,
     ).join("\n");
     return {
-      text: `Qamar has **${CERTIFICATES.length} certifications** 🏆\n\n${list}\n\nThe 4 Coursera certificates (IBM, DeepLearning.AI and Vanderbilt) each have a verification link. See the Certifications section for details!`,
+      text: `Qamar has **${CERTIFICATES.length} certifications** 🏆\n\n${list}\n\nThe ${CERTIFICATES.filter((c) => c.verifyUrl !== "#").length} Coursera certificates (IBM, DeepLearning.AI, Vanderbilt and Microsoft) each have a verification link. See the Certifications section for details!`,
       topic: "certifications",
     };
   }
@@ -239,7 +239,7 @@ function getBotResponse(
   // Resume
   if (/resume|\bcv\b|download|pdf/.test(q)) {
     return {
-      text: `Qamar's one-page resume is at **/resume** (open it from the **Resume** button in the navbar), with a PDF download. 📄\n\nIt covers:\n• BS Artificial Intelligence at Shifa Tameer-e-Millat University\n• Raahi, KKH Road Status and four more deployed projects, with live and code links\n• Freelance work on Fiverr\n• 4 verifiable Coursera certificates (IBM, DeepLearning.AI, Vanderbilt)\n• Skills grouped by area`,
+      text: `Qamar's one-page resume is at **/resume** (open it from the **Resume** button in the navbar), with a PDF download. 📄\n\nIt covers:\n• BS Artificial Intelligence at Shifa Tameer-e-Millat University\n• Raahi, KKH Road Status and four more deployed projects, with live and code links\n• Freelance work on Fiverr\n• ${CERTIFICATES.filter((c) => c.verifyUrl !== "#").length} verifiable Coursera certificates (IBM, DeepLearning.AI, Vanderbilt, Microsoft)\n• Skills grouped by area`,
       topic: "resume",
     };
   }

@@ -76,7 +76,7 @@ export const ABOUT = {
     { title: "Machine Learning", desc: "Regression, classification, ensembles and CNNs, each trained, compared and evaluated end to end." },
     { title: "AI Agents & Assistants", desc: "Custom GPTs, OpenAI API chatbots, and Raahi, a planner run by a team of specialist agents." },
     { title: "Shipped, Not Shelved", desc: "Live apps on Vercel and Render that anyone can open, not demos that only run on my laptop." },
-    { title: "Always Learning", desc: "4 Coursera certificates from IBM, DeepLearning.AI, and Vanderbilt — all verifiable." },
+    { title: "Always Learning", desc: "5 Coursera certificates from IBM, DeepLearning.AI, Vanderbilt and Microsoft — all verifiable." },
   ],
 } as const;
 
@@ -376,6 +376,19 @@ export const CERTIFICATES = [
     image: "/certificates/agentic-ai-agents.webp",
     pdfUrl: "/certificates/agentic-ai-agents.pdf",
     skills: ["Agentic AI", "AI Agents", "AI Leadership"],
+    featured: true,
+  },
+  {
+    id: "microsoft-operational-planning",
+    kind: "course",
+    title: "Operational Planning and Problem Solving",
+    provider: "Microsoft",
+    platform: "Coursera",
+    date: "Nov 24, 2026",
+    verifyUrl: "https://coursera.org/verify/YR2CRDCZBIFG",
+    image: "/certificates/microsoft-operational-planning.webp",
+    pdfUrl: "/certificates/microsoft-operational-planning.pdf",
+    skills: ["Operational Planning", "Problem Solving"],
     featured: true,
   },
   {
