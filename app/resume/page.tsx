@@ -157,7 +157,7 @@ export default function ResumePage() {
               {RESUME.education.details}
             </p>
 
-            <h2 className={styles.sectionTitle} style={{ marginTop: "3.4mm" }}>
+            <h2 className={styles.sectionTitle} style={{ marginTop: "2.9mm" }}>
               Languages
             </h2>
             <p className={styles.muted}>{RESUME.languages}</p>

@@ -48,13 +48,13 @@
   width: 210mm;
   min-height: 297mm;
   margin: 0 auto;
-  padding: 11mm 14mm 9mm;
+  padding: 10mm 14mm 9mm;
   background: #fff;
   color: #1e293b;
   box-shadow: 0 30px 60px -30px rgba(15, 23, 42, 0.35), 0 0 0 1px rgba(15, 23, 42, 0.04);
   font-family: var(--font-inter), system-ui, sans-serif;
   font-size: 8.9pt;
-  line-height: 1.4;
+  line-height: 1.37;
   -webkit-print-color-adjust: exact;
   print-color-adjust: exact;
 }
@@ -70,7 +70,7 @@
   grid-template-columns: 1fr auto;
   gap: 6mm;
   align-items: end;
-  padding-bottom: 4.5mm;
+  padding-bottom: 4mm;
   border-bottom: 0.6mm solid #4854d9;
 }
 .name {
@@ -116,13 +116,13 @@
 
 /* ---------- sections ---------- */
 .section {
-  margin-top: 3.4mm;
+  margin-top: 2.9mm;
 }
 .sectionTitle {
   display: flex;
   align-items: center;
   gap: 3mm;
-  margin: 0 0 2mm;
+  margin: 0 0 1.6mm;
   font-family: var(--font-space-grotesk), system-ui, sans-serif;
   font-size: 10.6pt;
   font-weight: 700;
@@ -157,7 +157,7 @@
 
 /* projects / experience items */
 .item + .item {
-  margin-top: 2.2mm;
+  margin-top: 1.9mm;
 }
 .itemHead {
   display: flex;
@@ -198,7 +198,7 @@
   font-weight: 600;
 }
 .bullets {
-  margin: 1mm 0 0;
+  margin: 0.8mm 0 0;
   padding: 0;
   list-style: none;
 }
@@ -233,7 +233,7 @@
   padding: 0;
 }
 .certs li + li {
-  margin-top: 1.1mm;
+  margin-top: 0.7mm;
 }
 .certTitle {
   font-weight: 600;

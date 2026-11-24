@@ -165,7 +165,9 @@ export default function About() {
                   <span className="font-display text-sm text-white/30">0{i + 1}</span>
                 </div>
                 <h3 className="mt-8 font-display text-xl font-semibold text-white">{kp.title}</h3>
-                <p className="mt-2 text-sm text-white/55 leading-relaxed">{kp.desc}</p>
+                <p className="mt-2 text-sm text-white/55 leading-relaxed">
+                  {kp.desc.replace("{count}", String(LEARNING_PATH.length))}
+                </p>
               </Reveal>
             );
           })}

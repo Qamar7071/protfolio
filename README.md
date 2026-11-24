@@ -7,7 +7,7 @@ Personal portfolio of **Qamar Abbas**, an AI/ML engineer and Python developer in
 ## What's on the site
 
 - **Projects** with dataset, method, results and live/code links: Raahi (multi-agent trip planner), KKH Road Status (calibrated road-risk model), Diabetes Risk Assessment, USWA AI Assistant, GPA and loan predictors, UniPredict, and more.
-- **Certifications**: five verifiable Coursera certificates (IBM, DeepLearning.AI and Stanford, Vanderbilt, Microsoft) plus school courses and awards.
+- **Certifications**: six verifiable Coursera certificates (IBM, DeepLearning.AI and Stanford, Vanderbilt, Microsoft, UC Irvine) plus school courses and awards.
 - **Resume** at `/resume`: a one-page A4 CV rendered from the same data as the site, printable and exported to `public/resume.pdf`.
 - Services, experience, a WhatsApp-based project inquiry form and a small rule-based chatbot.
 

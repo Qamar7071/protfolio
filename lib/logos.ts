@@ -58,6 +58,8 @@ const LOGOS: Record<string, Logo> = {
   shifatameeremillatuniversity: l("stmu.png"),
   fiverr: l("fiverr.svg", true),
   microsoft: l("microsoft.svg"),
+  uci: l("uci.png", true),
+  universityofcaliforniairvine: l("uci.png", true),
 
   // ---- Contact channels ----
   gmail: l("gmail.svg"),

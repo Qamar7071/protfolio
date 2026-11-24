@@ -76,7 +76,7 @@ export const ABOUT = {
     { title: "Machine Learning", desc: "Regression, classification, ensembles and CNNs, each trained, compared and evaluated end to end." },
     { title: "AI Agents & Assistants", desc: "Custom GPTs, OpenAI API chatbots, and Raahi, a planner run by a team of specialist agents." },
     { title: "Shipped, Not Shelved", desc: "Live apps on Vercel and Render that anyone can open, not demos that only run on my laptop." },
-    { title: "Always Learning", desc: "5 Coursera certificates from IBM, DeepLearning.AI, Vanderbilt and Microsoft — all verifiable." },
+    { title: "Always Learning", desc: "{count} Coursera certificates from IBM, DeepLearning.AI, Vanderbilt, Microsoft and UC Irvine — all verifiable." },
   ],
 } as const;
 
@@ -376,6 +376,19 @@ export const CERTIFICATES = [
     image: "/certificates/agentic-ai-agents.webp",
     pdfUrl: "/certificates/agentic-ai-agents.pdf",
     skills: ["Agentic AI", "AI Agents", "AI Leadership"],
+    featured: true,
+  },
+  {
+    id: "uci-problem-solving-decision-making",
+    kind: "course",
+    title: "Effective Problem-Solving and Decision-Making",
+    provider: "University of California, Irvine",
+    platform: "Coursera",
+    date: "Oct 21, 2026",
+    verifyUrl: "https://coursera.org/verify/1QJFWLSAL91E",
+    image: "/certificates/uci-problem-solving-decision-making.webp",
+    pdfUrl: "/certificates/uci-problem-solving-decision-making.pdf",
+    skills: ["Problem Solving", "Decision Making"],
     featured: true,
   },
   {

@@ -121,12 +121,16 @@ export const RESUME = {
     details: `${EDUCATION.grade}, ${EDUCATION.semester}. Coursework: linear algebra, algorithms in C++, AI fundamentals.`,
   },
 
-  certifications: CERTIFICATES.filter((c) => c.verifyUrl !== "#").map((c) => ({
-    title: c.title,
-    issuer: c.provider === "DeepLearning.AI" ? "DeepLearning.AI and Stanford Online" : c.provider,
-    date: c.date.replace(/ \d+,/, ""),
-    href: c.verifyUrl,
-  })),
+  // newest first, by the full date (the resume itself only shows month and year)
+  certifications: CERTIFICATES.filter((c) => c.verifyUrl !== "#")
+    .slice()
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .map((c) => ({
+      title: c.title,
+      issuer: c.provider === "DeepLearning.AI" ? "DeepLearning.AI and Stanford Online" : c.provider,
+      date: c.date.replace(/ \d+,/, ""),
+      href: c.verifyUrl,
+    })),
 
   languages: "English (professional), Urdu (native)",
 } as const;
